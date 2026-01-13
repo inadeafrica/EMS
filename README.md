@@ -45,7 +45,7 @@ An open-source Energy Management System built on **OpenEMS** (Open Energy Manage
 
 3. **Start the system**
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
 4. **Access the web interface**
@@ -117,31 +117,31 @@ This file defines:
 ### Starting the System
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Viewing Logs
 
 ```bash
 # All services
-docker-compose logs -f
+docker compose logs -f
 
 # Specific service
-docker-compose logs -f openems-edge
-docker-compose logs -f openems-backend
-docker-compose logs -f openems-ui
+docker compose logs -f openems-edge
+docker compose logs -f openems-backend
+docker compose logs -f openems-ui
 ```
 
 ### Stopping the System
 
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ### Stopping and Removing Data
 
 ```bash
-docker-compose down -v
+docker compose down -v
 ```
 
 ## Monitoring Energy Data
@@ -174,24 +174,24 @@ from(bucket: "energy_data")
 
 Check Docker logs:
 ```bash
-docker-compose logs
+docker compose logs
 ```
 
 ### Port Conflicts
 
-If ports are already in use, modify the port mappings in `docker-compose.yml` or `.env` file.
+If ports are already in use, modify the port mappings in `docker compose.yml` or `.env` file.
 
 ### Database Connection Issues
 
 Ensure PostgreSQL is running:
 ```bash
-docker-compose ps postgres
+docker compose ps postgres
 ```
 
 Reset the database:
 ```bash
-docker-compose down -v
-docker-compose up -d
+docker compose down -v
+docker compose up -d
 ```
 
 ## Development

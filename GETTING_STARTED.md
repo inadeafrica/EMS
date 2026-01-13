@@ -11,7 +11,7 @@ Before starting, ensure you have:
 docker --version
 
 # Check Docker Compose version (should be 2.0+)
-docker-compose --version
+docker compose --version
 
 # Check available disk space (need at least 10GB)
 df -h
@@ -38,10 +38,10 @@ nano .env
 
 ```bash
 # Start all services in detached mode
-docker-compose up -d
+docker compose up -d
 
 # Check service status
-docker-compose ps
+docker compose ps
 
 # You should see all services as "Up"
 ```
@@ -62,7 +62,7 @@ The services need a few minutes to initialize:
 
 ```bash
 # Watch the logs
-docker-compose logs -f
+docker compose logs -f
 
 # Wait until you see messages like:
 # "OpenEMS Edge started successfully"
@@ -132,10 +132,10 @@ When you're done:
 
 ```bash
 # Stop all services
-docker-compose down
+docker compose down
 
 # Or stop and remove all data
-docker-compose down -v
+docker compose down -v
 ```
 
 ## Next Steps
@@ -153,15 +153,15 @@ docker-compose down -v
 netstat -tuln | grep -E '8080|8084|8085|8086'
 
 # Check Docker logs for errors
-docker-compose logs openems-edge
-docker-compose logs openems-backend
+docker compose logs openems-edge
+docker compose logs openems-backend
 ```
 
 ### Can't Access Web UI
 
 1. Check if the service is running:
    ```bash
-   docker-compose ps openems-ui
+   docker compose ps openems-ui
    ```
 
 2. Check firewall rules:
@@ -179,10 +179,10 @@ docker-compose logs openems-backend
 
 ```bash
 # Restart the database
-docker-compose restart postgres
+docker compose restart postgres
 
 # Wait 30 seconds, then restart backend
-docker-compose restart openems-backend
+docker compose restart openems-backend
 ```
 
 ### Out of Disk Space
@@ -199,4 +199,4 @@ docker image prune -a
 
 - Check [README.md](README.md) for detailed documentation
 - Visit [OpenEMS Community Forum](https://community.openems.io/)
-- Review logs: `docker-compose logs -f`
+- Review logs: `docker compose logs -f`

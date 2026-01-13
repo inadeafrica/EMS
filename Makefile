@@ -36,7 +36,7 @@ setup:
 # Start services
 start:
 	@echo "Starting Energy Management System..."
-	docker-compose up -d
+	docker compose up -d
 	@echo ""
 	@echo "✓ Services started!"
 	@echo ""
@@ -49,49 +49,49 @@ start:
 # Stop services
 stop:
 	@echo "Stopping Energy Management System..."
-	docker-compose down
+	docker compose down
 	@echo "✓ Services stopped"
 
 # Restart services
 restart:
 	@echo "Restarting Energy Management System..."
-	docker-compose restart
+	docker compose restart
 	@echo "✓ Services restarted"
 
 # View all logs
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 # View Edge logs
 logs-edge:
-	docker-compose logs -f openems-edge
+	docker compose logs -f openems-edge
 
 # View Backend logs
 logs-backend:
-	docker-compose logs -f openems-backend
+	docker compose logs -f openems-backend
 
 # View UI logs
 logs-ui:
-	docker-compose logs -f openems-ui
+	docker compose logs -f openems-ui
 
 # Check status
 status:
 	@echo "Service Status:"
-	@docker-compose ps
+	@docker compose ps
 
 # Clean everything
 clean:
 	@echo "WARNING: This will remove all data!"
 	@echo "Press Ctrl+C to cancel, or Enter to continue..."
 	@read dummy
-	docker-compose down -v
+	docker compose down -v
 	@echo "✓ All services and data removed"
 
 # Run tests
 test:
 	@echo "Running system tests..."
 	@echo "Checking if services are running..."
-	@docker-compose ps | grep -q "Up" && echo "✓ Services are running" || (echo "✗ Services not running" && exit 1)
+	@docker compose ps | grep -q "Up" && echo "✓ Services are running" || (echo "✗ Services not running" && exit 1)
 	@echo "Testing OpenEMS UI..."
 	@curl -f http://localhost:8080 > /dev/null 2>&1 && echo "✓ UI is accessible" || echo "✗ UI not accessible"
 	@echo "Testing InfluxDB..."
@@ -103,9 +103,9 @@ test:
 backup:
 	@echo "Creating backup..."
 	@mkdir -p backups
-	@docker-compose exec -T postgres pg_dump -U openems openems > backups/postgres_$$(date +%Y%m%d_%H%M%S).sql
+	@docker compose exec -T postgres pg_dump -U openems openems > backups/postgres_$$(date +%Y%m%d_%H%M%S).sql
 	@echo "✓ PostgreSQL backup created"
-	@docker-compose exec -T influxdb influx backup /tmp/backup
+	@docker compose exec -T influxdb influx backup /tmp/backup
 	@docker cp openems-influxdb:/tmp/backup backups/influxdb_$$(date +%Y%m%d_%H%M%S)
 	@echo "✓ InfluxDB backup created"
 	@echo "Backups saved in ./backups/"
@@ -118,7 +118,7 @@ restore:
 	@echo "Enter PostgreSQL backup filename to restore:"
 	@read backup_file; \
 	if [ -f "backups/$$backup_file" ]; then \
-		docker-compose exec -T postgres psql -U openems -d openems < backups/$$backup_file; \
+		docker compose exec -T postgres psql -U openems -d openems < backups/$$backup_file; \
 		echo "✓ PostgreSQL restored from $$backup_file"; \
 	else \
 		echo "✗ Backup file not found"; \
@@ -127,7 +127,7 @@ restore:
 # Pull latest images
 update:
 	@echo "Pulling latest OpenEMS images..."
-	docker-compose pull
+	docker compose pull
 	@echo "✓ Images updated"
 	@echo "Run 'make restart' to use the new images"
 

@@ -281,7 +281,7 @@ Docker Compose can be configured with health checks:
 
 Each component logs to stdout:
 ```bash
-docker-compose logs -f [service_name]
+docker compose logs -f [service_name]
 ```
 
 ### Metrics
