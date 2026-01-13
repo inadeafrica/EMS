@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # OpenEMS Edge - Edge device controller
+  openems-edge:
+    image: openems/openems-edge:latest
+    container_name: openems-edge
+    ports:
+      - "8085:8085"  # Edge API
+    environment:
+      - TZ=UTC
+    volumes:
+      - ./config/edge:/etc/openems
+      - edge-data:/var/lib/openems
+    restart: unless-stopped
+    networks:
+      - openems-network
+
+  # OpenEMS Backend - Central management server
+  openems-backend:
+    image: openems/openems-backend:latest
+    container_name: openems-backend
+    ports:
+      - "8084:8084"  # Backend API
+    environment:
+      - TZ=UTC
+      - OPENEMS_DB_HOST=postgres
+      - OPENEMS_DB_PORT=5432
+      - OPENEMS_DB_NAME=openems
+      - OPENEMS_DB_USER=openems
+      - OPENEMS_DB_PASSWORD=openems
+    volumes:
+      - ./config/backend:/etc/openems
+      - backend-data:/var/lib/openems
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - openems-network
+
+  # OpenEMS UI - Web interface
+  openems-ui:
+    image: openems/openems-ui:latest
+    container_name: openems-ui
+    ports:
+      - "8080:80"  # Web UI
+    environment:
+      - TZ=UTC
+      - OPENEMS_EDGE_URL=http://openems-edge:8085
+      - OPENEMS_BACKEND_URL=http://openems-backend:8084
+    depends_on:
+      - openems-edge
+      - openems-backend
+    restart: unless-stopped
+    networks:
+      - openems-network
+
+  # PostgreSQL Database for OpenEMS Backend
+  postgres:
+    image: postgres:15-alpine
+    container_name: openems-postgres
+    environment:
+      - POSTGRES_DB=openems
+      - POSTGRES_USER=openems
+      - POSTGRES_PASSWORD=openems
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - openems-network
+
+  # InfluxDB for time-series data storage
+  influxdb:
+    image: influxdb:2.7-alpine
+    container_name: openems-influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=adminpassword
+      - DOCKER_INFLUXDB_INIT_ORG=openems
+      - DOCKER_INFLUXDB_INIT_BUCKET=energy_data
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=openems-token-change-in-production
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    restart: unless-stopped
+    networks:
+      - openems-network
+
+networks:
+  openems-network:
+    driver: bridge
+
+volumes:
+  edge-data:
+  backend-data:
+  postgres-data:
+  influxdb-data:
