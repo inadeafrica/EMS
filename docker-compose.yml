@@ -24,9 +24,9 @@ services:
       - TZ=UTC
       - OPENEMS_DB_HOST=postgres
       - OPENEMS_DB_PORT=5432
-      - OPENEMS_DB_NAME=openems
-      - OPENEMS_DB_USER=openems
-      - OPENEMS_DB_PASSWORD=openems
+      - OPENEMS_DB_NAME=${POSTGRES_DB:-openems}
+      - OPENEMS_DB_USER=${POSTGRES_USER:-openems}
+      - OPENEMS_DB_PASSWORD=${POSTGRES_PASSWORD:-openems}
     volumes:
       - ./config/backend:/etc/openems
       - backend-data:/var/lib/openems
@@ -58,9 +58,9 @@ services:
     image: postgres:15-alpine
     container_name: openems-postgres
     environment:
-      - POSTGRES_DB=openems
-      - POSTGRES_USER=openems
-      - POSTGRES_PASSWORD=openems
+      - POSTGRES_DB=${POSTGRES_DB:-openems}
+      - POSTGRES_USER=${POSTGRES_USER:-openems}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-openems}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
@@ -75,11 +75,11 @@ services:
       - "8086:8086"
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=adminpassword
-      - DOCKER_INFLUXDB_INIT_ORG=openems
-      - DOCKER_INFLUXDB_INIT_BUCKET=energy_data
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=openems-token-change-in-production
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_ADMIN_USER:-admin}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_ADMIN_PASSWORD:-adminpassword}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG:-openems}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET:-energy_data}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN:-openems-token-change-in-production}
     volumes:
       - influxdb-data:/var/lib/influxdb2
     restart: unless-stopped

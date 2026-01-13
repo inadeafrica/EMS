@@ -214,7 +214,18 @@ The default configuration includes simulated components for testing. To use real
 For production deployment:
 
 1. **Change default passwords** in `.env` file
+   ```bash
+   cp .env.example .env
+   # Edit .env and change all passwords and tokens
+   ```
+
 2. **Use secure tokens** for InfluxDB
+   ```bash
+   # Generate a strong token
+   openssl rand -base64 32
+   # Add to .env as INFLUXDB_TOKEN
+   ```
+
 3. **Enable SSL/TLS** for web interfaces
 4. **Set up backups** for databases
 5. **Configure firewall rules** to restrict access
