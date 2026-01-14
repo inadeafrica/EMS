@@ -6,11 +6,14 @@ An open-source Energy Management System built on **OpenEMS** (Open Energy Manage
 
 ## Repository Structure
 
+This project uses a **monorepo architecture** - all components (UI, Edge, Backend) are in a single repository. For details about this design choice and alternatives, see [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md).
+
 ```
 Energy-Management-System/
 ├── src/                    # Complete OpenEMS source code (Java, TypeScript)
-│   ├── io.openems.edge.*   # Edge device modules
-│   ├── io.openems.backend.*# Backend server modules
+│   ├── io.openems.edge.*   # Edge device modules (192 modules)
+│   ├── io.openems.backend.*# Backend server modules (18 modules)
+│   ├── io.openems.common.* # Shared components (2 modules)
 │   ├── ui/                 # Web UI (Angular)
 │   └── README.md           # Build and development guide
 ├── config/                 # Runtime configuration
@@ -304,6 +307,17 @@ For production deployment:
 7. **Set up monitoring and alerting**
 
 ## Resources
+
+### Documentation
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) - Detailed system architecture and component descriptions
+- [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md) - Repository organization explanation (monorepo vs. multi-repo)
+- [GETTING_STARTED.md](GETTING_STARTED.md) - Step-by-step setup guide
+- [EXAMPLES.md](EXAMPLES.md) - Practical usage examples
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Common issues and solutions
+- [SECURITY.md](SECURITY.md) - Security best practices
+
+### OpenEMS Resources
 
 - [OpenEMS Official Website](https://openems.io/)
 - [OpenEMS Documentation](https://openems.github.io/openems.io/openems/latest/introduction.html)
