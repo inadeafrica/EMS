@@ -2,6 +2,20 @@
 
 Fast lookup for common commands and configurations.
 
+## Repository Organization
+
+**Architecture**: Monorepo (all components in one repository)
+
+```
+Repository Structure:
+├── UI (1 app)       → src/ui/
+├── Edge (192 mods)  → src/io.openems.edge.*
+├── Backend (18 mods)→ src/io.openems.backend.*
+└── Common (2 mods)  → src/io.openems.common.*
+```
+
+📚 See [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md) for detailed explanation
+
 ## Essential Commands
 
 ### Setup
