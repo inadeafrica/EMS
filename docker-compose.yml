@@ -45,6 +45,8 @@ services:
     environment:
       - TZ=UTC
       - OPENEMS_BACKEND_URL=http://openems-backend:8084
+      - WEBSOCKET_HOST=localhost
+      - WEBSOCKET_PORT=8082
     depends_on:
       - openems-backend
     restart: unless-stopped
