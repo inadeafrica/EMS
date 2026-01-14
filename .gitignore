@@ -11,6 +11,9 @@ data/
 *.swp
 *.swo
 *~
+.classpath
+.project
+.settings/
 
 # OS
 .DS_Store
@@ -23,3 +26,16 @@ logs/
 # Temporary files
 tmp/
 temp/
+
+# Build artifacts
+build/
+target/
+*.class
+*.jar
+!gradle/wrapper/*.jar
+!src/.gradle-wrapper/*.jar
+.gradle/
+bin/
+generated/
+node_modules/
+dist/
