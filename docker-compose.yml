@@ -1,7 +1,7 @@
 services:
   # OpenEMS Edge - Edge device controller
   openems-edge:
-    image: openems/openems-edge:latest
+    image: openems/edge:latest
     container_name: openems-edge
     ports:
       - "8085:8085"  # Edge API
@@ -16,7 +16,7 @@ services:
 
   # OpenEMS Backend - Central management server
   openems-backend:
-    image: openems/openems-backend:latest
+    image: openems/backend:latest
     container_name: openems-backend
     ports:
       - "8084:8084"  # Backend API
@@ -38,16 +38,14 @@ services:
 
   # OpenEMS UI - Web interface
   openems-ui:
-    image: openems/openems-ui:latest
+    image: openems/ui-backend:latest
     container_name: openems-ui
     ports:
       - "8080:80"  # Web UI
     environment:
       - TZ=UTC
-      - OPENEMS_EDGE_URL=http://openems-edge:8085
       - OPENEMS_BACKEND_URL=http://openems-backend:8084
     depends_on:
-      - openems-edge
       - openems-backend
     restart: unless-stopped
     networks:
