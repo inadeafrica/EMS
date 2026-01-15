@@ -2,6 +2,25 @@
 
 An open-source Energy Management System built on **OpenEMS** (Open Energy Management System), an award-winning platform for managing renewable energy sources, battery storage, EV charging, and local grid interaction.
 
+**This repository includes the complete OpenEMS source code** in the `src/` directory, allowing you to customize and extend the platform for your specific needs.
+
+## Repository Structure
+
+```
+Energy-Management-System/
+├── src/                    # Complete OpenEMS source code (Java, TypeScript)
+│   ├── io.openems.edge.*   # Edge device modules
+│   ├── io.openems.backend.*# Backend server modules
+│   ├── ui/                 # Web UI (Angular)
+│   └── README.md           # Build and development guide
+├── config/                 # Runtime configuration
+│   ├── edge/               # Edge configuration
+│   └── backend/            # Backend configuration
+├── docker-compose.yml      # Docker orchestration
+├── Makefile               # Convenience commands
+└── Documentation files     # Comprehensive guides
+```
+
 ## Features
 
 - **Real-time Energy Monitoring**: Track energy consumption, production, and storage in real-time
@@ -12,24 +31,32 @@ An open-source Energy Management System built on **OpenEMS** (Open Energy Manage
 - **Time-series Data Storage**: Historical data analysis with InfluxDB
 - **Modular Architecture**: Easily extend with additional components
 - **Simulation Mode**: Test configurations without physical hardware
+- **Full Source Code**: Customize and build your own version
 
 ## Technology Stack
 
-- **OpenEMS Edge**: Edge device controller for real-time management
-- **OpenEMS Backend**: Central management server
-- **OpenEMS UI**: Web-based user interface
+- **OpenEMS Edge**: Edge device controller for real-time management (Java)
+- **OpenEMS Backend**: Central management server (Java/Spring Boot)
+- **OpenEMS UI**: Web-based user interface (Angular/TypeScript)
 - **PostgreSQL**: Relational database for configuration and metadata
 - **InfluxDB**: Time-series database for energy data
 - **Docker**: Containerized deployment
 
 ## Prerequisites
 
+### For Docker Deployment (Pre-built Images)
 - Docker (version 20.10 or higher)
 - Docker Compose (version 2.0 or higher)
 - At least 4GB RAM
 - 10GB free disk space
 
-## Quick Start
+### For Building from Source
+- Java Development Kit (JDK) 21 or later
+- Gradle (included via wrapper)
+- Node.js and npm (for UI)
+- 20GB free disk space
+
+## Quick Start (Docker Deployment)
 
 1. **Clone the repository**
    ```bash
@@ -167,6 +194,50 @@ from(bucket: "energy_data")
   |> filter(fn: (r) => r["_measurement"] == "energy")
   |> filter(fn: (r) => r["_field"] == "power")
 ```
+
+## Building from Source
+
+To customize and build your own version of OpenEMS:
+
+1. **Navigate to the source directory**
+   ```bash
+   cd src
+   ```
+
+2. **Build the project**
+   ```bash
+   # Build all modules
+   ./gradlew build
+   
+   # Build UI
+   cd ui
+   npm install
+   npm run build
+   ```
+
+3. **Run in development mode**
+   ```bash
+   # Run Edge
+   ./gradlew :io.openems.edge.application:runEdge
+   
+   # Run Backend
+   ./gradlew :io.openems.backend.application:runBackend
+   ```
+
+For detailed build instructions, see [`src/README.md`](src/README.md).
+
+## Customization
+
+With the full source code included, you can:
+
+- Add custom device drivers for specific hardware
+- Implement custom control algorithms
+- Modify the UI to match your branding
+- Integrate with proprietary systems
+- Add new energy management strategies
+- Extend the API with custom endpoints
+
+See the [OpenEMS Developer Documentation](https://openems.github.io/openems.io/openems/latest/development/overview.html) for guidance.
 
 ## Troubleshooting
 
