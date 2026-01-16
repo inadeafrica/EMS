@@ -1,238 +1,78 @@
 # Repository Structure Guide
 
-## Question: Multiple Repos or Grouped Folders?
+## Overview
 
-Based on the architecture described in [ARCHITECTURE.md](ARCHITECTURE.md), this document clarifies the repository organization strategy for the Energy Management System.
+This repository provides a **Docker-based deployment configuration** for OpenEMS (Open Energy Management System). It uses pre-built Docker images to deploy OpenEMS components without requiring the full source code.
 
 ## Current Structure
 
-The system uses a **monorepo approach** with all source code organized in a single repository:
+The repository contains Docker configuration and documentation:
 
 ```
 Energy-Management-System/
-├── src/
-│   ├── edge/                  (Edge modules folder)
-│   │   └── io.openems.edge.*  (192 Edge modules)
-│   ├── backend/               (Backend modules folder)
-│   │   └── io.openems.backend.* (18 Backend modules)
-│   ├── common/                (Shared modules folder)
-│   │   └── io.openems.common.*, io.openems.shared.*, io.openems.wrapper, io.openems.oem.* (5 modules)
-│   └── ui/                    (Angular web application)
-├── config/
-│   ├── edge/
-│   └── backend/
-└── [documentation files]
+├── config/                 # Runtime configuration (created during setup)
+│   ├── edge/               # Edge device configuration files
+│   └── backend/            # Backend server configuration files
+├── docker-compose.yml      # Docker service definitions
+├── Makefile               # Automation commands for deployment
+├── .env.example           # Environment variables template
+├── .gitignore             # Git ignore rules
+├── validate.sh            # Setup validation script
+└── [documentation files]   # README, ARCHITECTURE, etc.
 ```
 
-**Structure Implemented**: The repository follows **Option A** (Monorepo with Grouped Folders within src/), providing clear organization while maintaining monorepo benefits.
+## Docker Deployment Architecture
 
-## Architecture Components
-
-According to the system architecture, there are **three main components**:
+This repository deploys the following OpenEMS components using pre-built Docker images:
 
 ### 1. OpenEMS UI (Port 8080)
 - **Technology**: Angular, TypeScript, nginx
-- **Location**: `src/ui/`
+- **Docker Image**: `openems/ui-backend:latest`
 - **Purpose**: Web-based user interface
 
 ### 2. OpenEMS Edge (Port 8085)
 - **Technology**: Java, OSGi framework
-- **Location**: `src/io.openems.edge.*` (192 modules)
+- **Docker Image**: `openems/edge:latest`
 - **Purpose**: Edge device controller for real-time energy management
 
 ### 3. OpenEMS Backend (Port 8084)
 - **Technology**: Java, Spring Boot
-- **Location**: `src/backend/io.openems.backend.*` (18 modules)
+- **Docker Image**: `openems/backend:latest`
 - **Purpose**: Central management server
 
-## Organizational Options
+### 4. PostgreSQL (Port 5432)
+- **Docker Image**: `postgres:15-alpine`
+- **Purpose**: Configuration and metadata storage
 
-### Option A: Monorepo with Grouped Folders ✅ **IMPLEMENTED**
+### 5. InfluxDB (Port 8086)
+- **Docker Image**: `influxdb:2.7-alpine`
+- **Purpose**: Time-series energy data storage
 
-**Implemented Structure:**
-```
-Energy-Management-System/
-├── src/
-│   ├── edge/
-│   │   └── [All Edge modules: io.openems.edge.*]
-│   ├── backend/
-│   │   └── [All Backend modules: io.openems.backend.*]
-│   ├── common/
-│   │   └── [Shared modules: io.openems.common.*, etc.]
-│   └── ui/
-│       └── [Angular application]
-├── config/
-├── docs/
-└── docker-compose.yml
-```
+## Deployment Approach
 
-**Advantages:**
-- ✅ Single source of truth
-- ✅ Easier to maintain dependencies between components
-- ✅ Simpler CI/CD pipeline
-- ✅ Atomic commits across all components
-- ✅ Single issue tracker
-- ✅ Easier to ensure version compatibility
-- ✅ Reduced overhead (one repo to clone/manage)
-- ✅ **Clear organization by component type**
+This repository uses **Docker Compose** to orchestrate multiple containerized services. The configuration allows for:
 
-**Disadvantages:**
-- ❌ Larger repository size
-- ❌ All developers have access to all code
-- ❌ Longer build times if building everything
+- **Simple deployment**: All services defined in one `docker-compose.yml` file
+- **Pre-built images**: Uses official OpenEMS Docker images from Docker Hub
+- **Configuration management**: Runtime configuration stored in `config/` directory
+- **Easy updates**: Pull latest images with `make update`
+- **Selective deployment**: Deploy only specific services (see below)
 
-**When to use:**
-- Components are tightly coupled
-- Same team works on multiple components
-- Need coordinated releases
-- Development and deployment happen together
+## Customization and Extension
 
-### Option B: Multiple Separate Repositories
+### For Configuration Changes
+- Modify files in `config/edge/` for Edge configuration
+- Modify files in `config/backend/` for Backend configuration
+- Update `.env` file for environment variables
 
-**Structure:**
-```
-openems-ui/              (separate repo)
-openems-edge/            (separate repo)
-openems-backend/         (separate repo)
-openems-common/          (separate repo)
-openems-deployment/      (Docker configs, separate repo)
-```
+### For Source Code Changes
+If you need to modify the OpenEMS source code, you should:
+1. Fork the official OpenEMS repository: https://github.com/OpenEMS/openems
+2. Make your changes in that repository
+3. Build custom Docker images
+4. Update `docker-compose.yml` to use your custom images
 
-**Advantages:**
-- ✅ Clear separation of concerns
-- ✅ Independent versioning and releases
-- ✅ Smaller, focused repositories
-- ✅ Team-specific access control
-- ✅ Independent CI/CD pipelines
-- ✅ Faster clone and build times per component
-
-**Disadvantages:**
-- ❌ Complex dependency management
-- ❌ Difficult to make atomic changes across components
-- ❌ Multiple PRs needed for related changes
-- ❌ Version compatibility challenges
-- ❌ More complex setup for developers
-- ❌ Coordination overhead between repos
-
-**When to use:**
-- Components are loosely coupled
-- Different teams own different components
-- Components have different release cycles
-- Need strict access control per component
-
-### Option C: Hybrid Approach
-
-**Structure:**
-```
-Energy-Management-System/ (main repo)
-├── ui/           -> submodule to openems-ui repo
-├── edge/         -> submodule to openems-edge repo
-├── backend/      -> submodule to openems-backend repo
-├── common/       -> submodule to openems-common repo
-└── docker-compose.yml
-```
-
-**Advantages:**
-- ✅ Combines benefits of both approaches
-- ✅ Components can be developed independently
-- ✅ Main repo provides integration point
-
-**Disadvantages:**
-- ❌ Added complexity of git submodules
-- ❌ Submodule management overhead
-- ❌ Learning curve for developers
-
-## Recommendation for This Project
-
-### ✅ **Recommended: Option A - Monorepo with Grouped Folders**
-
-**Rationale:**
-
-1. **Current State**: The project already uses a monorepo (all code in `src/`)
-2. **Tight Integration**: The three components (UI, Edge, Backend) are tightly integrated and communicate via REST/WebSocket
-3. **Coordinated Releases**: All components need to be version-compatible
-4. **Shared Dependencies**: Common modules are used across components
-5. **Single Team**: Appears to be managed by a single team/organization
-6. **Deployment Together**: Docker Compose deploys all components together
-
-**Implementation Plan:**
-
-The current structure is already a monorepo, but organizing it better would improve clarity:
-
-```
-Energy-Management-System/
-├── src/
-│   ├── ui/                              (Already organized)
-│   │   └── [Angular application]
-│   │
-│   ├── edge/                            (New organization)
-│   │   ├── io.openems.edge.application/
-│   │   ├── io.openems.edge.battery.*/
-│   │   ├── io.openems.edge.controller.*/
-│   │   ├── io.openems.edge.ess.*/
-│   │   └── [190+ other edge modules]
-│   │
-│   ├── backend/                         (New organization)
-│   │   ├── io.openems.backend.application/
-│   │   ├── io.openems.backend.core/
-│   │   ├── io.openems.backend.timedata.*/
-│   │   └── [15+ other backend modules]
-│   │
-│   └── common/                          (New organization)
-│       ├── io.openems.common/
-│       └── io.openems.common.bridge.http/
-│
-├── config/
-│   ├── edge/
-│   └── backend/
-│
-├── docs/
-│   └── [All documentation]
-│
-└── docker-compose.yml
-```
-
-## Migration Strategy
-
-If you decide to reorganize the current structure:
-
-### Phase 1: Documentation Update (Minimal Risk)
-1. Update ARCHITECTURE.md to clarify the monorepo structure
-2. Add this REPOSITORY_STRUCTURE.md document
-3. Update README.md to reference the structure
-
-### Phase 2: Logical Organization (Optional)
-1. Move components into organized folders within `src/`
-2. Update build configuration (Gradle, etc.)
-3. Update Docker build contexts
-4. Update documentation references
-
-### Phase 3: Validation
-1. Verify all builds work
-2. Test Docker Compose deployment
-3. Validate CI/CD pipelines
-
-## Current Answer to Your Question
-
-**Q: Based on the Architecture, it appears that we'll have to create multiple repos or grouped folders for each of the UI, Edge and Backend. Correct?**
-
-**A: You have two valid options:**
-
-1. **Keep the current monorepo structure** (Recommended)
-   - All code stays in one repository
-   - Optionally organize better with grouped folders within `src/`
-   - This is already what you have and it works well for this type of system
-
-2. **Create multiple repositories** (Alternative)
-   - Create separate repos for UI, Edge, Backend
-   - More complex but provides independent versioning
-   - Requires more coordination overhead
-
-**The answer is NOT that you "have to" do either one** - it's a design choice based on your team structure, workflow, and preferences. For this project, the monorepo approach (what you currently have) is recommended because:
-- Components are tightly integrated
-- Same team likely works on all components  
-- Coordinated releases are needed
-- Current structure already supports this
+This separation keeps the deployment configuration clean and maintainable.
 
 ## Independent Component Deployment
 
@@ -300,39 +140,33 @@ docker compose -f docker-compose.edge.yml up -d
 docker compose -f docker-compose.backend.yml up -d
 ```
 
-### Strategy 3: Build-Specific Docker Images
+### Strategy 3: Custom Docker Images
 
-Build Docker images for specific components from the monorepo:
+If you need to build custom Docker images with your own modifications:
 
 ```bash
-# Build only Edge image
-cd src
-docker build -f Dockerfile.edge -t my-org/edge:latest .
+# Clone the official OpenEMS repository
+git clone https://github.com/OpenEMS/openems.git
+cd openems
 
-# Build only Backend image
-docker build -f Dockerfile.backend -t my-org/backend:latest .
+# Build custom Edge image
+docker build -f tools/docker/edge/Dockerfile -t my-org/edge:custom .
 
-# Build only UI image
-cd ui
-docker build -t my-org/ui:latest .
+# Build custom Backend image
+docker build -f tools/docker/backend/Dockerfile -t my-org/backend:custom .
+
+# Build custom UI image
+docker build -f tools/docker/ui/Dockerfile.backend -t my-org/ui:custom .
 ```
 
-**Create component-specific Dockerfiles:**
-
-**Dockerfile.edge**:
-```dockerfile
-FROM gradle:8-jdk21 AS builder
-WORKDIR /build
-COPY io.openems.edge.* ./
-COPY io.openems.common* ./
-RUN gradle :io.openems.edge.application:build
-
-FROM eclipse-temurin:21-jre
-COPY --from=builder /build/io.openems.edge.application/generated/*.jar /app/
-CMD ["java", "-jar", "/app/openems-edge.jar"]
+Then update your `docker-compose.yml` to use your custom images:
+```yaml
+services:
+  openems-edge:
+    image: my-org/edge:custom  # Instead of openems/edge:latest
 ```
 
-### Strategy 4: Selective Build and Deploy with Makefile
+### Strategy 4: Selective Deploy with Makefile
 
 Add component-specific targets to the Makefile:
 
@@ -359,141 +193,87 @@ build-edge:
 
 # Build only Backend from source
 build-backend:
-	cd src && ./gradlew :io.openems.backend.application:build
-	@echo "✓ Backend built"
-
-# Build only UI from source
-build-ui:
-	cd src/ui && npm install && npm run build
-	@echo "✓ UI built"
-```
 
 Usage:
 ```bash
 make start-edge      # Deploy only Edge
 make start-backend   # Deploy only Backend stack
-make build-edge      # Build only Edge from source
+make start-ui        # Deploy only UI stack
 ```
 
-### Strategy 5: CI/CD Pipeline with Path-Based Triggers
-
-Configure CI/CD to build/deploy only changed components:
-
-**GitHub Actions example** (.github/workflows/deploy.yml):
-```yaml
-name: Selective Deploy
-
-on:
-  push:
-    paths:
-      - 'src/io.openems.edge.**'
-      - 'src/io.openems.backend.**'
-      - 'src/ui/**'
-
-jobs:
-  deploy-edge:
-    if: contains(github.event.head_commit.modified, 'io.openems.edge')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build and Deploy Edge
+### Strategy 5: Environment-Specific Configurations
         run: |
-          # Build Edge component
-          # Deploy Edge component
 
-  deploy-backend:
-    if: contains(github.event.head_commit.modified, 'io.openems.backend')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build and Deploy Backend
-        run: |
-          # Build Backend component
-          # Deploy Backend component
+### Strategy 5: Environment-Specific Configurations
 
-  deploy-ui:
-    if: contains(github.event.head_commit.modified, 'src/ui')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build and Deploy UI
-        run: |
-          # Build UI component
-          # Deploy UI component
-```
-
-### Strategy 6: Gradle Selective Build
-
-The monorepo uses Gradle, which supports building specific modules:
+Use different environment files for different deployments:
 
 ```bash
-# Build only Edge modules
-cd src
-./gradlew :io.openems.edge.application:build
+# Development environment
+cp .env.dev .env
+docker compose up -d
 
-# Build only Backend modules
-./gradlew :io.openems.backend.application:build
-
-# Build specific Edge controller
-./gradlew :io.openems.edge.controller.ess.cycle:build
-
-# Build all Edge modules
-./gradlew tasks --all | grep "io.openems.edge" | xargs ./gradlew
+# Production environment
+cp .env.prod .env
+docker compose up -d
 ```
 
-### Summary: Independent Deployment in Monorepo
+### Summary: Independent Component Deployment
 
 | Deployment Need | Solution |
 |----------------|----------|
 | Deploy single service | `docker compose up -d [service-name]` |
-| Deploy service group | Create separate compose files |
-| Build specific component | Use Gradle selective build |
-| CI/CD selective deploy | Path-based pipeline triggers |
-| Production isolation | Build component-specific images |
-| Development workflow | Makefile component targets |
+| Deploy service group | Create separate compose files or use Makefile targets |
+| Update specific component | Pull new image and restart: `docker compose pull openems-edge && docker compose up -d openems-edge` |
+| Custom modifications | Fork OpenEMS, build custom images, update compose file |
+| Development workflow | Use Makefile targets: `make start-edge`, `make start-backend` |
 
-**Key Insight**: Monorepo does NOT mean "deploy everything together." You have full control over:
-- What to build (Gradle selective builds)
+**Key Insight**: Docker-based deployment allows flexible service management:
 - What to deploy (Docker Compose service selection)
-- When to deploy (CI/CD path triggers)
-- Where to deploy (Component-specific images)
-
-The monorepo structure **enables** independent deployment while maintaining the benefits of unified source control and coordinated releases when needed.
+- When to update (Pull and restart specific services)
+- Where to deploy (Multi-environment support with .env files)
+- How to customize (Use custom Docker images)
 
 ## Best Practices
 
-Regardless of which option you choose:
+### For Docker Deployment:
+- Use clear environment variable naming
+- Document configuration options
+- Keep sensitive data in `.env` (never commit)
+- Use Docker Compose service selection for independent deployment
+- Version-pin Docker images in production
+- Regularly update images with `make update`
+- Monitor logs with `make logs`
 
-### For Monorepo:
-- Use clear folder structure
-- Document component boundaries
-- Use build tools that support monorepos (Gradle multi-project, npm workspaces)
-- Implement proper CI/CD for selective builds
-- Use code owners for component-specific reviews
-- **Create component-specific deployment scripts**
-- **Use Docker Compose service selection for independent deployment**
-
-### For Multiple Repos:
-- Define clear APIs between components
-- Use semantic versioning strictly
-- Automate dependency updates
-- Document integration points
-- Create comprehensive API documentation
-- Use a deployment repo for orchestration
+### For Customization:
+- Fork the official OpenEMS repository for source code changes
+- Build custom Docker images from your fork
+- Test thoroughly before deploying custom images
+- Document your customizations
+- Consider contributing back to OpenEMS
 
 ## References
 
 - [ARCHITECTURE.md](ARCHITECTURE.md) - Detailed system architecture
 - [README.md](README.md) - Project overview and setup
 - [OpenEMS Documentation](https://openems.github.io/openems.io/) - Upstream project docs
+- [OpenEMS GitHub](https://github.com/OpenEMS/openems) - Official source code repository
 
 ## Decision Log
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
-| 2026-01-14 | Continue with monorepo | System components tightly integrated, same team, coordinated releases needed |
+| 2026-01-16 | Use Docker deployment repo | Separates deployment configuration from source code, uses pre-built images |
 
 ## Conclusion
 
-The current monorepo structure is appropriate for this Energy Management System. The three architectural components (UI, Edge, Backend) can coexist in a single repository with organized folders. There is **no requirement** to create multiple repositories unless your team structure or development workflow specifically benefits from that approach.
+This repository provides a clean Docker-based deployment solution for OpenEMS. By separating deployment configuration from source code:
 
-**Current Status**: ✅ Monorepo with all components in `src/` - **This works well for this project**
+- **Easier to maintain**: Focus on configuration, not code complexity
+- **Faster to deploy**: Use pre-built, tested Docker images
+- **Simpler to understand**: Clear separation of concerns
+- **Easy to customize**: Fork OpenEMS for modifications, build custom images
 
-**Recommendation**: Keep the monorepo, optionally improve folder organization for better clarity.
+**Current Status**: ✅ Docker deployment repository with pre-built images
+
+**For Source Code Development**: Visit the [official OpenEMS repository](https://github.com/OpenEMS/openems) to contribute or build custom versions.

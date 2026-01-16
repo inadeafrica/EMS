@@ -2,28 +2,20 @@
 
 An open-source Energy Management System built on **OpenEMS** (Open Energy Management System), an award-winning platform for managing renewable energy sources, battery storage, EV charging, and local grid interaction.
 
-**This repository includes the complete OpenEMS source code** in the `src/` directory, allowing you to customize and extend the platform for your specific needs.
+**This repository provides a Docker-based deployment configuration** for OpenEMS, making it easy to deploy and run the platform using pre-built Docker images.
 
 ## Repository Structure
 
-This project uses a **monorepo architecture** - all components (UI, Edge, Backend) are in a single repository organized into logical folders. For details about this design choice and alternatives, see [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md).
+This repository contains Docker configuration and documentation for deploying OpenEMS:
 
 ```
 Energy-Management-System/
-├── src/                    # Complete OpenEMS source code (Java, TypeScript)
-│   ├── edge/               # Edge component (organized)
-│   │   └── io.openems.edge.* (192 Java modules)
-│   ├── backend/            # Backend component (organized)
-│   │   └── io.openems.backend.* (18 Java modules)
-│   ├── common/             # Shared components (organized)
-│   │   └── io.openems.common.* (5 shared modules)
-│   ├── ui/                 # Web UI (Angular)
-│   └── README.md           # Build and development guide
-├── config/                 # Runtime configuration
+├── config/                 # Runtime configuration (created by setup)
 │   ├── edge/               # Edge configuration
 │   └── backend/            # Backend configuration
 ├── docker-compose.yml      # Docker orchestration
 ├── Makefile               # Convenience commands
+├── .env.example           # Environment variables template
 └── Documentation files     # Comprehensive guides
 ```
 
@@ -37,7 +29,7 @@ Energy-Management-System/
 - **Time-series Data Storage**: Historical data analysis with InfluxDB
 - **Modular Architecture**: Easily extend with additional components
 - **Simulation Mode**: Test configurations without physical hardware
-- **Full Source Code**: Customize and build your own version
+- **Docker-based Deployment**: Quick setup with pre-built images
 
 ## Technology Stack
 
@@ -50,24 +42,17 @@ Energy-Management-System/
 
 ## Prerequisites
 
-### For Docker Deployment (Pre-built Images)
 - Docker (version 20.10 or higher)
 - Docker Compose (version 2.0 or higher)
 - At least 4GB RAM
 - 10GB free disk space
 
-### For Building from Source
-- Java Development Kit (JDK) 21 or later
-- Gradle (included via wrapper)
-- Node.js and npm (for UI)
-- 20GB free disk space
-
-## Quick Start (Docker Deployment)
+## Quick Start
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/inadeafrica/Energy-Management-System.git
-   cd Energy-Management-System
+   git clone https://github.com/inadeafrica/EMS.git
+   cd EMS
    ```
 
 2. **Set up environment variables**
