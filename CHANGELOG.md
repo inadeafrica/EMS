@@ -20,13 +20,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 #### Documentation
 - **README.md**: Comprehensive main documentation with features, quick start, and architecture overview
-- **GETTING_STARTED.md**: Step-by-step guide for first-time setup
-- **ARCHITECTURE.md**: Detailed system architecture and component descriptions
-- **EXAMPLES.md**: Practical usage examples and integration guides
-- **TROUBLESHOOTING.md**: Common issues and solutions
+- **docs/GETTING_STARTED.md**: Step-by-step guide for first-time setup
+- **docs/ARCHITECTURE.md**: Detailed system architecture and component descriptions
+- **docs/EXAMPLES.md**: Practical usage examples and integration guides
+- **docs/TROUBLESHOOTING.md**: Common issues and solutions
 - **CONTRIBUTING.md**: Guidelines for contributing to the project
 - **LICENSE.md**: License information and third-party components
-- **QUICK_REFERENCE.md**: Fast lookup for commands and configurations
+- **docs/QUICK_REFERENCE.md**: Fast lookup for commands and configurations
 
 #### Configuration
 - `.env.example`: Template for environment variables

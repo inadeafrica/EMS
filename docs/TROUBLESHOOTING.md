@@ -433,7 +433,7 @@ If issues persist:
 
 6. **Documentation**:
    - [OpenEMS Documentation](https://openems.github.io/openems.io/)
-   - This repository's README.md
+   - This repository's [README.md](../README.md)
 
 ## Debug Mode
 

@@ -481,7 +481,7 @@ Regardless of which option you choose:
 ## References
 
 - [ARCHITECTURE.md](ARCHITECTURE.md) - Detailed system architecture
-- [README.md](README.md) - Project overview and setup
+- [README.md](../README.md) - Project overview and setup
 - [OpenEMS Documentation](https://openems.github.io/openems.io/) - Upstream project docs
 
 ## Decision Log
