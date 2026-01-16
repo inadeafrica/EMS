@@ -4,6 +4,19 @@ An open-source Energy Management System built on **OpenEMS** (Open Energy Manage
 
 **This repository includes the complete OpenEMS source code** in the `src/` directory, allowing you to customize and extend the platform for your specific needs.
 
+## 🎯 Quick Answers
+
+**❓ Does this have a user interface?**  
+✅ **YES!** Modern web UI with Angular/Ionic - real-time monitoring, analytics, and control.
+
+**❓ Does this have mobile apps?**  
+✅ **YES!** Native **Android** and **iOS** apps built with Capacitor, plus PWA support.
+
+**❓ Is this multi-tenant?**  
+✅ **YES!** Supports unlimited users and Edge devices with role-based access control.
+
+👉 **[See detailed answers](docs/QUICK_ANSWERS.md)** | **[Complete UI Guide](docs/UI_GUIDE.md)**
+
 ## Repository Structure
 
 This project uses a **monorepo architecture** - all components (UI, Edge, Backend) are in a single repository organized into logical folders. For details about this design choice and alternatives, see [REPOSITORY_STRUCTURE.md](docs/REPOSITORY_STRUCTURE.md).
@@ -34,6 +47,8 @@ Energy-Management-System/
 - **Self-Consumption Optimization**: Maximize use of self-generated energy
 - **Grid Interaction**: Manage energy flow between your system and the grid
 - **Web-based UI**: Modern, responsive interface for monitoring and control
+- **Mobile Apps**: Native Android and iOS applications with offline support
+- **Multi-Tenancy**: Manage multiple sites and users with role-based access
 - **Time-series Data Storage**: Historical data analysis with InfluxDB
 - **Modular Architecture**: Easily extend with additional components
 - **Simulation Mode**: Test configurations without physical hardware
