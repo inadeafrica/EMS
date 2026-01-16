@@ -173,9 +173,9 @@ EMS/
 │   ├── docker-compose.yml
 │   ├── .env.example
 │   ├── .gitignore
-│   └── config/
-│       ├── edge/config.json.example
-│       └── backend/config.json.example
+│   └── config/                   (Auto-generated OSGi configs)
+│       ├── edge/                 (Edge configuration - managed by OSGi)
+│       └── backend/              (Backend configuration - managed by OSGi)
 │
 └── Tools
     ├── Makefile

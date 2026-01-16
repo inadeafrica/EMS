@@ -105,56 +105,64 @@ from(bucket: "energy_data")
 
 ## Example 4: Configuring a Solar System
 
-### Edit Edge Configuration
+### Via OpenEMS UI
 
-Create `config/edge/config.json`:
+1. Access OpenEMS UI at http://localhost:8080
+2. Navigate to your Edge device → Settings → Components
+3. Click "Install Component"
+
+**Add Solar Inverter:**
+- Factory: `Meter.Api.ElectricityMeter` (or specific simulator/driver)
+- Component ID: `pvInverter0`
+- Alias: "Solar Inverter"
+- Type: PRODUCTION
+- Max Power: 10000 W
+
+**Add Battery Storage:**
+- Factory: `Ess.Generic.ManagedSymmetric`
+- Component ID: `ess0`
+- Alias: "Battery Storage"
+- Capacity: 13500 Wh
+- Max Apparent Power: 5000 W
+
+**Add Grid Meter:**
+- Factory: `Meter.Api.ElectricityMeter`
+- Component ID: `gridMeter0`
+- Alias: "Grid Connection Point"
+- Type: GRID
+
+**Add Self-Consumption Controller:**
+- Factory: `Controller.Ess.GridOptimizedCharge` or `Controller.Ess.SelfConsumption`
+- Component ID: `controller0`
+- Alias: "Self-Consumption Optimization"
+- ESS ID: `ess0`
+- Grid Meter ID: `gridMeter0`
+
+### Configuration via JSON-RPC (Advanced)
+
+For programmatic configuration, use JSON-RPC API:
 
 ```json
 {
-  "things": {
-    "pvInverter0": {
-      "alias": "Solar Inverter",
-      "class": "io.openems.edge.meter.api.ElectricityMeter",
-      "enabled": true,
-      "properties": {
-        "type": "PRODUCTION",
-        "maxPower": 10000
+  "method": "createComponentConfig",
+  "params": {
+    "factoryPid": "Meter.Api.ElectricityMeter",
+    "properties": [
+      {
+        "name": "id",
+        "value": "pvInverter0"
+      },
+      {
+        "name": "alias",
+        "value": "Solar Inverter"
+      },
+      {
+        "name": "type",
+        "value": "PRODUCTION"
       }
-    },
-    "ess0": {
-      "alias": "Battery Storage",
-      "class": "io.openems.edge.ess.api.ManagedSymmetricEss",
-      "enabled": true,
-      "properties": {
-        "capacity": 13500,
-        "maxApparentPower": 5000
-      }
-    },
-    "gridMeter0": {
-      "alias": "Grid Connection Point",
-      "class": "io.openems.edge.meter.api.ElectricityMeter",
-      "enabled": true,
-      "properties": {
-        "type": "GRID"
-      }
-    },
-    "controller0": {
-      "alias": "Self-Consumption Optimization",
-      "class": "io.openems.edge.controller.ess.selfconsumption.EssSelfConsumption",
-      "enabled": true,
-      "properties": {
-        "ess.id": "ess0",
-        "meter.id": "gridMeter0"
-      }
-    }
+    ]
   }
 }
-```
-
-### Restart Edge
-
-```bash
-docker compose restart openems-edge
 ```
 
 ## Example 5: Setting Up Alerts
