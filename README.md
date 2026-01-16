@@ -51,10 +51,16 @@ Energy-Management-System/
 ## Prerequisites
 
 ### For Docker Deployment (Pre-built Images)
-- Docker (version 20.10 or higher)
-- Docker Compose (version 2.0 or higher)
+- **Docker Desktop** (for Windows/macOS) or **Docker Engine** (for Linux)
+  - Version 20.10 or higher
+  - **Windows**: [Download Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
+  - **macOS**: [Download Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
+  - **Linux**: [Install Docker Engine](https://docs.docker.com/engine/install/)
+- Docker Compose (version 2.0 or higher, included with Docker Desktop)
 - At least 4GB RAM
 - 10GB free disk space
+
+**Important for Windows/macOS**: Make sure Docker Desktop is running before executing `docker compose` commands. Look for the Docker icon in your system tray (Windows) or menu bar (macOS).
 
 ### For Building from Source
 - Java Development Kit (JDK) 21 or later
@@ -80,6 +86,11 @@ Energy-Management-System/
    ```bash
    docker compose up -d
    ```
+   
+   **Troubleshooting**: If you get an error about unable to connect to Docker:
+   - **Windows/macOS**: Make sure Docker Desktop is running (check system tray/menu bar)
+   - **Linux**: Start Docker daemon with `sudo systemctl start docker`
+   - See [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md#docker-issues) for detailed solutions
 
 4. **Access the web interface**
    

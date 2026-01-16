@@ -6,19 +6,41 @@ This guide will help you get your Energy Management System up and running quickl
 
 Before starting, ensure you have:
 
+### Docker Installation
+
+**Windows/macOS users:**
+1. Download and install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+2. Launch Docker Desktop and wait for it to fully start
+3. Verify by checking for the Docker icon in your system tray (Windows) or menu bar (macOS)
+4. Icon should be steady, not animated, with tooltip "Docker Desktop is running"
+
+**Linux users:**
+1. Install Docker Engine following [official guide](https://docs.docker.com/engine/install/)
+2. Start Docker daemon: `sudo systemctl start docker`
+3. Enable auto-start: `sudo systemctl enable docker`
+
+### Verify Installation
+
 ```bash
 # Check Docker version (should be 20.10+)
 docker --version
 
 # Check Docker Compose version (should be 2.0+)
-docker compose --version
+docker compose version
+
+# Check Docker is running (should show both Client and Server)
+docker version
 
 # Check available disk space (need at least 10GB)
 df -h
 
 # Check available memory (need at least 4GB)
-free -h
+free -h  # Linux/macOS
 ```
+
+**Common Issue**: If `docker version` only shows "Client" but not "Server", Docker is not running:
+- **Windows/macOS**: Start Docker Desktop application
+- **Linux**: Run `sudo systemctl start docker`
 
 ## Step 2: Clone and Setup
 

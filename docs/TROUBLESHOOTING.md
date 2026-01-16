@@ -76,18 +76,72 @@ For detailed build instructions, see [BUILD_GUIDE.md](BUILD_GUIDE.md).
 
 ## Docker Issues
 
-### Docker Daemon Not Running
+### Docker Daemon Not Running (Linux)
 
 **Symptom**: `Cannot connect to the Docker daemon`
 
 **Solution**:
 ```bash
-# On Linux
+# Check Docker status
+sudo systemctl status docker
+
+# Start Docker
 sudo systemctl start docker
 
-# On macOS/Windows
-# Start Docker Desktop application
+# Enable Docker to start on boot
+sudo systemctl enable docker
+
+# Verify Docker is running
+docker version
 ```
+
+### Docker Desktop Not Running (Windows/macOS)
+
+**Symptom**: Error messages like:
+- `unable to get image 'openems/ui-backend:latest': error during connect`
+- `open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified`
+- `Cannot connect to the Docker daemon at unix:///var/run/docker.sock`
+
+**Solution**:
+
+1. **Verify Docker Desktop is installed**:
+   - Download from: https://www.docker.com/products/docker-desktop/
+
+2. **Start Docker Desktop**:
+   - **Windows**: Search for "Docker Desktop" in Start Menu and launch it
+   - **macOS**: Open Docker Desktop from Applications folder
+
+3. **Wait for Docker to fully start**:
+   - Look for the Docker icon in the system tray (Windows) or menu bar (macOS)
+   - Wait until the icon is steady (not animated)
+   - The tooltip should say "Docker Desktop is running"
+
+4. **Verify Docker is running**:
+   ```bash
+   # Check Docker version
+   docker version
+   
+   # Should show both Client and Server versions
+   # If only Client shows, Docker Desktop is not fully started
+   ```
+
+5. **If Docker Desktop fails to start**:
+   - Check Windows/macOS system requirements
+   - Ensure WSL 2 is installed and updated (Windows only)
+   - Restart your computer
+   - Reinstall Docker Desktop if necessary
+
+6. **Windows-specific: Update WSL 2**:
+   ```powershell
+   # Run in PowerShell as Administrator
+   wsl --update
+   wsl --set-default-version 2
+   ```
+
+7. **After Docker Desktop is running**, try again:
+   ```bash
+   docker compose up -d
+   ```
 
 ### Permission Denied
 
@@ -95,7 +149,7 @@ sudo systemctl start docker
 
 **Solution**:
 ```bash
-# Add user to docker group
+# Add user to docker group (Linux only)
 sudo usermod -aG docker $USER
 
 # Log out and log back in, or run:
