@@ -205,6 +205,28 @@ from(bucket: "energy_data")
 
 To customize and build your own version of OpenEMS:
 
+### Prerequisites
+- **Java 21 or later** is required for building OpenEMS
+- Check your Java version: `java -version`
+- If Java 21 is not your default, you may need to set `JAVA_HOME`:
+  ```bash
+  export JAVA_HOME=/path/to/java-21
+  export PATH=$JAVA_HOME/bin:$PATH
+  ```
+
+### Quick Build
+Use the provided build script:
+```bash
+./build.sh
+```
+
+This script will:
+- Automatically detect and use Java 21
+- Clean previous builds
+- Build all modules (excluding tests for faster builds)
+
+### Manual Build
+
 1. **Navigate to the source directory**
    ```bash
    cd src
@@ -212,8 +234,11 @@ To customize and build your own version of OpenEMS:
 
 2. **Build the project**
    ```bash
-   # Build all modules
+   # Build all modules (with Java 21)
    ./gradlew build
+   
+   # Build without tests (faster)
+   ./gradlew build -x test
    
    # Build UI
    cd ui
