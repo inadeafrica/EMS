@@ -42,61 +42,61 @@ This repository provides a complete, production-ready Energy Management System b
 
 ### Documentation Suite (11 Documents)
 
-1. **README.md** (270 lines)
+1. **README.md** (270 lines) - Root directory
    - Main documentation
    - Quick start guide
    - Features overview
    - System architecture diagram
 
-2. **GETTING_STARTED.md** (188 lines)
+2. **GETTING_STARTED.md** (188 lines) - docs/
    - Step-by-step setup
    - First-time user guide
    - Troubleshooting basics
    - Next steps
 
-3. **ARCHITECTURE.md** (392 lines)
+3. **ARCHITECTURE.md** (392 lines) - docs/
    - Detailed system architecture
    - Component descriptions
    - Data flow diagrams
    - Performance characteristics
 
-4. **EXAMPLES.md** (374 lines)
+4. **EXAMPLES.md** (374 lines) - docs/
    - 10 practical examples
    - Usage scenarios
    - Integration guides
    - Code samples
 
-5. **TROUBLESHOOTING.md** (366 lines)
+5. **TROUBLESHOOTING.md** (366 lines) - docs/
    - Common issues and solutions
    - Debug procedures
    - Performance optimization
    - Recovery procedures
 
-6. **SECURITY.md** (406 lines)
+6. **SECURITY.md** (406 lines) - Root directory
    - Security best practices
    - Credential management
    - Network security
    - Compliance guidance
 
-7. **CONTRIBUTING.md** (195 lines)
+7. **CONTRIBUTING.md** (195 lines) - Root directory
    - Contribution guidelines
    - Code style
    - Pull request process
    - Development setup
 
-8. **QUICK_REFERENCE.md** (283 lines)
+8. **QUICK_REFERENCE.md** (283 lines) - docs/
    - Command cheat sheet
    - Configuration reference
    - Port mappings
    - API quick reference
 
-9. **CHANGELOG.md** (223 lines)
+9. **CHANGELOG.md** (223 lines) - Root directory
    - Version history
    - Feature list
    - Known limitations
    - Future considerations
 
-10. **LICENSE.md** (68 lines)
+10. **LICENSE.md** (68 lines) - Root directory
     - License information
     - Third-party components
     - Legal disclaimers
@@ -153,18 +153,21 @@ Energy-Management-System/
 │   ├── io.openems.backend.*   (18 Backend modules - Java/Spring)
 │   └── io.openems.common.*    (2 Shared modules)
 │
-├── Documentation (12 files)
-│   ├── README.md
-│   ├── ARCHITECTURE.md
-│   ├── REPOSITORY_STRUCTURE.md    (NEW: Explains monorepo approach)
-│   ├── GETTING_STARTED.md
-│   ├── EXAMPLES.md
-│   ├── TROUBLESHOOTING.md
-│   ├── SECURITY.md
-│   ├── CONTRIBUTING.md
-│   ├── QUICK_REFERENCE.md
-│   ├── CHANGELOG.md
-│   └── LICENSE.md
+├── Documentation
+│   ├── Root directory:
+│   │   ├── README.md
+│   │   ├── SECURITY.md
+│   │   ├── CONTRIBUTING.md
+│   │   ├── CHANGELOG.md
+│   │   └── LICENSE.md
+│   └── docs/ directory:
+│       ├── ARCHITECTURE.md
+│       ├── REPOSITORY_STRUCTURE.md    (NEW: Explains monorepo approach)
+│       ├── GETTING_STARTED.md
+│       ├── EXAMPLES.md
+│       ├── TROUBLESHOOTING.md
+│       ├── QUICK_REFERENCE.md
+│       └── PROJECT_SUMMARY.md
 │
 ├── Configuration
 │   ├── docker-compose.yml
@@ -277,7 +280,7 @@ make start
 
 ## Next Steps for Users
 
-1. **Deploy**: Follow GETTING_STARTED.md
+1. **Deploy**: Follow [GETTING_STARTED.md](GETTING_STARTED.md)
 2. **Configure**: Customize for your needs
 3. **Integrate**: Connect real hardware
 4. **Optimize**: Use examples and guides
@@ -340,4 +343,4 @@ The system is ready to use immediately for simulation/testing, and can be easily
 
 **Last Updated**: 2026-01-13
 
-**License**: See LICENSE.md for details
+**License**: See [LICENSE.md](../LICENSE.md) for details

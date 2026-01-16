@@ -82,7 +82,7 @@ make update         # Pull latest OpenEMS images
 - Keep lines under 100 characters where practical
 - Use code blocks with language specifiers
 - Include practical examples
-- Update relevant docs when making changes (README, ARCHITECTURE, etc.)
+- Update relevant docs when making changes (README, docs/ARCHITECTURE.md, etc.)
 - Use clear headings and structure
 
 ### Shell Scripts
@@ -104,12 +104,19 @@ Key files and directories:
 - `validate.sh`: Setup validation script
 
 Documentation files:
-- `README.md`: Main project documentation
-- `ARCHITECTURE.md`: System architecture details
-- `CONTRIBUTING.md`: Contribution guidelines
-- `GETTING_STARTED.md`: Quick start guide
-- `TROUBLESHOOTING.md`: Common issues and solutions
-- `SECURITY.md`: Security guidelines and practices
+- `README.md`: Main project documentation (root)
+- `CONTRIBUTING.md`: Contribution guidelines (root)
+- `SECURITY.md`: Security guidelines and practices (root)
+- `CHANGELOG.md`: Version history (root)
+- `LICENSE.md`: License information (root)
+- `docs/`: Detailed documentation directory
+  - `docs/ARCHITECTURE.md`: System architecture details
+  - `docs/GETTING_STARTED.md`: Quick start guide
+  - `docs/TROUBLESHOOTING.md`: Common issues and solutions
+  - `docs/EXAMPLES.md`: Usage examples
+  - `docs/QUICK_REFERENCE.md`: Command reference
+  - `docs/REPOSITORY_STRUCTURE.md`: Repository organization
+  - `docs/PROJECT_SUMMARY.md`: Project overview
 
 ## Security Guidelines
 
@@ -143,7 +150,7 @@ Documentation files:
 
 1. **Before Making Changes**:
    - Run `make status` to check current state
-   - Review relevant documentation (ARCHITECTURE.md, README.md)
+   - Review relevant documentation (docs/ARCHITECTURE.md, README.md)
    - Test the current setup: `make test`
 
 2. **During Development**:

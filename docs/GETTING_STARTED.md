@@ -197,6 +197,6 @@ docker image prune -a
 
 ## Getting Help
 
-- Check [README.md](README.md) for detailed documentation
+- Check [README.md](../README.md) for detailed documentation
 - Visit [OpenEMS Community Forum](https://community.openems.io/)
 - Review logs: `docker compose logs -f`

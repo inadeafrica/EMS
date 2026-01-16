@@ -108,13 +108,13 @@ Energy-Management-System/
 ├── .gitignore            # Git ignore rules
 ├── Makefile              # Convenient commands
 ├── validate.sh           # Setup validation script
-├── README.md             # Main documentation
-├── GETTING_STARTED.md    # Quick start guide
-├── ARCHITECTURE.md       # System architecture
-├── EXAMPLES.md           # Usage examples
-├── TROUBLESHOOTING.md    # Problem solving
-├── CONTRIBUTING.md       # Contribution guide
-├── LICENSE.md            # License information
+├── README.md             # Main documentation (in root)
+├── GETTING_STARTED.md    # Quick start guide (in docs/)
+├── ARCHITECTURE.md       # System architecture (in docs/)
+├── EXAMPLES.md           # Usage examples (in docs/)
+├── TROUBLESHOOTING.md    # Problem solving (in docs/)
+├── CONTRIBUTING.md       # Contribution guide (in root)
+├── LICENSE.md            # License information (in root)
 └── config/               # Configuration files
     ├── edge/            # Edge device config
     └── backend/         # Backend server config
@@ -361,4 +361,4 @@ docker compose exec openems-edge java -version
 
 OpenEMS: Eclipse Public License 2.0 (EPL-2.0)
 
-See [LICENSE.md](LICENSE.md) for details.
+See [LICENSE.md](../LICENSE.md) for details.
