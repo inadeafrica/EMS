@@ -35,7 +35,8 @@ docker version
 df -h
 
 # Check available memory (need at least 4GB)
-free -h  # Linux/macOS
+free -h        # Linux only
+# macOS: Check "About This Mac" > Memory, or use Activity Monitor
 ```
 
 **Common Issue**: If `docker version` only shows "Client" but not "Server", Docker is not running:
