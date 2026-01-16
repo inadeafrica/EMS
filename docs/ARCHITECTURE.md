@@ -8,7 +8,7 @@ This project uses a **monorepo architecture** where all components (UI, Edge, Ba
 
 **Current Structure:**
 ```
-Energy-Management-System/
+EMS/
 ├── src/
 │   ├── edge/                  (Edge modules organized in subfolder)
 │   │   └── io.openems.edge.*  (192 Edge modules)

@@ -24,8 +24,8 @@ free -h
 
 ```bash
 # Clone the repository
-git clone https://github.com/inadeafrica/Energy-Management-System.git
-cd Energy-Management-System
+git clone https://github.com/inadeafrica/EMS.git
+cd EMS
 
 # Create environment file
 cp .env.example .env

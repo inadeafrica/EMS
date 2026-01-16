@@ -9,7 +9,7 @@ Based on the architecture described in [ARCHITECTURE.md](ARCHITECTURE.md), this 
 The system uses a **monorepo approach** with all source code organized in a single repository:
 
 ```
-Energy-Management-System/
+EMS/
 ├── src/
 │   ├── edge/                  (Edge modules folder)
 │   │   └── io.openems.edge.*  (192 Edge modules)
@@ -51,7 +51,7 @@ According to the system architecture, there are **three main components**:
 
 **Implemented Structure:**
 ```
-Energy-Management-System/
+EMS/
 ├── src/
 │   ├── edge/
 │   │   └── [All Edge modules: io.openems.edge.*]
@@ -124,7 +124,7 @@ openems-deployment/      (Docker configs, separate repo)
 
 **Structure:**
 ```
-Energy-Management-System/ (main repo)
+EMS/ (main repo)
 ├── ui/           -> submodule to openems-ui repo
 ├── edge/         -> submodule to openems-edge repo
 ├── backend/      -> submodule to openems-backend repo
@@ -160,7 +160,7 @@ Energy-Management-System/ (main repo)
 The current structure is already a monorepo, but organizing it better would improve clarity:
 
 ```
-Energy-Management-System/
+EMS/
 ├── src/
 │   ├── ui/                              (Already organized)
 │   │   └── [Angular application]

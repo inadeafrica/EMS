@@ -8,8 +8,8 @@ This guide provides practical examples of using the Energy Management System.
 
 ```bash
 # Clone and set up
-git clone https://github.com/inadeafrica/Energy-Management-System.git
-cd Energy-Management-System
+git clone https://github.com/inadeafrica/EMS.git
+cd EMS
 make setup
 
 # Start services
@@ -359,7 +359,7 @@ make logs | grep -i error
 
 ```bash
 # Automate with cron
-0 2 * * * cd /path/to/Energy-Management-System && make backup
+0 2 * * * cd /path/to/EMS && make backup
 ```
 
 ### 3. Update Regularly

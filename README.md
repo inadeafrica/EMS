@@ -9,7 +9,7 @@ An open-source Energy Management System built on **OpenEMS** (Open Energy Manage
 This project uses a **monorepo architecture** - all components (UI, Edge, Backend) are in a single repository organized into logical folders. For details about this design choice and alternatives, see [REPOSITORY_STRUCTURE.md](docs/REPOSITORY_STRUCTURE.md).
 
 ```
-Energy-Management-System/
+EMS/
 ├── src/                    # Complete OpenEMS source code (Java, TypeScript)
 │   ├── edge/               # Edge component (organized)
 │   │   └── io.openems.edge.* (192 Java modules)
@@ -66,8 +66,8 @@ Energy-Management-System/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/inadeafrica/Energy-Management-System.git
-   cd Energy-Management-System
+   git clone https://github.com/inadeafrica/EMS.git
+   cd EMS
    ```
 
 2. **Set up environment variables**
