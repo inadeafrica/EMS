@@ -1,8 +1,14 @@
 # Environment variables
 .env
 
-# Docker volumes
-config/
+# Docker volumes - ignore user-created config files but keep structure
+config/**
+!config/edge/
+!config/edge/README.md
+!config/edge/.gitkeep
+!config/backend/
+!config/backend/README.md
+!config/backend/.gitkeep
 data/
 
 # IDE

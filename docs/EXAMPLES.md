@@ -105,50 +105,52 @@ from(bucket: "energy_data")
 
 ## Example 4: Configuring a Solar System
 
-### Edit Edge Configuration
+### Using the Web UI (Recommended)
 
-Create `config/edge/config.json`:
+1. Access OpenEMS UI at http://localhost:8080
+2. Go to Settings → Components
+3. Add a Production Meter:
+   - Component: `Simulator.ProductionMeter.Acting`
+   - ID: `meter1`
+   - Alias: `Solar Inverter`
+   - Max Power: `10000` W
+4. Add a Battery Storage:
+   - Component: `Simulator.EssSymmetric.Reacting`
+   - ID: `ess0`
+   - Alias: `Battery Storage`
+   - Capacity: `13500` Wh
+   - Max Power: `5000` W
+5. Add a Self-Consumption Controller:
+   - Component: `Controller.Ess.GridOptimizedCharge`
+   - ESS-ID: `ess0`
+   - Grid Meter ID: `meter0`
 
-```json
-{
-  "things": {
-    "pvInverter0": {
-      "alias": "Solar Inverter",
-      "class": "io.openems.edge.meter.api.ElectricityMeter",
-      "enabled": true,
-      "properties": {
-        "type": "PRODUCTION",
-        "maxPower": 10000
-      }
-    },
-    "ess0": {
-      "alias": "Battery Storage",
-      "class": "io.openems.edge.ess.api.ManagedSymmetricEss",
-      "enabled": true,
-      "properties": {
-        "capacity": 13500,
-        "maxApparentPower": 5000
-      }
-    },
-    "gridMeter0": {
-      "alias": "Grid Connection Point",
-      "class": "io.openems.edge.meter.api.ElectricityMeter",
-      "enabled": true,
-      "properties": {
-        "type": "GRID"
-      }
-    },
-    "controller0": {
-      "alias": "Self-Consumption Optimization",
-      "class": "io.openems.edge.controller.ess.selfconsumption.EssSelfConsumption",
-      "enabled": true,
-      "properties": {
-        "ess.id": "ess0",
-        "meter.id": "gridMeter0"
-      }
-    }
-  }
-}
+### Manual Configuration (Advanced)
+
+If you prefer to configure manually, you can access the container and edit configuration files:
+
+```bash
+# Access the container
+docker exec -it openems-edge sh
+
+# Navigate to config directory
+cd /var/opt/openems/config
+
+# List existing components
+ls -la
+
+# Edit or create .config files as needed
+```
+
+Example `.config` file format (Apache Felix OSGi):
+```
+:org.apache.felix.configadmin.revision:=L"1"
+alias="Solar Inverter"
+enabled=B"true"
+id="meter1"
+maxPower=I"10000"
+service.factoryPid="Simulator.ProductionMeter.Acting"
+service.pid="Simulator.ProductionMeter.Acting.meter1"
 ```
 
 ### Restart Edge

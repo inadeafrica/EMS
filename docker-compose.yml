@@ -8,8 +8,8 @@ services:
     environment:
       - TZ=UTC
     volumes:
-      - ./config/edge:/etc/openems
-      - edge-data:/var/lib/openems
+      - edge-config:/var/opt/openems/config
+      - edge-data:/var/opt/openems/data
     restart: unless-stopped
     networks:
       - openems-network
@@ -28,8 +28,8 @@ services:
       - OPENEMS_DB_USER=${POSTGRES_USER:-openems}
       - OPENEMS_DB_PASSWORD=${POSTGRES_PASSWORD:-openems}
     volumes:
-      - ./config/backend:/etc/openems
-      - backend-data:/var/lib/openems
+      - backend-config:/var/opt/openems/config
+      - backend-data:/var/opt/openems/data
     depends_on:
       - postgres
     restart: unless-stopped
@@ -91,7 +91,9 @@ networks:
     driver: bridge
 
 volumes:
+  edge-config:
   edge-data:
+  backend-config:
   backend-data:
   postgres-data:
   influxdb-data:
