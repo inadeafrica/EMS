@@ -313,6 +313,7 @@ For production deployment:
 
 ### Documentation
 
+- [UI_GUIDE.md](docs/UI_GUIDE.md) - **Complete UI guide, mobile apps, and multi-tenancy features**
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) - Detailed system architecture and component descriptions
 - [REPOSITORY_STRUCTURE.md](docs/REPOSITORY_STRUCTURE.md) - Repository organization explanation (monorepo vs. multi-repo)
 - [GETTING_STARTED.md](docs/GETTING_STARTED.md) - Step-by-step setup guide
