@@ -10,10 +10,15 @@ This project uses a **monorepo architecture** where all components (UI, Edge, Ba
 ```
 Energy-Management-System/
 ├── src/
+│   ├── edge/                  (Edge modules organized in subfolder)
+│   │   └── io.openems.edge.*  (192 Edge modules)
+│   ├── backend/               (Backend modules organized in subfolder)
+│   │   └── io.openems.backend.* (18 Backend modules)
+│   ├── common/                (Shared modules organized in subfolder)
+│   │   └── io.openems.common.* (5 Common/shared modules)
 │   ├── ui/                    (Angular web application)
-│   ├── io.openems.edge.*      (192 Edge modules)
-│   ├── io.openems.backend.*   (18 Backend modules)
-│   └── io.openems.common.*    (2 Shared modules)
+│   ├── build.gradle           (Root build configuration)
+│   └── settings.gradle        (Project structure configuration)
 ├── config/
 │   ├── edge/
 │   └── backend/

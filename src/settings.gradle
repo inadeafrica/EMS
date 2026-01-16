@@ -1,39 +1,474 @@
 pluginManagement {
-	plugins {
-		id 'biz.aQute.bnd.workspace' version "${bnd_version}"
-		id 'biz.aQute.bnd' version "${bnd_version}"
-		id 'com.github.node-gradle.node' version "7.1.0"
-		id 'org.barfuin.gradle.jacocolog' version '3.1.0'
-		id 'org.sonarqube' version '7.2.0.6526'
-	}
-	repositories {
-		maven {
-    		name = 'Central Portal Snapshots'
-    		url = 'https://central.sonatype.com/repository/maven-snapshots/'
-    		content {
-    			includeModule('io.openems', 'j2mod')
-   			}
-  		}
-		maven {
-			name = 'BndRepo'
-			url = uri(bnd_releases)
-			content {
-				includeGroup('biz.aQute.bnd')
-				includeGroup('biz.aQute.bnd.workspace')
-			}
-		}
-		mavenLocal()
-		mavenCentral()
-		gradlePluginPortal()
-	}
+plugins {
+id 'biz.aQute.bnd.workspace' version "${bnd_version}"
+id 'biz.aQute.bnd' version "${bnd_version}"
+id 'com.github.node-gradle.node' version "7.1.0"
+id 'org.barfuin.gradle.jacocolog' version '3.1.0'
+id 'org.sonarqube' version '7.2.0.6526'
+}
+repositories {
+maven {
+    name = 'Central Portal Snapshots'
+    url = 'https://central.sonatype.com/repository/maven-snapshots/'
+    content {
+    includeModule('io.openems', 'j2mod')
+   }
+  }
+maven {
+name = 'BndRepo'
+url = uri(bnd_releases)
+content {
+includeGroup('biz.aQute.bnd')
+includeGroup('biz.aQute.bnd.workspace')
+}
+}
+mavenLocal()
+mavenCentral()
+gradlePluginPortal()
+}
 }
 
 plugins {
-	id 'biz.aQute.bnd.workspace'
+id 'biz.aQute.bnd.workspace'
 }
 
 rootProject.name = 'openems'
 
+// Edge modules
 include ":io.openems.edge.application"
+project(":io.openems.edge.application").projectDir = file("edge/io.openems.edge.application")
+include ":io.openems.edge.battery.api"
+project(":io.openems.edge.battery.api").projectDir = file("edge/io.openems.edge.battery.api")
+include ":io.openems.edge.battery.bmw"
+project(":io.openems.edge.battery.bmw").projectDir = file("edge/io.openems.edge.battery.bmw")
+include ":io.openems.edge.battery.bydcommercial"
+project(":io.openems.edge.battery.bydcommercial").projectDir = file("edge/io.openems.edge.battery.bydcommercial")
+include ":io.openems.edge.battery.fenecon.commercial"
+project(":io.openems.edge.battery.fenecon.commercial").projectDir = file("edge/io.openems.edge.battery.fenecon.commercial")
+include ":io.openems.edge.battery.fenecon.home"
+project(":io.openems.edge.battery.fenecon.home").projectDir = file("edge/io.openems.edge.battery.fenecon.home")
+include ":io.openems.edge.battery.pylontech"
+project(":io.openems.edge.battery.pylontech").projectDir = file("edge/io.openems.edge.battery.pylontech")
+include ":io.openems.edge.battery.soltaro"
+project(":io.openems.edge.battery.soltaro").projectDir = file("edge/io.openems.edge.battery.soltaro")
+include ":io.openems.edge.batteryinverter.api"
+project(":io.openems.edge.batteryinverter.api").projectDir = file("edge/io.openems.edge.batteryinverter.api")
+include ":io.openems.edge.batteryinverter.kaco.blueplanetgridsave"
+project(":io.openems.edge.batteryinverter.kaco.blueplanetgridsave").projectDir = file("edge/io.openems.edge.batteryinverter.kaco.blueplanetgridsave")
+include ":io.openems.edge.batteryinverter.refu88k"
+project(":io.openems.edge.batteryinverter.refu88k").projectDir = file("edge/io.openems.edge.batteryinverter.refu88k")
+include ":io.openems.edge.batteryinverter.sinexcel"
+project(":io.openems.edge.batteryinverter.sinexcel").projectDir = file("edge/io.openems.edge.batteryinverter.sinexcel")
+include ":io.openems.edge.bosch.bpts5hybrid"
+project(":io.openems.edge.bosch.bpts5hybrid").projectDir = file("edge/io.openems.edge.bosch.bpts5hybrid")
+include ":io.openems.edge.bridge.http"
+project(":io.openems.edge.bridge.http").projectDir = file("edge/io.openems.edge.bridge.http")
+include ":io.openems.edge.bridge.mbus"
+project(":io.openems.edge.bridge.mbus").projectDir = file("edge/io.openems.edge.bridge.mbus")
+include ":io.openems.edge.bridge.modbus"
+project(":io.openems.edge.bridge.modbus").projectDir = file("edge/io.openems.edge.bridge.modbus")
+include ":io.openems.edge.bridge.mqtt"
+project(":io.openems.edge.bridge.mqtt").projectDir = file("edge/io.openems.edge.bridge.mqtt")
+include ":io.openems.edge.bridge.onewire"
+project(":io.openems.edge.bridge.onewire").projectDir = file("edge/io.openems.edge.bridge.onewire")
+include ":io.openems.edge.common"
+project(":io.openems.edge.common").projectDir = file("edge/io.openems.edge.common")
+include ":io.openems.edge.controller.api"
+project(":io.openems.edge.controller.api").projectDir = file("edge/io.openems.edge.controller.api")
+include ":io.openems.edge.controller.api.backend"
+project(":io.openems.edge.controller.api.backend").projectDir = file("edge/io.openems.edge.controller.api.backend")
+include ":io.openems.edge.controller.api.common"
+project(":io.openems.edge.controller.api.common").projectDir = file("edge/io.openems.edge.controller.api.common")
+include ":io.openems.edge.controller.api.modbus"
+project(":io.openems.edge.controller.api.modbus").projectDir = file("edge/io.openems.edge.controller.api.modbus")
+include ":io.openems.edge.controller.api.mqtt"
+project(":io.openems.edge.controller.api.mqtt").projectDir = file("edge/io.openems.edge.controller.api.mqtt")
+include ":io.openems.edge.controller.api.rest"
+project(":io.openems.edge.controller.api.rest").projectDir = file("edge/io.openems.edge.controller.api.rest")
+include ":io.openems.edge.controller.api.websocket"
+project(":io.openems.edge.controller.api.websocket").projectDir = file("edge/io.openems.edge.controller.api.websocket")
+include ":io.openems.edge.controller.asymmetric.balancingcosphi"
+project(":io.openems.edge.controller.asymmetric.balancingcosphi").projectDir = file("edge/io.openems.edge.controller.asymmetric.balancingcosphi")
+include ":io.openems.edge.controller.asymmetric.fixreactivepower"
+project(":io.openems.edge.controller.asymmetric.fixreactivepower").projectDir = file("edge/io.openems.edge.controller.asymmetric.fixreactivepower")
+include ":io.openems.edge.controller.asymmetric.peakshaving"
+project(":io.openems.edge.controller.asymmetric.peakshaving").projectDir = file("edge/io.openems.edge.controller.asymmetric.peakshaving")
+include ":io.openems.edge.controller.asymmetric.phaserectification"
+project(":io.openems.edge.controller.asymmetric.phaserectification").projectDir = file("edge/io.openems.edge.controller.asymmetric.phaserectification")
+include ":io.openems.edge.controller.channelthreshold"
+project(":io.openems.edge.controller.channelthreshold").projectDir = file("edge/io.openems.edge.controller.channelthreshold")
+include ":io.openems.edge.controller.chp.soc"
+project(":io.openems.edge.controller.chp.soc").projectDir = file("edge/io.openems.edge.controller.chp.soc")
+include ":io.openems.edge.controller.cleverpv"
+project(":io.openems.edge.controller.cleverpv").projectDir = file("edge/io.openems.edge.controller.cleverpv")
+include ":io.openems.edge.controller.debug.detailedlog"
+project(":io.openems.edge.controller.debug.detailedlog").projectDir = file("edge/io.openems.edge.controller.debug.detailedlog")
+include ":io.openems.edge.controller.debug.log"
+project(":io.openems.edge.controller.debug.log").projectDir = file("edge/io.openems.edge.controller.debug.log")
+include ":io.openems.edge.controller.ess.acisland"
+project(":io.openems.edge.controller.ess.acisland").projectDir = file("edge/io.openems.edge.controller.ess.acisland")
+include ":io.openems.edge.controller.ess.activepowervoltagecharacteristic"
+project(":io.openems.edge.controller.ess.activepowervoltagecharacteristic").projectDir = file("edge/io.openems.edge.controller.ess.activepowervoltagecharacteristic")
+include ":io.openems.edge.controller.ess.balancing"
+project(":io.openems.edge.controller.ess.balancing").projectDir = file("edge/io.openems.edge.controller.ess.balancing")
+include ":io.openems.edge.controller.ess.cycle"
+project(":io.openems.edge.controller.ess.cycle").projectDir = file("edge/io.openems.edge.controller.ess.cycle")
+include ":io.openems.edge.controller.ess.delaycharge"
+project(":io.openems.edge.controller.ess.delaycharge").projectDir = file("edge/io.openems.edge.controller.ess.delaycharge")
+include ":io.openems.edge.controller.ess.delayedselltogrid"
+project(":io.openems.edge.controller.ess.delayedselltogrid").projectDir = file("edge/io.openems.edge.controller.ess.delayedselltogrid")
+include ":io.openems.edge.controller.ess.emergencycapacityreserve"
+project(":io.openems.edge.controller.ess.emergencycapacityreserve").projectDir = file("edge/io.openems.edge.controller.ess.emergencycapacityreserve")
+include ":io.openems.edge.controller.ess.fastfrequencyreserve"
+project(":io.openems.edge.controller.ess.fastfrequencyreserve").projectDir = file("edge/io.openems.edge.controller.ess.fastfrequencyreserve")
+include ":io.openems.edge.controller.ess.fixactivepower"
+project(":io.openems.edge.controller.ess.fixactivepower").projectDir = file("edge/io.openems.edge.controller.ess.fixactivepower")
+include ":io.openems.edge.controller.ess.fixstateofcharge"
+project(":io.openems.edge.controller.ess.fixstateofcharge").projectDir = file("edge/io.openems.edge.controller.ess.fixstateofcharge")
+include ":io.openems.edge.controller.ess.gridoptimizedcharge"
+project(":io.openems.edge.controller.ess.gridoptimizedcharge").projectDir = file("edge/io.openems.edge.controller.ess.gridoptimizedcharge")
+include ":io.openems.edge.controller.ess.hybrid.surplusfeedtogrid"
+project(":io.openems.edge.controller.ess.hybrid.surplusfeedtogrid").projectDir = file("edge/io.openems.edge.controller.ess.hybrid.surplusfeedtogrid")
+include ":io.openems.edge.controller.ess.limiter14a"
+project(":io.openems.edge.controller.ess.limiter14a").projectDir = file("edge/io.openems.edge.controller.ess.limiter14a")
+include ":io.openems.edge.controller.ess.limittotaldischarge"
+project(":io.openems.edge.controller.ess.limittotaldischarge").projectDir = file("edge/io.openems.edge.controller.ess.limittotaldischarge")
+include ":io.openems.edge.controller.ess.linearpowerband"
+project(":io.openems.edge.controller.ess.linearpowerband").projectDir = file("edge/io.openems.edge.controller.ess.linearpowerband")
+include ":io.openems.edge.controller.ess.mindischargeperiod"
+project(":io.openems.edge.controller.ess.mindischargeperiod").projectDir = file("edge/io.openems.edge.controller.ess.mindischargeperiod")
+include ":io.openems.edge.controller.ess.reactivepowervoltagecharacteristic"
+project(":io.openems.edge.controller.ess.reactivepowervoltagecharacteristic").projectDir = file("edge/io.openems.edge.controller.ess.reactivepowervoltagecharacteristic")
+include ":io.openems.edge.controller.ess.ripplecontrolreceiver"
+project(":io.openems.edge.controller.ess.ripplecontrolreceiver").projectDir = file("edge/io.openems.edge.controller.ess.ripplecontrolreceiver")
+include ":io.openems.edge.controller.ess.selltogridlimit"
+project(":io.openems.edge.controller.ess.selltogridlimit").projectDir = file("edge/io.openems.edge.controller.ess.selltogridlimit")
+include ":io.openems.edge.controller.ess.standby"
+project(":io.openems.edge.controller.ess.standby").projectDir = file("edge/io.openems.edge.controller.ess.standby")
+include ":io.openems.edge.controller.ess.timeofusetariff"
+project(":io.openems.edge.controller.ess.timeofusetariff").projectDir = file("edge/io.openems.edge.controller.ess.timeofusetariff")
+include ":io.openems.edge.controller.evcs"
+project(":io.openems.edge.controller.evcs").projectDir = file("edge/io.openems.edge.controller.evcs")
+include ":io.openems.edge.controller.evcs.fixactivepower"
+project(":io.openems.edge.controller.evcs.fixactivepower").projectDir = file("edge/io.openems.edge.controller.evcs.fixactivepower")
+include ":io.openems.edge.controller.evse"
+project(":io.openems.edge.controller.evse").projectDir = file("edge/io.openems.edge.controller.evse")
+include ":io.openems.edge.controller.generic.jsonlogic"
+project(":io.openems.edge.controller.generic.jsonlogic").projectDir = file("edge/io.openems.edge.controller.generic.jsonlogic")
+include ":io.openems.edge.controller.highloadtimeslot"
+project(":io.openems.edge.controller.highloadtimeslot").projectDir = file("edge/io.openems.edge.controller.highloadtimeslot")
+include ":io.openems.edge.controller.io.alarm"
+project(":io.openems.edge.controller.io.alarm").projectDir = file("edge/io.openems.edge.controller.io.alarm")
+include ":io.openems.edge.controller.io.analog"
+project(":io.openems.edge.controller.io.analog").projectDir = file("edge/io.openems.edge.controller.io.analog")
+include ":io.openems.edge.controller.io.channelsinglethreshold"
+project(":io.openems.edge.controller.io.channelsinglethreshold").projectDir = file("edge/io.openems.edge.controller.io.channelsinglethreshold")
+include ":io.openems.edge.controller.io.fixdigitaloutput"
+project(":io.openems.edge.controller.io.fixdigitaloutput").projectDir = file("edge/io.openems.edge.controller.io.fixdigitaloutput")
+include ":io.openems.edge.controller.io.heating.room"
+project(":io.openems.edge.controller.io.heating.room").projectDir = file("edge/io.openems.edge.controller.io.heating.room")
+include ":io.openems.edge.controller.io.heatingelement"
+project(":io.openems.edge.controller.io.heatingelement").projectDir = file("edge/io.openems.edge.controller.io.heatingelement")
+include ":io.openems.edge.controller.io.heatpump.sgready"
+project(":io.openems.edge.controller.io.heatpump.sgready").projectDir = file("edge/io.openems.edge.controller.io.heatpump.sgready")
+include ":io.openems.edge.controller.pvinverter.fixpowerlimit"
+project(":io.openems.edge.controller.pvinverter.fixpowerlimit").projectDir = file("edge/io.openems.edge.controller.pvinverter.fixpowerlimit")
+include ":io.openems.edge.controller.pvinverter.selltogridlimit"
+project(":io.openems.edge.controller.pvinverter.selltogridlimit").projectDir = file("edge/io.openems.edge.controller.pvinverter.selltogridlimit")
+include ":io.openems.edge.controller.symmetric.balancingschedule"
+project(":io.openems.edge.controller.symmetric.balancingschedule").projectDir = file("edge/io.openems.edge.controller.symmetric.balancingschedule")
+include ":io.openems.edge.controller.symmetric.fixreactivepower"
+project(":io.openems.edge.controller.symmetric.fixreactivepower").projectDir = file("edge/io.openems.edge.controller.symmetric.fixreactivepower")
+include ":io.openems.edge.controller.symmetric.limitactivepower"
+project(":io.openems.edge.controller.symmetric.limitactivepower").projectDir = file("edge/io.openems.edge.controller.symmetric.limitactivepower")
+include ":io.openems.edge.controller.symmetric.peakshaving"
+project(":io.openems.edge.controller.symmetric.peakshaving").projectDir = file("edge/io.openems.edge.controller.symmetric.peakshaving")
+include ":io.openems.edge.controller.symmetric.randompower"
+project(":io.openems.edge.controller.symmetric.randompower").projectDir = file("edge/io.openems.edge.controller.symmetric.randompower")
+include ":io.openems.edge.controller.symmetric.timeslotpeakshaving"
+project(":io.openems.edge.controller.symmetric.timeslotpeakshaving").projectDir = file("edge/io.openems.edge.controller.symmetric.timeslotpeakshaving")
+include ":io.openems.edge.core"
+project(":io.openems.edge.core").projectDir = file("edge/io.openems.edge.core")
+include ":io.openems.edge.edge2edge"
+project(":io.openems.edge.edge2edge").projectDir = file("edge/io.openems.edge.edge2edge")
+include ":io.openems.edge.energy"
+project(":io.openems.edge.energy").projectDir = file("edge/io.openems.edge.energy")
+include ":io.openems.edge.energy.api"
+project(":io.openems.edge.energy.api").projectDir = file("edge/io.openems.edge.energy.api")
+include ":io.openems.edge.ess.adstec.storaxe"
+project(":io.openems.edge.ess.adstec.storaxe").projectDir = file("edge/io.openems.edge.ess.adstec.storaxe")
+include ":io.openems.edge.ess.api"
+project(":io.openems.edge.ess.api").projectDir = file("edge/io.openems.edge.ess.api")
+include ":io.openems.edge.ess.cluster"
+project(":io.openems.edge.ess.cluster").projectDir = file("edge/io.openems.edge.ess.cluster")
+include ":io.openems.edge.ess.core"
+project(":io.openems.edge.ess.core").projectDir = file("edge/io.openems.edge.ess.core")
+include ":io.openems.edge.ess.fenecon.commercial40"
+project(":io.openems.edge.ess.fenecon.commercial40").projectDir = file("edge/io.openems.edge.ess.fenecon.commercial40")
+include ":io.openems.edge.ess.generic"
+project(":io.openems.edge.ess.generic").projectDir = file("edge/io.openems.edge.ess.generic")
+include ":io.openems.edge.ess.samsung"
+project(":io.openems.edge.ess.samsung").projectDir = file("edge/io.openems.edge.ess.samsung")
+include ":io.openems.edge.evcs.abl"
+project(":io.openems.edge.evcs.abl").projectDir = file("edge/io.openems.edge.evcs.abl")
+include ":io.openems.edge.evcs.api"
+project(":io.openems.edge.evcs.api").projectDir = file("edge/io.openems.edge.evcs.api")
+include ":io.openems.edge.evcs.cluster"
+project(":io.openems.edge.evcs.cluster").projectDir = file("edge/io.openems.edge.evcs.cluster")
+include ":io.openems.edge.evcs.core"
+project(":io.openems.edge.evcs.core").projectDir = file("edge/io.openems.edge.evcs.core")
+include ":io.openems.edge.evcs.goe"
+project(":io.openems.edge.evcs.goe").projectDir = file("edge/io.openems.edge.evcs.goe")
+include ":io.openems.edge.evcs.goe.chargerhome"
+project(":io.openems.edge.evcs.goe.chargerhome").projectDir = file("edge/io.openems.edge.evcs.goe.chargerhome")
+include ":io.openems.edge.evcs.heidelberg"
+project(":io.openems.edge.evcs.heidelberg").projectDir = file("edge/io.openems.edge.evcs.heidelberg")
+include ":io.openems.edge.evcs.mennekes"
+project(":io.openems.edge.evcs.mennekes").projectDir = file("edge/io.openems.edge.evcs.mennekes")
+include ":io.openems.edge.evcs.ocpp.abl"
+project(":io.openems.edge.evcs.ocpp.abl").projectDir = file("edge/io.openems.edge.evcs.ocpp.abl")
+include ":io.openems.edge.evcs.ocpp.common"
+project(":io.openems.edge.evcs.ocpp.common").projectDir = file("edge/io.openems.edge.evcs.ocpp.common")
+include ":io.openems.edge.evcs.ocpp.ies.keywatt.singleccs"
+project(":io.openems.edge.evcs.ocpp.ies.keywatt.singleccs").projectDir = file("edge/io.openems.edge.evcs.ocpp.ies.keywatt.singleccs")
+include ":io.openems.edge.evcs.ocpp.server"
+project(":io.openems.edge.evcs.ocpp.server").projectDir = file("edge/io.openems.edge.evcs.ocpp.server")
+include ":io.openems.edge.evcs.openwb"
+project(":io.openems.edge.evcs.openwb").projectDir = file("edge/io.openems.edge.evcs.openwb")
+include ":io.openems.edge.evcs.spelsberg"
+project(":io.openems.edge.evcs.spelsberg").projectDir = file("edge/io.openems.edge.evcs.spelsberg")
+include ":io.openems.edge.evcs.webasto.next"
+project(":io.openems.edge.evcs.webasto.next").projectDir = file("edge/io.openems.edge.evcs.webasto.next")
+include ":io.openems.edge.evcs.webasto.unite"
+project(":io.openems.edge.evcs.webasto.unite").projectDir = file("edge/io.openems.edge.evcs.webasto.unite")
+include ":io.openems.edge.evse.api"
+project(":io.openems.edge.evse.api").projectDir = file("edge/io.openems.edge.evse.api")
+include ":io.openems.edge.evse.chargepoint.alpitronic"
+project(":io.openems.edge.evse.chargepoint.alpitronic").projectDir = file("edge/io.openems.edge.evse.chargepoint.alpitronic")
+include ":io.openems.edge.evse.chargepoint.hardybarth"
+project(":io.openems.edge.evse.chargepoint.hardybarth").projectDir = file("edge/io.openems.edge.evse.chargepoint.hardybarth")
+include ":io.openems.edge.evse.chargepoint.heidelberg"
+project(":io.openems.edge.evse.chargepoint.heidelberg").projectDir = file("edge/io.openems.edge.evse.chargepoint.heidelberg")
+include ":io.openems.edge.evse.chargepoint.keba"
+project(":io.openems.edge.evse.chargepoint.keba").projectDir = file("edge/io.openems.edge.evse.chargepoint.keba")
+include ":io.openems.edge.evse.electricvehicle.generic"
+project(":io.openems.edge.evse.electricvehicle.generic").projectDir = file("edge/io.openems.edge.evse.electricvehicle.generic")
+include ":io.openems.edge.fenecon.dess"
+project(":io.openems.edge.fenecon.dess").projectDir = file("edge/io.openems.edge.fenecon.dess")
+include ":io.openems.edge.fenecon.mini"
+project(":io.openems.edge.fenecon.mini").projectDir = file("edge/io.openems.edge.fenecon.mini")
+include ":io.openems.edge.fenecon.pro"
+project(":io.openems.edge.fenecon.pro").projectDir = file("edge/io.openems.edge.fenecon.pro")
+include ":io.openems.edge.fronius"
+project(":io.openems.edge.fronius").projectDir = file("edge/io.openems.edge.fronius")
+include ":io.openems.edge.goodwe"
+project(":io.openems.edge.goodwe").projectDir = file("edge/io.openems.edge.goodwe")
+include ":io.openems.edge.heat.api"
+project(":io.openems.edge.heat.api").projectDir = file("edge/io.openems.edge.heat.api")
+include ":io.openems.edge.heat.askoma"
+project(":io.openems.edge.heat.askoma").projectDir = file("edge/io.openems.edge.heat.askoma")
+include ":io.openems.edge.heat.mypv"
+project(":io.openems.edge.heat.mypv").projectDir = file("edge/io.openems.edge.heat.mypv")
+include ":io.openems.edge.io.api"
+project(":io.openems.edge.io.api").projectDir = file("edge/io.openems.edge.io.api")
+include ":io.openems.edge.io.filipowski"
+project(":io.openems.edge.io.filipowski").projectDir = file("edge/io.openems.edge.io.filipowski")
+include ":io.openems.edge.io.gpio"
+project(":io.openems.edge.io.gpio").projectDir = file("edge/io.openems.edge.io.gpio")
+include ":io.openems.edge.io.kmtronic"
+project(":io.openems.edge.io.kmtronic").projectDir = file("edge/io.openems.edge.io.kmtronic")
+include ":io.openems.edge.io.offgridswitch"
+project(":io.openems.edge.io.offgridswitch").projectDir = file("edge/io.openems.edge.io.offgridswitch")
+include ":io.openems.edge.io.revpi"
+project(":io.openems.edge.io.revpi").projectDir = file("edge/io.openems.edge.io.revpi")
+include ":io.openems.edge.io.shelly"
+project(":io.openems.edge.io.shelly").projectDir = file("edge/io.openems.edge.io.shelly")
+include ":io.openems.edge.io.siemenslogo"
+project(":io.openems.edge.io.siemenslogo").projectDir = file("edge/io.openems.edge.io.siemenslogo")
+include ":io.openems.edge.io.wago"
+project(":io.openems.edge.io.wago").projectDir = file("edge/io.openems.edge.io.wago")
+include ":io.openems.edge.io.weidmueller"
+project(":io.openems.edge.io.weidmueller").projectDir = file("edge/io.openems.edge.io.weidmueller")
+include ":io.openems.edge.kaco.blueplanet.hybrid10"
+project(":io.openems.edge.kaco.blueplanet.hybrid10").projectDir = file("edge/io.openems.edge.kaco.blueplanet.hybrid10")
+include ":io.openems.edge.katek.edcom"
+project(":io.openems.edge.katek.edcom").projectDir = file("edge/io.openems.edge.katek.edcom")
+include ":io.openems.edge.kostal"
+project(":io.openems.edge.kostal").projectDir = file("edge/io.openems.edge.kostal")
+include ":io.openems.edge.meter.abb"
+project(":io.openems.edge.meter.abb").projectDir = file("edge/io.openems.edge.meter.abb")
+include ":io.openems.edge.meter.api"
+project(":io.openems.edge.meter.api").projectDir = file("edge/io.openems.edge.meter.api")
+include ":io.openems.edge.meter.artemes.am2"
+project(":io.openems.edge.meter.artemes.am2").projectDir = file("edge/io.openems.edge.meter.artemes.am2")
+include ":io.openems.edge.meter.bcontrol.em300"
+project(":io.openems.edge.meter.bcontrol.em300").projectDir = file("edge/io.openems.edge.meter.bcontrol.em300")
+include ":io.openems.edge.meter.bgetech"
+project(":io.openems.edge.meter.bgetech").projectDir = file("edge/io.openems.edge.meter.bgetech")
+include ":io.openems.edge.meter.camillebauer.aplus"
+project(":io.openems.edge.meter.camillebauer.aplus").projectDir = file("edge/io.openems.edge.meter.camillebauer.aplus")
+include ":io.openems.edge.meter.carlo.gavazzi"
+project(":io.openems.edge.meter.carlo.gavazzi").projectDir = file("edge/io.openems.edge.meter.carlo.gavazzi")
+include ":io.openems.edge.meter.discovergy"
+project(":io.openems.edge.meter.discovergy").projectDir = file("edge/io.openems.edge.meter.discovergy")
+include ":io.openems.edge.meter.eastron"
+project(":io.openems.edge.meter.eastron").projectDir = file("edge/io.openems.edge.meter.eastron")
+include ":io.openems.edge.meter.janitza"
+project(":io.openems.edge.meter.janitza").projectDir = file("edge/io.openems.edge.meter.janitza")
+include ":io.openems.edge.meter.kdk"
+project(":io.openems.edge.meter.kdk").projectDir = file("edge/io.openems.edge.meter.kdk")
+include ":io.openems.edge.meter.phoenixcontact"
+project(":io.openems.edge.meter.phoenixcontact").projectDir = file("edge/io.openems.edge.meter.phoenixcontact")
+include ":io.openems.edge.meter.plexlog"
+project(":io.openems.edge.meter.plexlog").projectDir = file("edge/io.openems.edge.meter.plexlog")
+include ":io.openems.edge.meter.pqplus"
+project(":io.openems.edge.meter.pqplus").projectDir = file("edge/io.openems.edge.meter.pqplus")
+include ":io.openems.edge.meter.schneider.acti9.smartlink"
+project(":io.openems.edge.meter.schneider.acti9.smartlink").projectDir = file("edge/io.openems.edge.meter.schneider.acti9.smartlink")
+include ":io.openems.edge.meter.siemens"
+project(":io.openems.edge.meter.siemens").projectDir = file("edge/io.openems.edge.meter.siemens")
+include ":io.openems.edge.meter.socomec"
+project(":io.openems.edge.meter.socomec").projectDir = file("edge/io.openems.edge.meter.socomec")
+include ":io.openems.edge.meter.virtual"
+project(":io.openems.edge.meter.virtual").projectDir = file("edge/io.openems.edge.meter.virtual")
+include ":io.openems.edge.meter.weidmueller"
+project(":io.openems.edge.meter.weidmueller").projectDir = file("edge/io.openems.edge.meter.weidmueller")
+include ":io.openems.edge.meter.ziehl"
+project(":io.openems.edge.meter.ziehl").projectDir = file("edge/io.openems.edge.meter.ziehl")
+include ":io.openems.edge.onewire.thermometer"
+project(":io.openems.edge.onewire.thermometer").projectDir = file("edge/io.openems.edge.onewire.thermometer")
+include ":io.openems.edge.predictor.api"
+project(":io.openems.edge.predictor.api").projectDir = file("edge/io.openems.edge.predictor.api")
+include ":io.openems.edge.predictor.lstm"
+project(":io.openems.edge.predictor.lstm").projectDir = file("edge/io.openems.edge.predictor.lstm")
+include ":io.openems.edge.predictor.persistencemodel"
+project(":io.openems.edge.predictor.persistencemodel").projectDir = file("edge/io.openems.edge.predictor.persistencemodel")
+include ":io.openems.edge.predictor.production.linearmodel"
+project(":io.openems.edge.predictor.production.linearmodel").projectDir = file("edge/io.openems.edge.predictor.production.linearmodel")
+include ":io.openems.edge.predictor.profileclusteringmodel"
+project(":io.openems.edge.predictor.profileclusteringmodel").projectDir = file("edge/io.openems.edge.predictor.profileclusteringmodel")
+include ":io.openems.edge.predictor.similardaymodel"
+project(":io.openems.edge.predictor.similardaymodel").projectDir = file("edge/io.openems.edge.predictor.similardaymodel")
+include ":io.openems.edge.pvinverter.api"
+project(":io.openems.edge.pvinverter.api").projectDir = file("edge/io.openems.edge.pvinverter.api")
+include ":io.openems.edge.pvinverter.cluster"
+project(":io.openems.edge.pvinverter.cluster").projectDir = file("edge/io.openems.edge.pvinverter.cluster")
+include ":io.openems.edge.pvinverter.kaco.blueplanet"
+project(":io.openems.edge.pvinverter.kaco.blueplanet").projectDir = file("edge/io.openems.edge.pvinverter.kaco.blueplanet")
+include ":io.openems.edge.pvinverter.kostal"
+project(":io.openems.edge.pvinverter.kostal").projectDir = file("edge/io.openems.edge.pvinverter.kostal")
+include ":io.openems.edge.pvinverter.solarlog"
+project(":io.openems.edge.pvinverter.solarlog").projectDir = file("edge/io.openems.edge.pvinverter.solarlog")
+include ":io.openems.edge.scheduler.allalphabetically"
+project(":io.openems.edge.scheduler.allalphabetically").projectDir = file("edge/io.openems.edge.scheduler.allalphabetically")
+include ":io.openems.edge.scheduler.api"
+project(":io.openems.edge.scheduler.api").projectDir = file("edge/io.openems.edge.scheduler.api")
+include ":io.openems.edge.scheduler.daily"
+project(":io.openems.edge.scheduler.daily").projectDir = file("edge/io.openems.edge.scheduler.daily")
+include ":io.openems.edge.scheduler.fixedorder"
+project(":io.openems.edge.scheduler.fixedorder").projectDir = file("edge/io.openems.edge.scheduler.fixedorder")
+include ":io.openems.edge.scheduler.jscalendar"
+project(":io.openems.edge.scheduler.jscalendar").projectDir = file("edge/io.openems.edge.scheduler.jscalendar")
+include ":io.openems.edge.simulator"
+project(":io.openems.edge.simulator").projectDir = file("edge/io.openems.edge.simulator")
+include ":io.openems.edge.sma"
+project(":io.openems.edge.sma").projectDir = file("edge/io.openems.edge.sma")
+include ":io.openems.edge.solaredge"
+project(":io.openems.edge.solaredge").projectDir = file("edge/io.openems.edge.solaredge")
+include ":io.openems.edge.system.fenecon"
+project(":io.openems.edge.system.fenecon").projectDir = file("edge/io.openems.edge.system.fenecon")
+include ":io.openems.edge.tesla.powerwall2"
+project(":io.openems.edge.tesla.powerwall2").projectDir = file("edge/io.openems.edge.tesla.powerwall2")
+include ":io.openems.edge.thermometer.api"
+project(":io.openems.edge.thermometer.api").projectDir = file("edge/io.openems.edge.thermometer.api")
+include ":io.openems.edge.timedata.api"
+project(":io.openems.edge.timedata.api").projectDir = file("edge/io.openems.edge.timedata.api")
+include ":io.openems.edge.timedata.influxdb"
+project(":io.openems.edge.timedata.influxdb").projectDir = file("edge/io.openems.edge.timedata.influxdb")
+include ":io.openems.edge.timedata.rrd4j"
+project(":io.openems.edge.timedata.rrd4j").projectDir = file("edge/io.openems.edge.timedata.rrd4j")
+include ":io.openems.edge.timeofusetariff.ancillarycosts"
+project(":io.openems.edge.timeofusetariff.ancillarycosts").projectDir = file("edge/io.openems.edge.timeofusetariff.ancillarycosts")
+include ":io.openems.edge.timeofusetariff.api"
+project(":io.openems.edge.timeofusetariff.api").projectDir = file("edge/io.openems.edge.timeofusetariff.api")
+include ":io.openems.edge.timeofusetariff.awattar"
+project(":io.openems.edge.timeofusetariff.awattar").projectDir = file("edge/io.openems.edge.timeofusetariff.awattar")
+include ":io.openems.edge.timeofusetariff.corrently"
+project(":io.openems.edge.timeofusetariff.corrently").projectDir = file("edge/io.openems.edge.timeofusetariff.corrently")
+include ":io.openems.edge.timeofusetariff.entsoe"
+project(":io.openems.edge.timeofusetariff.entsoe").projectDir = file("edge/io.openems.edge.timeofusetariff.entsoe")
+include ":io.openems.edge.timeofusetariff.ews"
+project(":io.openems.edge.timeofusetariff.ews").projectDir = file("edge/io.openems.edge.timeofusetariff.ews")
+include ":io.openems.edge.timeofusetariff.groupe"
+project(":io.openems.edge.timeofusetariff.groupe").projectDir = file("edge/io.openems.edge.timeofusetariff.groupe")
+include ":io.openems.edge.timeofusetariff.hassfurt"
+project(":io.openems.edge.timeofusetariff.hassfurt").projectDir = file("edge/io.openems.edge.timeofusetariff.hassfurt")
+include ":io.openems.edge.timeofusetariff.luox"
+project(":io.openems.edge.timeofusetariff.luox").projectDir = file("edge/io.openems.edge.timeofusetariff.luox")
+include ":io.openems.edge.timeofusetariff.manual"
+project(":io.openems.edge.timeofusetariff.manual").projectDir = file("edge/io.openems.edge.timeofusetariff.manual")
+include ":io.openems.edge.timeofusetariff.rabotcharge"
+project(":io.openems.edge.timeofusetariff.rabotcharge").projectDir = file("edge/io.openems.edge.timeofusetariff.rabotcharge")
+include ":io.openems.edge.timeofusetariff.swisspower"
+project(":io.openems.edge.timeofusetariff.swisspower").projectDir = file("edge/io.openems.edge.timeofusetariff.swisspower")
+include ":io.openems.edge.timeofusetariff.tibber"
+project(":io.openems.edge.timeofusetariff.tibber").projectDir = file("edge/io.openems.edge.timeofusetariff.tibber")
+include ":io.openems.edge.victron"
+project(":io.openems.edge.victron").projectDir = file("edge/io.openems.edge.victron")
+include ":io.openems.edge.weather.api"
+project(":io.openems.edge.weather.api").projectDir = file("edge/io.openems.edge.weather.api")
+include ":io.openems.edge.weather.openmeteo"
+project(":io.openems.edge.weather.openmeteo").projectDir = file("edge/io.openems.edge.weather.openmeteo")
+
+// Backend modules
+include ":io.openems.backend.alerting"
+project(":io.openems.backend.alerting").projectDir = file("backend/io.openems.backend.alerting")
 include ":io.openems.backend.application"
+project(":io.openems.backend.application").projectDir = file("backend/io.openems.backend.application")
+include ":io.openems.backend.b2brest"
+project(":io.openems.backend.b2brest").projectDir = file("backend/io.openems.backend.b2brest")
+include ":io.openems.backend.b2bwebsocket"
+project(":io.openems.backend.b2bwebsocket").projectDir = file("backend/io.openems.backend.b2bwebsocket")
+include ":io.openems.backend.common"
+project(":io.openems.backend.common").projectDir = file("backend/io.openems.backend.common")
+include ":io.openems.backend.core"
+project(":io.openems.backend.core").projectDir = file("backend/io.openems.backend.core")
+include ":io.openems.backend.edgewebsocket"
+project(":io.openems.backend.edgewebsocket").projectDir = file("backend/io.openems.backend.edgewebsocket")
+include ":io.openems.backend.metadata.dummy"
+project(":io.openems.backend.metadata.dummy").projectDir = file("backend/io.openems.backend.metadata.dummy")
+include ":io.openems.backend.metadata.file"
+project(":io.openems.backend.metadata.file").projectDir = file("backend/io.openems.backend.metadata.file")
+include ":io.openems.backend.metadata.odoo"
+project(":io.openems.backend.metadata.odoo").projectDir = file("backend/io.openems.backend.metadata.odoo")
+include ":io.openems.backend.metrics.prometheus"
+project(":io.openems.backend.metrics.prometheus").projectDir = file("backend/io.openems.backend.metrics.prometheus")
+include ":io.openems.backend.oauthregistry"
+project(":io.openems.backend.oauthregistry").projectDir = file("backend/io.openems.backend.oauthregistry")
+include ":io.openems.backend.simulator"
+project(":io.openems.backend.simulator").projectDir = file("backend/io.openems.backend.simulator")
+include ":io.openems.backend.timedata.aggregatedinflux"
+project(":io.openems.backend.timedata.aggregatedinflux").projectDir = file("backend/io.openems.backend.timedata.aggregatedinflux")
+include ":io.openems.backend.timedata.dummy"
+project(":io.openems.backend.timedata.dummy").projectDir = file("backend/io.openems.backend.timedata.dummy")
+include ":io.openems.backend.timedata.influx"
+project(":io.openems.backend.timedata.influx").projectDir = file("backend/io.openems.backend.timedata.influx")
+include ":io.openems.backend.timedata.timescaledb"
+project(":io.openems.backend.timedata.timescaledb").projectDir = file("backend/io.openems.backend.timedata.timescaledb")
+include ":io.openems.backend.uiwebsocket"
+project(":io.openems.backend.uiwebsocket").projectDir = file("backend/io.openems.backend.uiwebsocket")
+
+// Common modules
+include ":io.openems.common"
+project(":io.openems.common").projectDir = file("common/io.openems.common")
+include ":io.openems.common.bridge.http"
+project(":io.openems.common.bridge.http").projectDir = file("common/io.openems.common.bridge.http")
+include ":io.openems.oem.openems"
+project(":io.openems.oem.openems").projectDir = file("common/io.openems.oem.openems")
+include ":io.openems.shared.influxdb"
+project(":io.openems.shared.influxdb").projectDir = file("common/io.openems.shared.influxdb")
+include ":io.openems.wrapper"
+project(":io.openems.wrapper").projectDir = file("common/io.openems.wrapper")
+
+// Documentation
 include ":doc"

@@ -6,14 +6,17 @@ An open-source Energy Management System built on **OpenEMS** (Open Energy Manage
 
 ## Repository Structure
 
-This project uses a **monorepo architecture** - all components (UI, Edge, Backend) are in a single repository. For details about this design choice and alternatives, see [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md).
+This project uses a **monorepo architecture** - all components (UI, Edge, Backend) are in a single repository organized into logical folders. For details about this design choice and alternatives, see [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md).
 
 ```
 Energy-Management-System/
 ├── src/                    # Complete OpenEMS source code (Java, TypeScript)
-│   ├── io.openems.edge.*   # Edge device modules (192 modules)
-│   ├── io.openems.backend.*# Backend server modules (18 modules)
-│   ├── io.openems.common.* # Shared components (2 modules)
+│   ├── edge/               # Edge component (organized)
+│   │   └── io.openems.edge.* (192 Java modules)
+│   ├── backend/            # Backend component (organized)
+│   │   └── io.openems.backend.* (18 Java modules)
+│   ├── common/             # Shared components (organized)
+│   │   └── io.openems.common.* (5 shared modules)
 │   ├── ui/                 # Web UI (Angular)
 │   └── README.md           # Build and development guide
 ├── config/                 # Runtime configuration

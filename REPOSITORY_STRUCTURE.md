@@ -6,20 +6,25 @@ Based on the architecture described in [ARCHITECTURE.md](ARCHITECTURE.md), this 
 
 ## Current Structure
 
-The system currently uses a **monorepo approach** with all source code in a single repository:
+The system uses a **monorepo approach** with all source code organized in a single repository:
 
 ```
 Energy-Management-System/
 ├── src/
-│   ├── io.openems.edge.*      (192 Edge modules)
-│   ├── io.openems.backend.*   (18 Backend modules)
-│   ├── io.openems.common.*    (2 Common modules)
-│   └── ui/                    (1 UI application)
+│   ├── edge/                  (Edge modules folder)
+│   │   └── io.openems.edge.*  (192 Edge modules)
+│   ├── backend/               (Backend modules folder)
+│   │   └── io.openems.backend.* (18 Backend modules)
+│   ├── common/                (Shared modules folder)
+│   │   └── io.openems.common.*, io.openems.shared.*, io.openems.wrapper, io.openems.oem.* (5 modules)
+│   └── ui/                    (Angular web application)
 ├── config/
 │   ├── edge/
 │   └── backend/
 └── [documentation files]
 ```
+
+**Structure Implemented**: The repository follows **Option A** (Monorepo with Grouped Folders within src/), providing clear organization while maintaining monorepo benefits.
 
 ## Architecture Components
 
@@ -37,24 +42,25 @@ According to the system architecture, there are **three main components**:
 
 ### 3. OpenEMS Backend (Port 8084)
 - **Technology**: Java, Spring Boot
-- **Location**: `src/io.openems.backend.*` (18 modules)
+- **Location**: `src/backend/io.openems.backend.*` (18 modules)
 - **Purpose**: Central management server
 
 ## Organizational Options
 
-### Option A: Monorepo with Grouped Folders (Recommended)
+### Option A: Monorepo with Grouped Folders ✅ **IMPLEMENTED**
 
-**Structure:**
+**Implemented Structure:**
 ```
 Energy-Management-System/
-├── ui/
-│   └── [Angular application]
-├── edge/
-│   └── [All Edge modules: io.openems.edge.*]
-├── backend/
-│   └── [All Backend modules: io.openems.backend.*]
-├── common/
-│   └── [Shared modules: io.openems.common.*]
+├── src/
+│   ├── edge/
+│   │   └── [All Edge modules: io.openems.edge.*]
+│   ├── backend/
+│   │   └── [All Backend modules: io.openems.backend.*]
+│   ├── common/
+│   │   └── [Shared modules: io.openems.common.*, etc.]
+│   └── ui/
+│       └── [Angular application]
 ├── config/
 ├── docs/
 └── docker-compose.yml
@@ -68,6 +74,7 @@ Energy-Management-System/
 - ✅ Single issue tracker
 - ✅ Easier to ensure version compatibility
 - ✅ Reduced overhead (one repo to clone/manage)
+- ✅ **Clear organization by component type**
 
 **Disadvantages:**
 - ❌ Larger repository size
