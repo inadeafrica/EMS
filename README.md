@@ -2,20 +2,28 @@
 
 An open-source Energy Management System built on **OpenEMS** (Open Energy Management System), an award-winning platform for managing renewable energy sources, battery storage, EV charging, and local grid interaction.
 
-**This repository provides a Docker-based deployment configuration** for OpenEMS, making it easy to deploy and run the platform using pre-built Docker images.
+**This repository includes the complete OpenEMS source code** in the `src/` directory, allowing you to customize and extend the platform for your specific needs.
 
 ## Repository Structure
 
-This repository contains Docker configuration and documentation for deploying OpenEMS:
+This project uses a **monorepo architecture** - all components (UI, Edge, Backend) are in a single repository organized into logical folders. For details about this design choice and alternatives, see [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md).
 
 ```
 Energy-Management-System/
-├── config/                 # Runtime configuration (created by setup)
+├── src/                    # Complete OpenEMS source code (Java, TypeScript)
+│   ├── edge/               # Edge component (organized)
+│   │   └── io.openems.edge.* (192 Java modules)
+│   ├── backend/            # Backend component (organized)
+│   │   └── io.openems.backend.* (18 Java modules)
+│   ├── common/             # Shared components (organized)
+│   │   └── io.openems.common.* (5 shared modules)
+│   ├── ui/                 # Web UI (Angular)
+│   └── README.md           # Build and development guide
+├── config/                 # Runtime configuration
 │   ├── edge/               # Edge configuration
 │   └── backend/            # Backend configuration
 ├── docker-compose.yml      # Docker orchestration
 ├── Makefile               # Convenience commands
-├── .env.example           # Environment variables template
 └── Documentation files     # Comprehensive guides
 ```
 
@@ -29,7 +37,7 @@ Energy-Management-System/
 - **Time-series Data Storage**: Historical data analysis with InfluxDB
 - **Modular Architecture**: Easily extend with additional components
 - **Simulation Mode**: Test configurations without physical hardware
-- **Docker-based Deployment**: Quick setup with pre-built images
+- **Full Source Code**: Customize and build your own version
 
 ## Technology Stack
 
@@ -42,17 +50,24 @@ Energy-Management-System/
 
 ## Prerequisites
 
+### For Docker Deployment (Pre-built Images)
 - Docker (version 20.10 or higher)
 - Docker Compose (version 2.0 or higher)
 - At least 4GB RAM
 - 10GB free disk space
 
-## Quick Start
+### For Building from Source
+- Java Development Kit (JDK) 21 or later
+- Gradle (included via wrapper)
+- Node.js and npm (for UI)
+- 20GB free disk space
+
+## Quick Start (Docker Deployment)
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/inadeafrica/EMS.git
-   cd EMS
+   git clone https://github.com/inadeafrica/Energy-Management-System.git
+   cd Energy-Management-System
    ```
 
 2. **Set up environment variables**
@@ -178,40 +193,57 @@ docker compose down -v
 4. Query energy data from the `energy_data` bucket
 5. Create custom dashboards
 
+Example InfluxDB query:
+```flux
+from(bucket: "energy_data")
+  |> range(start: -1h)
+  |> filter(fn: (r) => r["_measurement"] == "energy")
+  |> filter(fn: (r) => r["_field"] == "power")
+```
+
+## Building from Source
+
+To customize and build your own version of OpenEMS:
+
+1. **Navigate to the source directory**
+   ```bash
+   cd src
+   ```
+
+2. **Build the project**
+   ```bash
+   # Build all modules
+   ./gradlew build
+   
+   # Build UI
+   cd ui
+   npm install
+   npm run build
+   ```
+
+3. **Run in development mode**
+   ```bash
+   # Run Edge
+   ./gradlew :io.openems.edge.application:runEdge
+   
+   # Run Backend
+   ./gradlew :io.openems.backend.application:runBackend
+   ```
+
+For detailed build instructions, see [`src/README.md`](src/README.md).
+
 ## Customization
 
-To customize OpenEMS, you should:
+With the full source code included, you can:
 
-1. **Fork the official OpenEMS repository**
-   ```bash
-   # Clone the official OpenEMS repository
-   git clone https://github.com/OpenEMS/openems.git
-   cd openems
-   ```
+- Add custom device drivers for specific hardware
+- Implement custom control algorithms
+- Modify the UI to match your branding
+- Integrate with proprietary systems
+- Add new energy management strategies
+- Extend the API with custom endpoints
 
-2. **Make your modifications**
-   - Add custom device drivers for specific hardware
-   - Implement custom control algorithms
-   - Modify the UI to match your branding
-   - Integrate with proprietary systems
-   - Add new energy management strategies
-   - Extend the API with custom endpoints
-
-3. **Build custom Docker images**
-   ```bash
-   # Build custom Edge image
-   docker build -f tools/docker/edge/Dockerfile -t my-org/edge:custom .
-   
-   # Build custom Backend image
-   docker build -f tools/docker/backend/Dockerfile -t my-org/backend:custom .
-   
-   # Build custom UI image
-   docker build -f tools/docker/ui/Dockerfile.backend -t my-org/ui:custom .
-   ```
-
-4. **Update your docker-compose.yml** to use your custom images instead of the official ones
-
-See the [OpenEMS Developer Documentation](https://openems.github.io/openems.io/openems/latest/development/overview.html) for detailed guidance on development and building.
+See the [OpenEMS Developer Documentation](https://openems.github.io/openems.io/openems/latest/development/overview.html) for guidance.
 
 ## Troubleshooting
 

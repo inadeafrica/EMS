@@ -1,14 +1,9 @@
 # Environment variables
 .env
 
-# Configuration (created during setup)
-config/
-
 # Docker volumes
+config/
 data/
-
-# OpenEMS source code (use official repo instead)
-src/
 
 # IDE
 .vscode/
