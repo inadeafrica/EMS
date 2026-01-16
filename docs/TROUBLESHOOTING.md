@@ -4,12 +4,75 @@ Common issues and solutions for the Energy Management System.
 
 ## Table of Contents
 
+- [Build Issues](#build-issues)
 - [Docker Issues](#docker-issues)
 - [Service Issues](#service-issues)
 - [Network Issues](#network-issues)
 - [Database Issues](#database-issues)
 - [Performance Issues](#performance-issues)
 - [Data Issues](#data-issues)
+
+## Build Issues
+
+### Build Fails with Java Version Error
+
+**Symptom**: Build fails with error about unsupported Java version or `class file has wrong version`
+
+**Solution**: OpenEMS requires Java 21 or later
+
+```bash
+# Check your Java version
+java -version
+
+# Should show: openjdk version "21..." or higher
+
+# If you have multiple Java versions, set JAVA_HOME
+export JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64  # Linux
+export PATH=$JAVA_HOME/bin:$PATH
+
+# Or use the build script which handles this automatically
+./build.sh
+```
+
+**Common Java 21 locations**:
+- Linux: `/usr/lib/jvm/temurin-21-jdk-amd64` or `/usr/lib/jvm/java-21-openjdk-amd64`
+- macOS: `/opt/homebrew/opt/openjdk@21` or `/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home`
+- Windows: `C:\Program Files\Eclipse Adoptium\jdk-21`
+
+Download Java 21: https://adoptium.net/temurin/releases/?version=21
+
+### Build Hangs or Runs Slowly
+
+**Symptom**: Gradle build takes too long or appears to hang
+
+**Solution 1**: Increase memory allocation (already configured)
+```bash
+# Check gradle.properties for:
+org.gradle.jvmargs=-Xms512m -Xmx2048m
+```
+
+**Solution 2**: Use `--no-daemon` flag
+```bash
+cd src
+./gradlew build --no-daemon
+```
+
+**Solution 3**: Stop existing Gradle daemons
+```bash
+./gradlew --stop
+```
+
+### Cannot Download Dependencies
+
+**Symptom**: Build fails downloading dependencies from Maven Central
+
+**Solution**: Check internet connection and try again
+```bash
+cd src
+./gradlew build --refresh-dependencies
+```
+
+For detailed build instructions, see [BUILD_GUIDE.md](BUILD_GUIDE.md).
 
 ## Docker Issues
 
