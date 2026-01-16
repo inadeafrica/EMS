@@ -1,0 +1,6 @@
+# This directory contains OpenEMS Backend configuration files.
+#
+# The OpenEMS Backend Docker container will automatically populate this directory
+# with default configuration files on first start if it is empty.
+#
+# See README.md in this directory for more information.

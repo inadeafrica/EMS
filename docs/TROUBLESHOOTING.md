@@ -115,17 +115,24 @@ docker compose logs openems-edge
 ```
 
 **Common issues**:
-- Invalid configuration in `config/edge/config.json`
+- Invalid OSGi configuration files
 - Missing device drivers
 - Java memory issues
 
 **Solution**:
 ```bash
-# Validate configuration
+# Validate docker-compose.yml
 docker compose config
 
 # Check Java errors in logs
 docker compose logs openems-edge | grep -i error
+
+# Check configuration files inside container
+docker exec openems-edge ls -la /var/opt/openems/config
+
+# Reset to default configuration (removes custom settings)
+docker volume rm energy-management-system_edge-config
+docker compose up -d openems-edge
 
 # Increase memory if needed
 # Add to docker-compose.yml under openems-edge:
@@ -378,8 +385,8 @@ docker compose exec influxdb influx query 'from(bucket:"energy_data") |> range(s
 # Restart Edge to start data collection
 docker compose restart openems-edge
 
-# Check simulation is enabled
-# Verify config/edge/config.json has simulator components
+# Check simulation components are configured
+docker exec openems-edge ls -la /var/opt/openems/config
 ```
 
 ### Incorrect Data
@@ -388,8 +395,11 @@ docker compose restart openems-edge
 
 **Check configuration**:
 ```bash
-# Review Edge configuration
-cat config/edge/config.json
+# Review Edge configuration files
+docker exec openems-edge ls -la /var/opt/openems/config
+
+# View a specific configuration file
+docker exec openems-edge cat /var/opt/openems/config/Core/ComponentManager.config
 ```
 
 **Common issues**:

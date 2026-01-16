@@ -117,33 +117,52 @@ Energy-Management-System/
 
 ## Configuration
 
-### Edge Configuration
+### Automatic Configuration
 
-The Edge device configuration is located in `config/edge/config.json.example`. Copy and modify it:
+OpenEMS uses **Apache Felix OSGi configuration** stored in `.config` files. When you start the system for the first time, the containers automatically create default configuration files with simulation components for testing.
 
+**No manual configuration is required to get started!**
+
+### Viewing and Customizing Configuration
+
+**Option 1: Web UI (Recommended)**
+1. Access the OpenEMS UI at http://localhost:8080
+2. Navigate to Settings → Components
+3. Add, modify, or remove components through the interface
+4. Changes are automatically saved
+
+**Option 2: Configuration Files**
+
+Edge configuration is stored in a Docker volume at `/var/opt/openems/config` inside the container.
+
+To view the configuration:
 ```bash
-cp config/edge/config.json.example config/edge/config.json
+# View Edge configuration files
+docker exec openems-edge ls -la /var/opt/openems/config
+
+# View Backend configuration files
+docker exec openems-backend ls -la /var/opt/openems/config
 ```
 
-This file defines:
-- Energy sources (solar, grid, etc.)
-- Storage systems (batteries)
-- Controllers (self-consumption, etc.)
-- Meters and sensors
+To customize configuration files, you can:
+1. Use the Web UI (easiest method)
+2. Copy files from the container, edit them, and copy them back
+3. See `config/edge/README.md` and `config/backend/README.md` for more details
 
-### Backend Configuration
+### Configuration Details
 
-The Backend configuration is located in `config/backend/config.json.example`. Copy and modify it:
+The default configuration includes:
+- **Simulator Components**: Virtual devices for testing without hardware
+  - Grid meter simulator
+  - Battery storage simulator
+  - Self-consumption controller
+- **Core Services**: Essential OpenEMS services
+- **API Websocket**: Communication with UI and Backend
 
-```bash
-cp config/backend/config.json.example config/backend/config.json
-```
-
-This file defines:
-- Database connections
-- InfluxDB settings
-- API configuration
-- Logging levels
+For more information about OpenEMS configuration:
+- See [config/edge/README.md](config/edge/README.md)
+- See [config/backend/README.md](config/backend/README.md)
+- Visit [OpenEMS Documentation](https://openems.github.io/openems.io/)
 
 ## Usage
 
