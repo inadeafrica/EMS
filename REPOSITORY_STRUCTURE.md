@@ -227,6 +227,229 @@ If you decide to reorganize the current structure:
 - Coordinated releases are needed
 - Current structure already supports this
 
+## Independent Component Deployment
+
+One of the common questions about monorepo structure is: **"How can I deploy individual components without deploying everything?"**
+
+Even in a monorepo, you can deploy components independently. Here are the strategies:
+
+### Strategy 1: Docker Compose Service Selection
+
+Deploy only specific services using Docker Compose:
+
+```bash
+# Deploy only Edge component
+docker compose up -d openems-edge
+
+# Deploy only Backend and its dependencies
+docker compose up -d openems-backend postgres influxdb
+
+# Deploy only UI and its dependencies
+docker compose up -d openems-ui openems-backend postgres
+
+# Deploy Edge and Backend without UI
+docker compose up -d openems-edge openems-backend postgres influxdb
+```
+
+**Stop specific services:**
+```bash
+# Stop only Edge
+docker compose stop openems-edge
+
+# Restart only Backend
+docker compose restart openems-backend
+```
+
+### Strategy 2: Multiple Docker Compose Files
+
+Create separate compose files for different deployment scenarios:
+
+**docker-compose.edge.yml** (Edge only):
+```yaml
+services:
+  openems-edge:
+    image: openems/edge:latest
+    # ... edge configuration
+```
+
+**docker-compose.backend.yml** (Backend only):
+```yaml
+services:
+  openems-backend:
+    image: openems/backend:latest
+    # ... backend configuration
+  postgres:
+    # ... postgres configuration
+  influxdb:
+    # ... influxdb configuration
+```
+
+Deploy using:
+```bash
+# Deploy only Edge
+docker compose -f docker-compose.edge.yml up -d
+
+# Deploy only Backend
+docker compose -f docker-compose.backend.yml up -d
+```
+
+### Strategy 3: Build-Specific Docker Images
+
+Build Docker images for specific components from the monorepo:
+
+```bash
+# Build only Edge image
+cd src
+docker build -f Dockerfile.edge -t my-org/edge:latest .
+
+# Build only Backend image
+docker build -f Dockerfile.backend -t my-org/backend:latest .
+
+# Build only UI image
+cd ui
+docker build -t my-org/ui:latest .
+```
+
+**Create component-specific Dockerfiles:**
+
+**Dockerfile.edge**:
+```dockerfile
+FROM gradle:8-jdk21 AS builder
+WORKDIR /build
+COPY io.openems.edge.* ./
+COPY io.openems.common* ./
+RUN gradle :io.openems.edge.application:build
+
+FROM eclipse-temurin:21-jre
+COPY --from=builder /build/io.openems.edge.application/generated/*.jar /app/
+CMD ["java", "-jar", "/app/openems-edge.jar"]
+```
+
+### Strategy 4: Selective Build and Deploy with Makefile
+
+Add component-specific targets to the Makefile:
+
+```makefile
+# Deploy only Edge
+start-edge:
+	docker compose up -d openems-edge
+	@echo "✓ Edge service started"
+
+# Deploy only Backend with dependencies
+start-backend:
+	docker compose up -d openems-backend postgres influxdb
+	@echo "✓ Backend services started"
+
+# Deploy only UI with dependencies
+start-ui:
+	docker compose up -d openems-ui openems-backend postgres
+	@echo "✓ UI services started"
+
+# Build only Edge from source
+build-edge:
+	cd src && ./gradlew :io.openems.edge.application:build
+	@echo "✓ Edge built"
+
+# Build only Backend from source
+build-backend:
+	cd src && ./gradlew :io.openems.backend.application:build
+	@echo "✓ Backend built"
+
+# Build only UI from source
+build-ui:
+	cd src/ui && npm install && npm run build
+	@echo "✓ UI built"
+```
+
+Usage:
+```bash
+make start-edge      # Deploy only Edge
+make start-backend   # Deploy only Backend stack
+make build-edge      # Build only Edge from source
+```
+
+### Strategy 5: CI/CD Pipeline with Path-Based Triggers
+
+Configure CI/CD to build/deploy only changed components:
+
+**GitHub Actions example** (.github/workflows/deploy.yml):
+```yaml
+name: Selective Deploy
+
+on:
+  push:
+    paths:
+      - 'src/io.openems.edge.**'
+      - 'src/io.openems.backend.**'
+      - 'src/ui/**'
+
+jobs:
+  deploy-edge:
+    if: contains(github.event.head_commit.modified, 'io.openems.edge')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and Deploy Edge
+        run: |
+          # Build Edge component
+          # Deploy Edge component
+
+  deploy-backend:
+    if: contains(github.event.head_commit.modified, 'io.openems.backend')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and Deploy Backend
+        run: |
+          # Build Backend component
+          # Deploy Backend component
+
+  deploy-ui:
+    if: contains(github.event.head_commit.modified, 'src/ui')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and Deploy UI
+        run: |
+          # Build UI component
+          # Deploy UI component
+```
+
+### Strategy 6: Gradle Selective Build
+
+The monorepo uses Gradle, which supports building specific modules:
+
+```bash
+# Build only Edge modules
+cd src
+./gradlew :io.openems.edge.application:build
+
+# Build only Backend modules
+./gradlew :io.openems.backend.application:build
+
+# Build specific Edge controller
+./gradlew :io.openems.edge.controller.ess.cycle:build
+
+# Build all Edge modules
+./gradlew tasks --all | grep "io.openems.edge" | xargs ./gradlew
+```
+
+### Summary: Independent Deployment in Monorepo
+
+| Deployment Need | Solution |
+|----------------|----------|
+| Deploy single service | `docker compose up -d [service-name]` |
+| Deploy service group | Create separate compose files |
+| Build specific component | Use Gradle selective build |
+| CI/CD selective deploy | Path-based pipeline triggers |
+| Production isolation | Build component-specific images |
+| Development workflow | Makefile component targets |
+
+**Key Insight**: Monorepo does NOT mean "deploy everything together." You have full control over:
+- What to build (Gradle selective builds)
+- What to deploy (Docker Compose service selection)
+- When to deploy (CI/CD path triggers)
+- Where to deploy (Component-specific images)
+
+The monorepo structure **enables** independent deployment while maintaining the benefits of unified source control and coordinated releases when needed.
+
 ## Best Practices
 
 Regardless of which option you choose:
@@ -237,6 +460,8 @@ Regardless of which option you choose:
 - Use build tools that support monorepos (Gradle multi-project, npm workspaces)
 - Implement proper CI/CD for selective builds
 - Use code owners for component-specific reviews
+- **Create component-specific deployment scripts**
+- **Use Docker Compose service selection for independent deployment**
 
 ### For Multiple Repos:
 - Define clear APIs between components
