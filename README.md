@@ -178,57 +178,40 @@ docker compose down -v
 4. Query energy data from the `energy_data` bucket
 5. Create custom dashboards
 
-Example InfluxDB query:
-```flux
-from(bucket: "energy_data")
-  |> range(start: -1h)
-  |> filter(fn: (r) => r["_measurement"] == "energy")
-  |> filter(fn: (r) => r["_field"] == "power")
-```
-
-## Building from Source
-
-To customize and build your own version of OpenEMS:
-
-1. **Navigate to the source directory**
-   ```bash
-   cd src
-   ```
-
-2. **Build the project**
-   ```bash
-   # Build all modules
-   ./gradlew build
-   
-   # Build UI
-   cd ui
-   npm install
-   npm run build
-   ```
-
-3. **Run in development mode**
-   ```bash
-   # Run Edge
-   ./gradlew :io.openems.edge.application:runEdge
-   
-   # Run Backend
-   ./gradlew :io.openems.backend.application:runBackend
-   ```
-
-For detailed build instructions, see [`src/README.md`](src/README.md).
-
 ## Customization
 
-With the full source code included, you can:
+To customize OpenEMS, you should:
 
-- Add custom device drivers for specific hardware
-- Implement custom control algorithms
-- Modify the UI to match your branding
-- Integrate with proprietary systems
-- Add new energy management strategies
-- Extend the API with custom endpoints
+1. **Fork the official OpenEMS repository**
+   ```bash
+   # Clone the official OpenEMS repository
+   git clone https://github.com/OpenEMS/openems.git
+   cd openems
+   ```
 
-See the [OpenEMS Developer Documentation](https://openems.github.io/openems.io/openems/latest/development/overview.html) for guidance.
+2. **Make your modifications**
+   - Add custom device drivers for specific hardware
+   - Implement custom control algorithms
+   - Modify the UI to match your branding
+   - Integrate with proprietary systems
+   - Add new energy management strategies
+   - Extend the API with custom endpoints
+
+3. **Build custom Docker images**
+   ```bash
+   # Build custom Edge image
+   docker build -f tools/docker/edge/Dockerfile -t my-org/edge:custom .
+   
+   # Build custom Backend image
+   docker build -f tools/docker/backend/Dockerfile -t my-org/backend:custom .
+   
+   # Build custom UI image
+   docker build -f tools/docker/ui/Dockerfile.backend -t my-org/ui:custom .
+   ```
+
+4. **Update your docker-compose.yml** to use your custom images instead of the official ones
+
+See the [OpenEMS Developer Documentation](https://openems.github.io/openems.io/openems/latest/development/overview.html) for detailed guidance on development and building.
 
 ## Troubleshooting
 
