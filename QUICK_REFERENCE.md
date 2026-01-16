@@ -2,6 +2,20 @@
 
 Fast lookup for common commands and configurations.
 
+## Repository Organization
+
+**Architecture**: Monorepo (all components in one repository)
+
+```
+Repository Structure:
+├── UI (1 app)       → src/ui/
+├── Edge (192 mods)  → src/edge/io.openems.edge.*
+├── Backend (18 mods)→ src/backend/io.openems.backend.*
+└── Common (5 mods)  → src/common/io.openems.common.*
+```
+
+📚 See [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md) for detailed explanation
+
 ## Essential Commands
 
 ### Setup
@@ -19,6 +33,36 @@ make stop       # Stop all services
 make restart    # Restart all services
 make status     # Check service status
 make logs       # View all logs
+```
+
+### Component-Specific Deployment
+```bash
+# Start individual components
+make start-edge      # Start only Edge service
+make start-backend   # Start Backend with databases
+make start-ui        # Start UI with dependencies
+
+# Stop individual components
+make stop-edge       # Stop Edge service
+make stop-backend    # Stop Backend service
+make stop-ui         # Stop UI service
+
+# Restart individual components
+make restart-edge    # Restart Edge service
+make restart-backend # Restart Backend service
+make restart-ui      # Restart UI service
+```
+
+### Direct Docker Compose Commands
+```bash
+# Deploy specific services
+docker compose up -d openems-edge                    # Edge only
+docker compose up -d openems-backend postgres influxdb  # Backend stack
+docker compose up -d openems-ui openems-backend      # UI + Backend
+
+# Stop specific services
+docker compose stop openems-edge
+docker compose restart openems-backend
 ```
 
 ### Specific Service Logs

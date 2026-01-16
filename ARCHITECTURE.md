@@ -2,6 +2,35 @@
 
 This document describes the architecture of the Energy Management System.
 
+## Repository Structure
+
+This project uses a **monorepo architecture** where all components (UI, Edge, Backend) are maintained in a single repository. For detailed information about the repository organization and alternative approaches, see [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md).
+
+**Current Structure:**
+```
+Energy-Management-System/
+├── src/
+│   ├── edge/                  (Edge modules organized in subfolder)
+│   │   └── io.openems.edge.*  (192 Edge modules)
+│   ├── backend/               (Backend modules organized in subfolder)
+│   │   └── io.openems.backend.* (18 Backend modules)
+│   ├── common/                (Shared modules organized in subfolder)
+│   │   └── io.openems.common.* (5 Common/shared modules)
+│   ├── ui/                    (Angular web application)
+│   ├── build.gradle           (Root build configuration)
+│   └── settings.gradle        (Project structure configuration)
+├── config/
+│   ├── edge/
+│   └── backend/
+└── docker-compose.yml
+```
+
+The monorepo approach is ideal for this system because:
+- Components are tightly integrated (UI ↔ Edge ↔ Backend)
+- Coordinated releases ensure version compatibility
+- Single source of truth for all components
+- Simplified dependency management
+
 ## Overview
 
 The system consists of five main components running as Docker containers:
@@ -289,6 +318,62 @@ docker compose logs -f [service_name]
 - InfluxDB stores system metrics
 - Monitor disk usage, memory, CPU
 - Alert on anomalies
+
+## Source Code Organization
+
+### Component Breakdown
+
+The source code is organized in a single repository (`src/` directory) with the following structure:
+
+#### UI Component (`src/ui/`)
+- **1 Application**: Angular-based web interface
+- **Technology**: TypeScript, Angular, Ionic
+- **Build**: npm/Node.js
+- **Output**: Static web assets served by nginx
+
+#### Edge Component (`src/io.openems.edge.*`)
+- **192 Modules** including:
+  - Application (`io.openems.edge.application`)
+  - Battery drivers (8 modules)
+  - Controllers (60+ modules)
+  - Energy Storage Systems (8 modules)
+  - Meters (15+ modules)
+  - IO devices (15+ modules)
+  - Simulators, schedulers, and more
+- **Technology**: Java, OSGi framework
+- **Build**: Gradle
+- **Output**: OSGi bundles
+
+#### Backend Component (`src/io.openems.backend.*`)
+- **18 Modules** including:
+  - Application (`io.openems.backend.application`)
+  - Core services
+  - REST/WebSocket APIs
+  - Time-series data handlers
+  - Metadata management
+- **Technology**: Java, Spring Boot
+- **Build**: Gradle
+- **Output**: Spring Boot application
+
+#### Common/Shared Components
+- **2 Modules**:
+  - `io.openems.common` - Shared utilities and interfaces
+  - `io.openems.common.bridge.http` - HTTP communication
+- **Technology**: Java
+- **Build**: Gradle
+- **Output**: Shared libraries used by both Edge and Backend
+
+### Why Monorepo?
+
+This monorepo structure provides several benefits:
+
+1. **Version Synchronization**: All components are guaranteed to be compatible
+2. **Atomic Changes**: Changes spanning multiple components can be committed together
+3. **Simplified Build**: Single build system (Gradle) for all Java components
+4. **Easier Testing**: Integration testing across components is straightforward
+5. **Unified Documentation**: All docs and code in one place
+
+For detailed discussion of repository organization options, see [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md).
 
 ## Deployment Options
 

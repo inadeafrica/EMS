@@ -143,12 +143,21 @@ This repository provides a complete, production-ready Energy Management System b
 
 ## File Structure
 
+This project uses a **monorepo architecture** with all components in a single repository. See [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md) for detailed explanation.
+
 ```
 Energy-Management-System/
-├── Documentation (11 files)
+├── src/
+│   ├── ui/                    (Web UI - Angular/TypeScript)
+│   ├── io.openems.edge.*      (192 Edge modules - Java/OSGi)
+│   ├── io.openems.backend.*   (18 Backend modules - Java/Spring)
+│   └── io.openems.common.*    (2 Shared modules)
+│
+├── Documentation (12 files)
 │   ├── README.md
-│   ├── GETTING_STARTED.md
 │   ├── ARCHITECTURE.md
+│   ├── REPOSITORY_STRUCTURE.md    (NEW: Explains monorepo approach)
+│   ├── GETTING_STARTED.md
 │   ├── EXAMPLES.md
 │   ├── TROUBLESHOOTING.md
 │   ├── SECURITY.md

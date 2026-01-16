@@ -258,23 +258,25 @@ task buildEdge() {
 	group = 'OpenEMS-Build'
 	description = 'Build a Fat-Jar for the OpenEMS-Edge into build/openems-edge.jar'
 	
-	def assemble = tasks.getByPath(':assembleEdge')
-	def export = tasks.getByPath(':io.openems.edge.application:export.EdgeApp')
-	def resolve = tasks.getByPath(':io.openems.edge.application:resolve.EdgeApp')
-	
-	dependsOn assemble
-	dependsOn export
-	dependsOn resolve
-	
-	resolve.mustRunAfter assemble
-	export.mustRunAfter resolve
+	dependsOn ':assembleEdge'
+	dependsOn ':io.openems.edge.application:export.EdgeApp'
+	dependsOn ':io.openems.edge.application:resolve.EdgeApp'
 	
 	/* force rebuild */
-	export.outputs.upToDateWhen { false }
 	outputs.upToDateWhen { false }
 	
+	doFirst {
+		def resolve = tasks.getByPath(':io.openems.edge.application:resolve.EdgeApp')
+		def export = tasks.getByPath(':io.openems.edge.application:export.EdgeApp')
+		def assemble = tasks.getByPath(':assembleEdge')
+		
+		resolve.mustRunAfter assemble
+		export.mustRunAfter resolve
+		export.outputs.upToDateWhen { false }
+	}
+	
 	doLast {
-		def source = file("io.openems.edge.application/generated/distributions/executable/EdgeApp.jar")
+		def source = file("edge/io.openems.edge.application/generated/distributions/executable/EdgeApp.jar")
 		def output = file(System.getenv('OEMS_EDGE_OUTPUT') ?: "${buildDir}/openems-edge.jar")
 
 		output.delete()
@@ -291,23 +293,25 @@ task buildBackend() {
 	group = 'OpenEMS-Build'
 	description = 'Build a Fat-Jar for the OpenEMS-Backend into build/openems-backend.jar'
 	
-	def assemble = tasks.getByPath(':assembleBackend')
-	def export = tasks.getByPath(':io.openems.backend.application:export.BackendApp')
-	def resolve = tasks.getByPath(':io.openems.backend.application:resolve.BackendApp')
-	
-	dependsOn assemble
-	dependsOn export
-	dependsOn resolve
-	
-	resolve.mustRunAfter assemble
-	export.mustRunAfter resolve
+	dependsOn ':assembleBackend'
+	dependsOn ':io.openems.backend.application:export.BackendApp'
+	dependsOn ':io.openems.backend.application:resolve.BackendApp'
 	
 	/* force rebuild */
-	export.outputs.upToDateWhen { false }
 	outputs.upToDateWhen { false }
 
+	doFirst {
+		def resolve = tasks.getByPath(':io.openems.backend.application:resolve.BackendApp')
+		def export = tasks.getByPath(':io.openems.backend.application:export.BackendApp')
+		def assemble = tasks.getByPath(':assembleBackend')
+		
+		resolve.mustRunAfter assemble
+		export.mustRunAfter resolve
+		export.outputs.upToDateWhen { false }
+	}
+
 	doLast {
-		def source = file("io.openems.backend.application/generated/distributions/executable/BackendApp.jar")
+		def source = file("backend/io.openems.backend.application/generated/distributions/executable/BackendApp.jar")
 		def output = file(System.getenv('OEMS_BACKEND_OUTPUT') ?: "${buildDir}/openems-backend.jar")
 
 		output.delete()
