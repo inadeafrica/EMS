@@ -76,7 +76,27 @@ set PATH=%JAVA_HOME%\bin;%PATH%
 - macOS (Manual): `/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home`
 - Windows: `C:\Program Files\Eclipse Adoptium\jdk-21` or `C:\Program Files\Java\jdk-21`
 
-### Issue 2: Gradle Daemon Issues
+### Issue 2: "Gradle requires JVM 17 or later to run"
+
+**Symptom**: `./gradlew` fails immediately with an error like:
+```
+Gradle requires JVM 17 or later to run. Your build is currently configured to use JVM 11.
+```
+
+**Cause**: This project's Gradle wrapper uses Gradle 9, which needs JVM 17+ just to *launch* Gradle itself — this is separate from the Java 21 toolchain the build compiles against. It happens when the `java` on your `PATH`/`JAVA_HOME` resolves to an older JDK (commonly JDK 11 on older distros or CI images), even if a newer JDK is also installed.
+
+**Solution**: Point `JAVA_HOME` at a JDK 17+ (JDK 21 recommended, to match this project's compile target) before invoking Gradle:
+
+```bash
+java -version                 # confirm what "java" currently resolves to
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64   # adjust path as needed
+export PATH=$JAVA_HOME/bin:$PATH
+./gradlew build
+```
+
+`./build.sh` at the repository root does this detection for you automatically — it searches installed JDKs, picks the newest one that is 17+, and fails with a clear message instead of silently continuing on an incompatible JVM.
+
+### Issue 3: Gradle Daemon Issues
 
 **Symptom**: Build hangs or fails with daemon errors
 
