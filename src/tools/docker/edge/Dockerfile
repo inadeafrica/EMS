@@ -13,6 +13,7 @@ RUN find /opt/ -type f -name 'run' -o -name '*.sh' -exec chmod +x {} \;
 WORKDIR /src
 
 ENV OEMS_EDGE_OUTPUT=/opt/openems-edge.jar
+ENV GRADLE_OPTS="-Dorg.gradle.native=false"
 RUN --mount=type=bind,target=.,readwrite \
     --mount=type=cache,target=/root/.gradle,sharing=locked \
     ./gradlew --no-build-cache buildEdge
