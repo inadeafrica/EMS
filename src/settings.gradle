@@ -469,17 +469,16 @@ project(":io.openems.wrapper").projectDir = file("common/io.openems.wrapper")
 // Documentation
 include ":doc"
 
-// bnd's own Workspace model (used by the biz.aQute.bnd Gradle plugin) requires
-// every project to be a flat, direct child of the workspace root next to cnf/
-// - a hard requirement in bnd itself (new File(workspaceRoot, projectName)),
-// not something Gradle's settings/projectDir remapping can influence. This
-// repo instead organizes modules into edge/, backend/, common/. Rather than
-// move ~215 project directories back to a flat layout, create thin symlinks
-// at the workspace root pointing into each project's real location, so bnd's
-// own lookup succeeds without physically relocating any source. Idempotent
-// and self-healing: runs on every settings.gradle evaluation, skips anything
-// already in place (including stale/broken symlinks left over from a moved
-// or renamed project).
+// bnd's own Workspace model (used by the biz.aQute.bnd Gradle plugin, and by
+// Bndtools in Eclipse) requires every project to be a flat, direct child of
+// the workspace root next to cnf/ - a hard requirement in bnd itself
+// (new File(workspaceRoot, projectName)), not something Gradle's
+// settings/projectDir remapping can influence. This repo instead organizes
+// modules into edge/, backend/, common/, so a symlink for each project
+// (workspace-root/<name> -> its real nested location) is committed to the
+// repo, satisfying bnd's lookup without physically relocating any source.
+// This block is only a self-healing fallback for a project added later
+// without its symlink committed yet - it's a no-op once that symlink exists.
 rootProject.children.each { proj ->
 	def real = proj.projectDir
 	def link = new File(rootDir, proj.name)
