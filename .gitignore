@@ -27,6 +27,9 @@ logs/
 tmp/
 temp/
 
+# Auto-generated bnd-workspace compatibility symlinks (see src/settings.gradle)
+src/io.openems.*
+
 # Build artifacts
 build/
 target/
