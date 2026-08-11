@@ -43,8 +43,15 @@ setup:
 	@echo "Setup complete! You can now run: make start"
 
 # Start services
+# Images are built one at a time (not `docker compose up -d`'s default
+# parallel build) because each of the edge/backend Gradle builds wants a
+# ~2GB JVM heap; building both at once can exceed a memory-constrained
+# Docker Desktop VM and crash the JVM instead of failing cleanly.
 start:
 	@echo "Starting Energy Management System..."
+	docker compose build openems-edge
+	docker compose build openems-backend
+	docker compose build openems-ui
 	docker compose up -d
 	@echo ""
 	@echo "✓ Services started!"
@@ -133,10 +140,14 @@ restore:
 		echo "✗ Backup file not found"; \
 	fi
 
-# Pull latest images
+# Rebuild OpenEMS images from source and pull the latest database images
 update:
-	@echo "Pulling latest OpenEMS images..."
-	docker compose pull
+	@echo "Pulling latest database images..."
+	docker compose pull --ignore-buildable
+	@echo "Rebuilding OpenEMS edge/backend/ui images from source..."
+	docker compose build --pull openems-edge
+	docker compose build --pull openems-backend
+	docker compose build --pull openems-ui
 	@echo "✓ Images updated"
 	@echo "Run 'make restart' to use the new images"
 
@@ -160,8 +171,8 @@ start-backend:
 	@echo "Starting Backend services..."
 	docker compose up -d openems-backend postgres influxdb
 	@echo "✓ Backend services started"
-	@echo "  - Backend API:  http://localhost:8084"
-	@echo "  - InfluxDB UI:  http://localhost:8086"
+	@echo "  - Backend Felix console: http://localhost:8079"
+	@echo "  - InfluxDB UI:           http://localhost:8086"
 	@echo ""
 	@echo "View logs with: make logs-backend"
 
