@@ -2,8 +2,8 @@
 .env
 
 # Docker volumes
-config/
-data/
+/config/
+/data/
 
 # IDE
 .vscode/
