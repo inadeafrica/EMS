@@ -7,8 +7,8 @@ RUN apk add --no-cache dos2unix bash
 
 COPY tools/docker/edge/root/ /opt/root/
 
-RUN find /opt/ -type f -exec dos2unix -f {} +
-RUN find /opt/ -type f -name 'run' -o -name '*.sh' -exec chmod +x {} \;
+RUN find /opt/root/ -type f -exec dos2unix -f {} +
+RUN find /opt/root/ -type f -name 'run' -o -name '*.sh' -exec chmod +x {} \;
 
 WORKDIR /src
 
@@ -16,11 +16,7 @@ ENV OEMS_EDGE_OUTPUT=/opt/openems-edge.jar
 ENV GRADLE_OPTS="-Dorg.gradle.native=false"
 RUN --mount=type=bind,target=.,readwrite \
     --mount=type=cache,target=/root/.gradle,sharing=locked \
-    set -x && echo CHECKPOINT_1_SHELL_OK && \
-    java -version && echo CHECKPOINT_2_JAVA_OK && \
-    ls -la ./gradlew && echo CHECKPOINT_3_WRAPPER_PRESENT && \
-    ./gradlew --version && echo CHECKPOINT_4_WRAPPER_RAN && \
-    ./gradlew --no-build-cache buildEdge && echo CHECKPOINT_5_BUILD_OK
+    ./gradlew --no-build-cache buildEdge
 
 ### Build jar container base
 FROM ghcr.io/linuxserver/baseimage-alpine:edge AS base_container

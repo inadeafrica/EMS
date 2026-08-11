@@ -7,8 +7,8 @@ RUN apk add --no-cache dos2unix bash
 
 COPY tools/docker/backend/root/ /opt/root/
 
-RUN find /opt/ -type f -exec dos2unix -f {} +
-RUN find /opt/ -type f -name 'run' -o -name '*.sh' -exec chmod +x {} \;
+RUN find /opt/root/ -type f -exec dos2unix -f {} +
+RUN find /opt/root/ -type f -name 'run' -o -name '*.sh' -exec chmod +x {} \;
 
 WORKDIR /src
 

@@ -16,7 +16,7 @@ COPY tools/docker/ui/root/ /opt/root/
 COPY tools/docker/ui/root-edge/ /opt/root/
 
 RUN find /opt/root/ -type f -name 'run' -exec chmod +x {} \;
-RUN find /opt -type f -exec dos2unix -f {} +
+RUN find /opt/root -type f -exec dos2unix -f {} +
 
 WORKDIR /src
 
