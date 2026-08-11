@@ -16,7 +16,11 @@ ENV OEMS_EDGE_OUTPUT=/opt/openems-edge.jar
 ENV GRADLE_OPTS="-Dorg.gradle.native=false"
 RUN --mount=type=bind,target=.,readwrite \
     --mount=type=cache,target=/root/.gradle,sharing=locked \
-    ./gradlew --no-build-cache buildEdge
+    set -x && echo CHECKPOINT_1_SHELL_OK && \
+    java -version && echo CHECKPOINT_2_JAVA_OK && \
+    ls -la ./gradlew && echo CHECKPOINT_3_WRAPPER_PRESENT && \
+    ./gradlew --version && echo CHECKPOINT_4_WRAPPER_RAN && \
+    ./gradlew --no-build-cache buildEdge && echo CHECKPOINT_5_BUILD_OK
 
 ### Build jar container base
 FROM ghcr.io/linuxserver/baseimage-alpine:edge AS base_container
