@@ -1,59 +1,73 @@
 services:
   # OpenEMS Edge - Edge device controller
   openems-edge:
-    image: openems/edge:latest
+    build:
+      context: ./src
+      dockerfile: tools/docker/edge/Dockerfile
+    image: openems/edge:local
     container_name: openems-edge
-    ports:
-      - "8085:8085"  # Edge API
+    hostname: openems-edge
     environment:
       - TZ=UTC
     volumes:
-      - ./config/edge:/etc/openems
-      - edge-data:/var/lib/openems
+      - ./config/edge:/var/opt/openems/config:rw
+      - edge-data:/var/opt/openems/data:rw
+    ports:
+      - "8090:8080"  # Apache Felix web console
+      - "8085:8085"  # UI Websocket
     restart: unless-stopped
     networks:
       - openems-network
 
   # OpenEMS Backend - Central management server
   openems-backend:
-    image: openems/backend:latest
+    build:
+      context: ./src
+      dockerfile: tools/docker/backend/Dockerfile
+    image: openems/backend:local
     container_name: openems-backend
-    ports:
-      - "8084:8084"  # Backend API
+    hostname: openems-backend
     environment:
       - TZ=UTC
-      - OPENEMS_DB_HOST=postgres
-      - OPENEMS_DB_PORT=5432
-      - OPENEMS_DB_NAME=${POSTGRES_DB:-openems}
-      - OPENEMS_DB_USER=${POSTGRES_USER:-openems}
-      - OPENEMS_DB_PASSWORD=${POSTGRES_PASSWORD:-openems}
     volumes:
-      - ./config/backend:/etc/openems
-      - backend-data:/var/lib/openems
-    depends_on:
-      - postgres
+      - ./config/backend:/var/opt/openems/config:rw
+      - backend-data:/var/opt/openems/data:rw
+    ports:
+      - "8079:8079"  # Apache Felix web console
+      - "8081:8081"  # Edge Websocket
+      - "8082:8082"  # UI Websocket
     restart: unless-stopped
     networks:
       - openems-network
 
-  # OpenEMS UI - Web interface
+  # OpenEMS UI - Web interface (talks to the Backend)
   openems-ui:
-    image: openems/ui-backend:latest
+    build:
+      context: ./src
+      dockerfile: tools/docker/ui/Dockerfile.backend
+    image: openems/ui-backend:local
     container_name: openems-ui
+    hostname: openems-ui
+    environment:
+      - WEBSOCKET_HOST=openems-backend
+      - WEBSOCKET_PORT=8082
+      - REST_PORT=8084
+      - ENABLE_HTTPS=false
+    volumes:
+      - ui-conf:/etc/nginx:rw
+      - ui-log:/var/log/nginx:rw
     ports:
       - "8080:80"  # Web UI
-    environment:
-      - TZ=UTC
-      - OPENEMS_BACKEND_URL=http://openems-backend:8084
-      - WEBSOCKET_HOST=localhost
-      - WEBSOCKET_PORT=8082
     depends_on:
       - openems-backend
     restart: unless-stopped
     networks:
       - openems-network
 
-  # PostgreSQL Database for OpenEMS Backend
+  # PostgreSQL - only needed if Backend Metadata is switched to an Odoo/DB-backed
+  # provider. The default seeded config (Metadata/File.config) does not use it,
+  # and no bundle in this repo reads OPENEMS_DB_*, so it is not wired to the
+  # Backend service. Kept here for optional future use.
   postgres:
     image: postgres:15-alpine
     container_name: openems-postgres
@@ -67,7 +81,9 @@ services:
     networks:
       - openems-network
 
-  # InfluxDB for time-series data storage
+  # InfluxDB - only needed if Backend Timedata is switched to the Influx
+  # provider. The default seeded config (Timedata/Dummy.config) does not use
+  # it. Kept here for optional future use.
   influxdb:
     image: influxdb:2.7-alpine
     container_name: openems-influxdb
@@ -93,5 +109,7 @@ networks:
 volumes:
   edge-data:
   backend-data:
+  ui-conf:
+  ui-log:
   postgres-data:
   influxdb-data:

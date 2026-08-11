@@ -7,14 +7,14 @@ RUN apk add --no-cache dos2unix bash
 
 COPY tools/docker/edge/root/ /opt/root/
 
-RUN find /opt/ -type f -print0 | xargs -0 dos2unix
-RUN find /opt/ -type f -name 'run' -o -name '*.sh' -exec chmod +x {} \;
+RUN find /opt/root/ -type f -exec dos2unix -f {} +
+RUN find /opt/root/ -type f -name 'run' -o -name '*.sh' -exec chmod +x {} \;
 
 WORKDIR /src
 
 ENV OEMS_EDGE_OUTPUT=/opt/openems-edge.jar
 RUN --mount=type=bind,target=.,readwrite \
-    --mount=type=cache,target=/root/.gradle \
+    --mount=type=cache,target=/root/.gradle,sharing=locked \
     ./gradlew --no-build-cache buildEdge
 
 ### Build jar container base
@@ -38,8 +38,8 @@ COPY --from=build_edge /opt/openems-edge.jar /opt/openems/openems-edge.jar
 
 RUN find /etc/s6-overlay/ -type f -name 'run' -exec chmod +x {} \;
 
-RUN find /etc/s6-overlay -type f -print0 | xargs -0 dos2unix && \
-    find /var/lib/openems-default-config -type f -print0 | xargs -0 dos2unix
+RUN find /etc/s6-overlay -type f -exec dos2unix -f {} + && \
+    find /var/lib/openems-default-config -type f -exec dos2unix -f {} +
 
 VOLUME /var/opt/openems/config
 VOLUME /var/opt/openems/data
