@@ -28,10 +28,6 @@ gradlePluginPortal()
 }
 }
 
-plugins {
-id 'biz.aQute.bnd.workspace'
-}
-
 rootProject.name = 'openems'
 
 // Edge modules
