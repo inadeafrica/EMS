@@ -16,7 +16,7 @@ COPY tools/docker/ui/root/ /opt/root/
 COPY tools/docker/ui/root-backend/ /opt/root/
 
 RUN find /opt/root/ -type f -name 'run' -exec chmod +x {} \;
-RUN find /opt -type f -exec dos2unix {} +
+RUN find /opt -type f -exec dos2unix -f {} +
 
 WORKDIR /src
 
@@ -38,8 +38,8 @@ COPY --from=build_ui /src/target/ /var/www/html/openems/
 
 RUN find /etc/s6-overlay/ -type f -name 'run' -exec chmod +x {} \;
 
-RUN find /etc/s6-overlay -type f -exec dos2unix {} + && \
-    find /etc/nginx -type f -exec dos2unix {} +
+RUN find /etc/s6-overlay -type f -exec dos2unix -f {} + && \
+    find /etc/nginx -type f -exec dos2unix -f {} +
 
 VOLUME /etc/nginx
 VOLUME /var/log/nginx

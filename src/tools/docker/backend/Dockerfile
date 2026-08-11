@@ -7,7 +7,7 @@ RUN apk add --no-cache dos2unix bash
 
 COPY tools/docker/backend/root/ /opt/root/
 
-RUN find /opt/ -type f -exec dos2unix {} +
+RUN find /opt/ -type f -exec dos2unix -f {} +
 RUN find /opt/ -type f -name 'run' -o -name '*.sh' -exec chmod +x {} \;
 
 WORKDIR /src
@@ -38,8 +38,8 @@ COPY --from=build_backend /opt/openems-backend.jar /opt/openems/openems-backend.
 
 RUN find /etc/s6-overlay/ -type f -name 'run' -exec chmod +x {} \;
 
-RUN find /etc/s6-overlay -type f -exec dos2unix {} + && \
-    find /var/opt/openems -type f -exec dos2unix {} +
+RUN find /etc/s6-overlay -type f -exec dos2unix -f {} + && \
+    find /var/opt/openems -type f -exec dos2unix -f {} +
 
 VOLUME /var/opt/openems/config
 VOLUME /var/opt/openems/data
