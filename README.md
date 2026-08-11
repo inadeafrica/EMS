@@ -9,7 +9,7 @@ An open-source Energy Management System built on **OpenEMS** (Open Energy Manage
 This project uses a **monorepo architecture** - all components (UI, Edge, Backend) are in a single repository organized into logical folders. For details about this design choice and alternatives, see [REPOSITORY_STRUCTURE.md](docs/REPOSITORY_STRUCTURE.md).
 
 ```
-Energy-Management-System/
+EMS/
 ├── src/                    # Complete OpenEMS source code (Java, TypeScript)
 │   ├── edge/               # Edge component (organized)
 │   │   └── io.openems.edge.* (192 Java modules)
@@ -66,8 +66,8 @@ Energy-Management-System/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/inadeafrica/Energy-Management-System.git
-   cd Energy-Management-System
+   git clone https://github.com/inadeafrica/EMS.git
+   cd EMS
    ```
 
 2. **Set up environment variables**
@@ -117,33 +117,34 @@ Energy-Management-System/
 
 ## Configuration
 
-### Edge Configuration
+OpenEMS uses the OSGi Configuration Admin Service for component configuration. Configuration is managed through the web-based user interface, not by manually editing files.
 
-The Edge device configuration is located in `config/edge/config.json.example`. Copy and modify it:
+### Configuring via OpenEMS UI
 
-```bash
-cp config/edge/config.json.example config/edge/config.json
-```
+1. **Access the UI**: Open http://localhost:8080 in your browser
+2. **Navigate to Settings**: Click on the Edge device, then go to Settings
+3. **Install Components**: Add and configure components like:
+   - Energy sources (solar inverters, grid meters)
+   - Storage systems (batteries, ESS)
+   - Controllers (self-consumption optimization, peak shaving)
+   - Meters and sensors
 
-This file defines:
-- Energy sources (solar, grid, etc.)
-- Storage systems (batteries)
-- Controllers (self-consumption, etc.)
-- Meters and sensors
+The UI provides a guided interface for:
+- Selecting component types from available factories
+- Configuring component-specific parameters
+- Enabling/disabling components
+- Managing component relationships
 
-### Backend Configuration
+### Advanced Configuration
 
-The Backend configuration is located in `config/backend/config.json.example`. Copy and modify it:
+For advanced users, configuration can also be managed via:
 
-```bash
-cp config/backend/config.json.example config/backend/config.json
-```
+- **Apache Felix Web Console**: Access at http://localhost:8085/system/console/configMgr
+- **JSON-RPC API**: Programmatic configuration using `createComponentConfig` and `updateComponentConfig` methods
 
-This file defines:
-- Database connections
-- InfluxDB settings
-- API configuration
-- Logging levels
+### Configuration Storage
+
+OpenEMS automatically stores configuration in the `config/` directories (mounted to `/etc/openems` in containers). These files are managed by OSGi and should not be manually edited unless you understand the OSGi Configuration Admin format.
 
 ## Usage
 
@@ -304,12 +305,16 @@ OpenEMS supports custom components. Refer to the [OpenEMS documentation](https:/
 
 ### Running in Simulation Mode
 
-The default configuration includes simulated components for testing. To use real hardware:
+The default Docker deployment includes simulated components for testing without physical hardware. To switch to real hardware:
 
-1. Modify `config/edge/config.json`
-2. Replace simulator components with real device drivers
-3. Configure device-specific parameters
-4. Restart the Edge service
+1. Access the OpenEMS UI at http://localhost:8080
+2. Navigate to Settings > Components
+3. Remove or disable simulator components
+4. Add real device drivers for your hardware (inverters, batteries, meters)
+5. Configure device-specific parameters (IP addresses, Modbus settings, etc.)
+6. Save and restart the Edge service if needed
+
+Refer to the [OpenEMS documentation](https://openems.github.io/openems.io/openems/latest/introduction.html) for specific device driver configuration.
 
 ## Production Deployment
 

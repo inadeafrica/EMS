@@ -146,7 +146,7 @@ This repository provides a complete, production-ready Energy Management System b
 This project uses a **monorepo architecture** with all components in a single repository. See [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md) for detailed explanation.
 
 ```
-Energy-Management-System/
+EMS/
 ├── src/
 │   ├── ui/                    (Web UI - Angular/TypeScript)
 │   ├── io.openems.edge.*      (192 Edge modules - Java/OSGi)
@@ -173,9 +173,9 @@ Energy-Management-System/
 │   ├── docker-compose.yml
 │   ├── .env.example
 │   ├── .gitignore
-│   └── config/
-│       ├── edge/config.json.example
-│       └── backend/config.json.example
+│   └── config/                   (Auto-generated OSGi configs)
+│       ├── edge/                 (Edge configuration - managed by OSGi)
+│       └── backend/              (Backend configuration - managed by OSGi)
 │
 └── Tools
     ├── Makefile
@@ -193,8 +193,8 @@ Energy-Management-System/
 
 ```bash
 # 1. Clone
-git clone https://github.com/inadeafrica/Energy-Management-System.git
-cd Energy-Management-System
+git clone https://github.com/inadeafrica/EMS.git
+cd EMS
 
 # 2. Setup
 make setup
@@ -292,7 +292,7 @@ make start
 - **Documentation**: See the 11 guides in this repo
 - **Community**: [OpenEMS Forum](https://community.openems.io/)
 - **Source Code**: [OpenEMS GitHub](https://github.com/OpenEMS/openems)
-- **Issues**: [Report issues](https://github.com/inadeafrica/Energy-Management-System/issues)
+- **Issues**: [Report issues](https://github.com/inadeafrica/EMS/issues)
 
 ## Future Enhancements
 

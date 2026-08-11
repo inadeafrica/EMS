@@ -20,8 +20,8 @@ Repository Structure:
 
 ### Setup
 ```bash
-git clone https://github.com/inadeafrica/Energy-Management-System.git
-cd Energy-Management-System
+git clone https://github.com/inadeafrica/EMS.git
+cd EMS
 make setup
 make start
 ```
@@ -102,7 +102,7 @@ make test      # Run validation tests
 ## File Structure
 
 ```
-Energy-Management-System/
+EMS/
 ├── docker-compose.yml      # Service definitions
 ├── .env.example           # Environment variables template
 ├── .gitignore            # Git ignore rules
@@ -346,7 +346,7 @@ curl -X POST http://localhost:8086/api/v2/query \
 - **Documentation**: [OpenEMS Docs](https://openems.github.io/openems.io/)
 - **Community**: [OpenEMS Forum](https://community.openems.io/)
 - **Source Code**: [GitHub](https://github.com/OpenEMS/openems)
-- **Issues**: [GitHub Issues](https://github.com/inadeafrica/Energy-Management-System/issues)
+- **Issues**: [GitHub Issues](https://github.com/inadeafrica/EMS/issues)
 
 ## Version Information
 

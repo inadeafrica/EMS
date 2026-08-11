@@ -8,7 +8,7 @@ Thank you for your interest in contributing to this Energy Management System pro
 
 If you find a bug or have a suggestion:
 
-1. Check if the issue already exists in [Issues](https://github.com/inadeafrica/Energy-Management-System/issues)
+1. Check if the issue already exists in [Issues](https://github.com/inadeafrica/EMS/issues)
 2. If not, create a new issue with:
    - Clear title and description
    - Steps to reproduce (for bugs)
@@ -57,8 +57,8 @@ If you find a bug or have a suggestion:
 
 1. Clone your fork:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/Energy-Management-System.git
-   cd Energy-Management-System
+   git clone https://github.com/YOUR_USERNAME/EMS.git
+   cd EMS
    ```
 
 2. Set up the environment:
@@ -202,7 +202,7 @@ For contributions specific to OpenEMS (not the Docker setup):
 
 ## Questions?
 
-- Open a [Discussion](https://github.com/inadeafrica/Energy-Management-System/discussions)
+- Open a [Discussion](https://github.com/inadeafrica/EMS/discussions)
 - Ask in [OpenEMS Community Forum](https://community.openems.io/)
 - Contact maintainers via issues
 
