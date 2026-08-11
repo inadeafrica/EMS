@@ -34,6 +34,7 @@ target/
 *.jar
 !gradle/wrapper/*.jar
 !src/.gradle-wrapper/*.jar
+!src/io.openems.edge.bridge.onewire/lib/RXTXcomm.jar
 .gradle/
 bin/
 generated/
