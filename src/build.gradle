@@ -274,20 +274,10 @@ task buildEdge() {
 	dependsOn ':assembleEdge'
 	dependsOn ':io.openems.edge.application:export.EdgeApp'
 	dependsOn ':io.openems.edge.application:resolve.EdgeApp'
-	
+
 	/* force rebuild */
 	outputs.upToDateWhen { false }
-	
-	doFirst {
-		def resolve = tasks.getByPath(':io.openems.edge.application:resolve.EdgeApp')
-		def export = tasks.getByPath(':io.openems.edge.application:export.EdgeApp')
-		def assemble = tasks.getByPath(':assembleEdge')
-		
-		resolve.mustRunAfter assemble
-		export.mustRunAfter resolve
-		export.outputs.upToDateWhen { false }
-	}
-	
+
 	doLast {
 		def source = file("edge/io.openems.edge.application/generated/distributions/executable/EdgeApp.jar")
 		def output = file(System.getenv('OEMS_EDGE_OUTPUT') ?: "${buildDir}/openems-edge.jar")
@@ -309,19 +299,9 @@ task buildBackend() {
 	dependsOn ':assembleBackend'
 	dependsOn ':io.openems.backend.application:export.BackendApp'
 	dependsOn ':io.openems.backend.application:resolve.BackendApp'
-	
+
 	/* force rebuild */
 	outputs.upToDateWhen { false }
-
-	doFirst {
-		def resolve = tasks.getByPath(':io.openems.backend.application:resolve.BackendApp')
-		def export = tasks.getByPath(':io.openems.backend.application:export.BackendApp')
-		def assemble = tasks.getByPath(':assembleBackend')
-		
-		resolve.mustRunAfter assemble
-		export.mustRunAfter resolve
-		export.outputs.upToDateWhen { false }
-	}
 
 	doLast {
 		def source = file("backend/io.openems.backend.application/generated/distributions/executable/BackendApp.jar")
@@ -335,6 +315,28 @@ task buildBackend() {
 		}
 		println("Built ${output}!")
 	}
+}
+
+// buildEdge/buildBackend need resolve.*App to run strictly after assemble*
+// and export.*App strictly after resolve.*App, since export reads the
+// -runbundles that resolve computes and both need every referenced
+// project's jar to already exist. Declaring mustRunAfter here (inside
+// projectsEvaluated, not inside a task's doFirst) is what actually makes it
+// take effect: doFirst runs at task-execution time, long after Gradle has
+// already built the task execution graph, so ordering set there is a no-op.
+// projectsEvaluated fires once every project (including the bnd-plugin
+// tasks on subprojects like io.openems.edge.application) is configured, but
+// still before the execution graph is built - exactly the window needed for
+// mustRunAfter to be picked up while the referenced tasks are guaranteed to
+// already exist.
+gradle.projectsEvaluated {
+	tasks.getByPath(':io.openems.edge.application:resolve.EdgeApp').mustRunAfter tasks.getByPath(':assembleEdge')
+	tasks.getByPath(':io.openems.edge.application:export.EdgeApp').mustRunAfter tasks.getByPath(':io.openems.edge.application:resolve.EdgeApp')
+	tasks.getByPath(':io.openems.edge.application:export.EdgeApp').outputs.upToDateWhen { false }
+
+	tasks.getByPath(':io.openems.backend.application:resolve.BackendApp').mustRunAfter tasks.getByPath(':assembleBackend')
+	tasks.getByPath(':io.openems.backend.application:export.BackendApp').mustRunAfter tasks.getByPath(':io.openems.backend.application:resolve.BackendApp')
+	tasks.getByPath(':io.openems.backend.application:export.BackendApp').outputs.upToDateWhen { false }
 }
 
 /*
