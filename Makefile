@@ -133,10 +133,12 @@ restore:
 		echo "✗ Backup file not found"; \
 	fi
 
-# Pull latest images
+# Rebuild OpenEMS images from source and pull the latest database images
 update:
-	@echo "Pulling latest OpenEMS images..."
-	docker compose pull
+	@echo "Pulling latest database images..."
+	docker compose pull --ignore-buildable
+	@echo "Rebuilding OpenEMS edge/backend/ui images from source..."
+	docker compose build --pull
 	@echo "✓ Images updated"
 	@echo "Run 'make restart' to use the new images"
 
@@ -160,8 +162,8 @@ start-backend:
 	@echo "Starting Backend services..."
 	docker compose up -d openems-backend postgres influxdb
 	@echo "✓ Backend services started"
-	@echo "  - Backend API:  http://localhost:8084"
-	@echo "  - InfluxDB UI:  http://localhost:8086"
+	@echo "  - Backend Felix console: http://localhost:8079"
+	@echo "  - InfluxDB UI:           http://localhost:8086"
 	@echo ""
 	@echo "View logs with: make logs-backend"
 
