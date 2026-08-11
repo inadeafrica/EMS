@@ -35,7 +35,11 @@ subprojects {
 	repositories {
 		mavenCentral()
 	}
-	
+
+	if (file('bnd.bnd').exists()) {
+		apply plugin: 'biz.aQute.bnd'
+	}
+
 	if (name ==~ /io.openems.(common|edge|oem|shared|wrapper).*/) {
 		ext.isEdge = true
 	}
