@@ -35,6 +35,7 @@ target/
 !gradle/wrapper/*.jar
 !src/.gradle-wrapper/*.jar
 !src/io.openems.edge.bridge.onewire/lib/RXTXcomm.jar
+!src/io.openems.edge.controller.generic.jsonlogic/lib/json-logic-java-1.0.0.jar
 .gradle/
 bin/
 generated/

@@ -113,6 +113,8 @@ local.properties
 
 # Package Files #
 *.jar
+!io.openems.edge.bridge.onewire/lib/RXTXcomm.jar
+!io.openems.edge.controller.generic.jsonlogic/lib/json-logic-java-1.0.0.jar
 *.war
 *.ear
 *.zip
