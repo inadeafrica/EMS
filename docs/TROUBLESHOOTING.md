@@ -300,6 +300,15 @@ docker compose ps | grep Up
 docker compose logs openems-ui
 ```
 
+**Solution 4**: Verify `WEBSOCKET_HOST` points to the backend container, not `localhost`
+
+The `openems-ui` container's nginx proxies `/openems-backend` to `http://$WEBSOCKET_HOST:$WEBSOCKET_PORT` *from inside the container*. If `WEBSOCKET_HOST` is set to `localhost`, nginx tries to reach the backend on itself instead of the `openems-backend` service, the WebSocket connection the Angular app depends on for all content never connects, and the page stays blank. In `docker-compose.yml`, `WEBSOCKET_HOST` must be the Compose service name of the backend container:
+```yaml
+environment:
+  - WEBSOCKET_HOST=openems-backend   # NOT localhost
+  - WEBSOCKET_PORT=8082
+```
+
 ## Network Issues
 
 ### Cannot Access UI from External Network
