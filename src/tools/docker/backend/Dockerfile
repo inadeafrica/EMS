@@ -14,7 +14,7 @@ WORKDIR /src
 
 ENV OEMS_BACKEND_OUTPUT=/opt/openems-backend.jar
 RUN --mount=type=bind,target=.,readwrite \
-    --mount=type=cache,target=/root/.gradle \
+    --mount=type=cache,target=/root/.gradle,sharing=locked \
     ./gradlew --no-build-cache buildBackend
 
 ### Build jar container base
