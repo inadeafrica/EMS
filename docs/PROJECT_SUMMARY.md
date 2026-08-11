@@ -10,9 +10,10 @@ This repository provides a complete, production-ready Energy Management System b
 
 1. **OpenEMS Edge** - Real-time edge device controller
 2. **OpenEMS Backend** - Central management server
-3. **OpenEMS UI** - Web-based user interface
-4. **PostgreSQL** - Configuration and metadata database
-5. **InfluxDB** - Time-series data storage
+3. **OpenEMS UI** - Web-based user interface (Angular + Ionic)
+4. **Mobile Apps** - Native Android and iOS applications (Capacitor)
+5. **PostgreSQL** - Configuration and metadata database
+6. **InfluxDB** - Time-series data storage
 
 ### Key Features
 
@@ -40,7 +41,20 @@ This repository provides a complete, production-ready Energy Management System b
 - Standard protocols support
 - Extensible architecture
 
-### Documentation Suite (11 Documents)
+✅ **Mobile Applications**
+- Native Android app (built with Capacitor)
+- Native iOS app (built with Capacitor)
+- Progressive Web App (PWA) support
+- Offline capability
+- Push notifications
+
+✅ **Multi-Tenancy**
+- Multiple Edge devices per Backend
+- Multiple users with role-based access
+- User-Edge access control
+- Enterprise-ready (Odoo integration)
+
+### Documentation Suite (12 Documents)
 
 1. **README.md** (270 lines) - Root directory
    - Main documentation
@@ -48,60 +62,67 @@ This repository provides a complete, production-ready Energy Management System b
    - Features overview
    - System architecture diagram
 
-2. **GETTING_STARTED.md** (188 lines) - docs/
+2. **UI_GUIDE.md** (760+ lines) - docs/ ⭐ NEW
+   - Complete UI functionality guide
+   - Android & iOS mobile apps documentation
+   - Multi-tenancy explanation
+   - User roles and permissions
+   - All UI screens and features
+
+3. **GETTING_STARTED.md** (188 lines) - docs/
    - Step-by-step setup
    - First-time user guide
    - Troubleshooting basics
    - Next steps
 
-3. **ARCHITECTURE.md** (392 lines) - docs/
+4. **ARCHITECTURE.md** (392 lines) - docs/
    - Detailed system architecture
    - Component descriptions
    - Data flow diagrams
    - Performance characteristics
 
-4. **EXAMPLES.md** (374 lines) - docs/
+5. **EXAMPLES.md** (374 lines) - docs/
    - 10 practical examples
    - Usage scenarios
    - Integration guides
    - Code samples
 
-5. **TROUBLESHOOTING.md** (366 lines) - docs/
+6. **TROUBLESHOOTING.md** (366 lines) - docs/
    - Common issues and solutions
    - Debug procedures
    - Performance optimization
    - Recovery procedures
 
-6. **SECURITY.md** (406 lines) - Root directory
+7. **SECURITY.md** (406 lines) - Root directory
    - Security best practices
    - Credential management
    - Network security
    - Compliance guidance
 
-7. **CONTRIBUTING.md** (195 lines) - Root directory
+8. **CONTRIBUTING.md** (195 lines) - Root directory
    - Contribution guidelines
    - Code style
    - Pull request process
    - Development setup
 
-8. **QUICK_REFERENCE.md** (283 lines) - docs/
+9. **QUICK_REFERENCE.md** (283 lines) - docs/
    - Command cheat sheet
    - Configuration reference
    - Port mappings
    - API quick reference
 
-9. **CHANGELOG.md** (223 lines) - Root directory
-   - Version history
-   - Feature list
-   - Known limitations
-   - Future considerations
+10. **CHANGELOG.md** (223 lines) - Root directory
+    - Version history
+    - Feature list
+    - Known limitations
+    - Future considerations
 
-10. **LICENSE.md** (68 lines) - Root directory
+11. **LICENSE.md** (68 lines) - Root directory
     - License information
     - Third-party components
     - Legal disclaimers
 
-11. **Configuration Examples**
+12. **Configuration Examples**
     - Edge device configuration
     - Backend configuration
     - Environment variables
@@ -184,8 +205,8 @@ EMS/
 
 ## Lines of Code/Documentation
 
-- **Total**: 3,137 lines
-- **Documentation**: ~2,800 lines
+- **Total**: 3,900+ lines
+- **Documentation**: ~3,560+ lines
 - **Configuration**: ~250 lines
 - **Tools**: ~260 lines
 
@@ -258,19 +279,23 @@ make start
 
 1. **Complete Solution**: Everything needed to run an EMS
 2. **Production Ready**: Security and best practices built-in
-3. **Well Documented**: 11 comprehensive guides
+3. **Well Documented**: 12 comprehensive guides (including detailed UI guide)
 4. **Easy to Use**: Simple commands via Makefile
-5. **Flexible**: Simulation and real hardware support
-6. **Extensible**: Based on modular OpenEMS platform
-7. **Open Source**: Built on award-winning OSS
-8. **Community**: Access to OpenEMS community resources
+5. **Mobile Apps**: Native Android and iOS applications included
+6. **Multi-Tenant**: Support for multiple users and edge devices
+7. **Flexible**: Simulation and real hardware support
+8. **Extensible**: Based on modular OpenEMS platform
+9. **Open Source**: Built on award-winning OSS
+10. **Community**: Access to OpenEMS community resources
 
 ## Comparison with Other Solutions
 
 | Feature | This Project | Typical EMS Setup |
 |---------|--------------|-------------------|
 | Setup Time | 5 minutes | Hours/Days |
-| Documentation | Comprehensive (11 docs) | Minimal/Scattered |
+| Documentation | Comprehensive (12 docs) | Minimal/Scattered |
+| Mobile Apps | Yes (Android & iOS) | Rarely available |
+| Multi-Tenancy | Yes (built-in) | Often single-tenant |
 | Container Support | Yes (Docker Compose) | Often manual |
 | Security Guide | Yes | Rarely included |
 | Examples | 10+ practical examples | Few or none |
@@ -300,10 +325,11 @@ Potential additions based on user feedback:
 - Additional hardware profiles
 - More dashboard templates
 - Advanced analytics
-- Mobile app integration
+- Enhanced mobile app features
 - Machine learning features
 - Kubernetes deployment
 - Additional language support
+- Custom theme marketplace
 
 ## Acknowledgments
 
@@ -317,7 +343,9 @@ Built on [OpenEMS](https://openems.io/), the award-winning open-source Energy Ma
 This project provides:
 - ✅ Complete working system out-of-the-box
 - ✅ Production-ready configuration
-- ✅ 3,000+ lines of documentation
+- ✅ 3,900+ lines of documentation
+- ✅ Mobile apps (Android & iOS)
+- ✅ Multi-tenancy support
 - ✅ Security best practices
 - ✅ Easy deployment (5 minutes)
 - ✅ Comprehensive troubleshooting
@@ -329,7 +357,9 @@ This project provides:
 This Energy Management System repository provides everything needed to deploy, configure, and operate a professional-grade energy management system. Whether for residential, commercial, industrial, or research purposes, users have access to:
 
 - A complete, working system
-- Comprehensive documentation
+- Web and mobile applications (Android & iOS)
+- Multi-tenancy support for managing multiple sites
+- Comprehensive documentation (12 guides, 3,900+ lines)
 - Security best practices
 - Practical examples
 - Community support
