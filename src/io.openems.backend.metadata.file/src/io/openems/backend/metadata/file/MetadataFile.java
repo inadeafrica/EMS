@@ -91,7 +91,7 @@ public class MetadataFile extends AbstractMetadata implements Metadata, EventHan
 	private static final Role USER_GLOBAL_ROLE = Role.ADMIN;
 	private JsonObject settings = new JsonObject();
 
-	private static Language LANGUAGE = Language.DE;
+	private static Language LANGUAGE = Language.DEFAULT;
 
 	private final Logger log = LoggerFactory.getLogger(MetadataFile.class);
 	private final Map<String, MyEdge> edges = new HashMap<>();
