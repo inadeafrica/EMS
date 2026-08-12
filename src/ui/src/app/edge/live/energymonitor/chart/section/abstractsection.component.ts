@@ -118,9 +118,20 @@ export class EnergyFlow {
 
 export abstract class AbstractSection {
 
+    /** Number of rounded-cap pill segments the ring track is split into, per quadrant. */
+    private static readonly SEGMENT_COUNT = 10;
+    /** Angular gap between adjacent segments, in degrees. */
+    private static readonly SEGMENT_GAP_DEG = 2.2;
+    /** Corner radius (px) applied to each segment — gives the rounded-cap "pill" look. */
+    private static readonly SEGMENT_CORNER_RADIUS = 4;
+    /** Gap between the ring's outer edge and the icon/label/value cluster, as a fraction of outerRadius. */
+    private static readonly CLUSTER_GAP_FACTOR = 0.16;
+
     public fillRef: string = "";
-    public valuePath: string = "";
-    public outlinePath: string = "";
+    /** Rounded-cap pill segments for the full quadrant track (background). */
+    public trackSegments: string[] = [];
+    /** Rounded-cap pill segments currently "filled" by the live value, subset of the track grid. */
+    public valueSegments: string[] = [];
     public energyFlow: EnergyFlow | null = null;
     public square: SvgSquare;
     public squarePosition: SvgSquarePosition;
@@ -136,6 +147,9 @@ export abstract class AbstractSection {
     protected width: number = 0;
     protected gridMode: GridMode;
     protected restrictionMode: number;
+
+    /** Fixed angular grid (start/end in degrees) the track segments were last built from — reused so value segments line up with the track. */
+    private segmentGrid: { start: number, end: number }[] = [];
 
     private lastCurrentData: DefaultTypes.Summary | null = null;
 
@@ -177,13 +191,15 @@ export abstract class AbstractSection {
         this.innerRadius = innerRadius;
         this.height = height;
         this.width = width;
-        const outlineArc = this.getArc()
-            .startAngle(this.deg2rad(this.getStartAngle()))
-            .endAngle(this.deg2rad(this.getEndAngle()));
-        this.outlinePath = outlineArc();
+
+        this.segmentGrid = this.buildSegmentGrid(this.getStartAngle(), this.getEndAngle());
+        this.trackSegments = this.segmentGrid
+            .map(segment => this.pathForAngles(segment.start, segment.end))
+            .filter(path => path != null);
 
         /**
-         * imaginary positioning "square"
+         * imaginary positioning "square" — placed just outside the ring, at the
+         * quadrant's compass-point angle, using the same angle math as the ring itself.
          */
         this.square = this.getSquare(innerRadius);
         this.squarePosition = this.getSquarePosition(this.square, innerRadius);
@@ -218,11 +234,41 @@ export abstract class AbstractSection {
     protected getArc(): any {
         return d3.arc()
             .innerRadius(this.innerRadius)
-            .outerRadius(this.outerRadius);
+            .outerRadius(this.outerRadius)
+            .cornerRadius(AbstractSection.SEGMENT_CORNER_RADIUS);
     }
 
     protected deg2rad(value: number): number {
         return value * (Math.PI / 180);
+    }
+
+    /**
+     * Splits [rangeStart, rangeEnd] (in degrees) into {@link SEGMENT_COUNT} equal slices,
+     * each shrunk by half of {@link SEGMENT_GAP_DEG} on either side so a visible gap
+     * separates neighbouring pills.
+     */
+    private buildSegmentGrid(rangeStart: number, rangeEnd: number): { start: number, end: number }[] {
+        const totalSpan = rangeEnd - rangeStart;
+        const stepSpan = totalSpan / AbstractSection.SEGMENT_COUNT;
+        const grid: { start: number, end: number }[] = [];
+        for (let i = 0; i < AbstractSection.SEGMENT_COUNT; i++) {
+            grid.push({
+                start: rangeStart + (i * stepSpan) + (AbstractSection.SEGMENT_GAP_DEG / 2),
+                end: rangeStart + ((i + 1) * stepSpan) - (AbstractSection.SEGMENT_GAP_DEG / 2),
+            });
+        }
+        return grid;
+    }
+
+    /** Builds a single rounded-cap pill path for [start, end] (in degrees), or null if the gap left no room. */
+    private pathForAngles(start: number, end: number): string | null {
+        if (end <= start) {
+            return null;
+        }
+        const arc = this.getArc()
+            .startAngle(this.deg2rad(start))
+            .endAngle(this.deg2rad(end));
+        return arc();
     }
 
     /**
@@ -255,10 +301,21 @@ export abstract class AbstractSection {
                 break;
         }
         const valueEndAngle = (this.getEndAngle() - startAngle) * valueRatio + startAngle;
-        const valueArc = this.getArc()
-            .startAngle(this.deg2rad(startAngle))
-            .endAngle(this.deg2rad(valueEndAngle));
-        this.valuePath = valueArc();
+
+        /*
+         * Re-use the exact same fixed segment grid the track was built from, and keep
+         * only the segments whose center falls inside [startAngle, valueEndAngle] — this
+         * is what makes the filled pills line up perfectly with the track pills.
+         */
+        const fillStart = Math.min(startAngle, valueEndAngle);
+        const fillEnd = Math.max(startAngle, valueEndAngle);
+        this.valueSegments = this.segmentGrid
+            .filter(segment => {
+                const center = (segment.start + segment.end) / 2;
+                return center >= fillStart && center <= fillEnd;
+            })
+            .map(segment => this.pathForAngles(segment.start, segment.end))
+            .filter(path => path != null);
 
         /*
          * Create the energy flow direction arrow
@@ -309,6 +366,26 @@ export abstract class AbstractSection {
     }
 
     /**
+     * Places the icon/label/value cluster just outside the ring, centered on the
+     * quadrant's compass-point angle (the midpoint between {@link getStartAngle} and
+     * {@link getEndAngle}) — using the same angle math the ring arcs are drawn with,
+     * rather than a per-section hand-tuned Cartesian offset. Because every distance here
+     * scales with outerRadius/innerRadius, the cluster never overlaps the ring track at
+     * any viewport width.
+     */
+    protected getSquarePosition(square: SvgSquare, innerRadius: number): SvgSquarePosition {
+        const angleDeg = (this.getStartAngle() + this.getEndAngle()) / 2;
+        const angleRad = this.deg2rad(angleDeg);
+        const clusterCenterRadius = this.outerRadius + (this.outerRadius * AbstractSection.CLUSTER_GAP_FACTOR) + (square.length / 2);
+
+        // d3-arc angle convention: 0deg = 12 o'clock, clockwise positive
+        const centerX = Math.sin(angleRad) * clusterCenterRadius;
+        const centerY = -Math.cos(angleRad) * clusterCenterRadius;
+
+        return new SvgSquarePosition(centerX - (square.length / 2), centerY - (square.length / 2));
+    }
+
+    /**
      * Gets the Start-Angle in Degree
      */
     protected abstract getStartAngle(): number;
@@ -346,7 +423,6 @@ export abstract class AbstractSection {
      */
     protected abstract _updateCurrentData(sum: DefaultTypes.Summary): void;
     protected abstract getImagePath(): string;
-    protected abstract getSquarePosition(rect: SvgSquare, innerRadius: number): SvgSquarePosition;
     protected abstract getValueText(value: number): string;
     protected abstract initEnergyFlow(radius: number): EnergyFlow;
     protected abstract setElementHeight();

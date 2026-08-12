@@ -5,7 +5,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { UnitvaluePipe } from "src/app/shared/pipe/unitvalue/unitvalue.pipe";
 import { Service, Utils } from "../../../../../shared/shared";
 import { DefaultTypes } from "../../../../../shared/type/defaulttypes";
-import { AbstractSection, EnergyFlow, Ratio, SvgEnergyFlow, SvgSquare, SvgSquarePosition } from "./abstractsection.component";
+import { AbstractSection, EnergyFlow, Ratio, SvgEnergyFlow } from "./abstractsection.component";
 
 @Component({
     selector: "[consumptionsection]",
@@ -39,7 +39,7 @@ export class ConsumptionSectionComponent extends AbstractSection implements OnIn
         translate: TranslateService,
         service: Service,
     ) {
-        super("GENERAL.CONSUMPTION", "right", "#FDC507", translate, service, "Consumption");
+        super("GENERAL.CONSUMPTION", "right", "var(--oe-consumption)", translate, service, "Consumption");
         this.unitpipe = unitpipe;
     }
 
@@ -91,11 +91,6 @@ export class ConsumptionSectionComponent extends AbstractSection implements OnIn
             arrowIndicate);
     }
 
-    protected getSquarePosition(square: SvgSquare, innerRadius: number): SvgSquarePosition {
-        const x = innerRadius - 5 - square.length;
-        const y = (square.length / 2) * (-1);
-        return new SvgSquarePosition(x, y);
-    }
     protected getImagePath(): string {
         return "icon/consumption.svg";
     }

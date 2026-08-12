@@ -5,7 +5,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { UnitvaluePipe } from "src/app/shared/pipe/unitvalue/unitvalue.pipe";
 import { Service, Utils } from "../../../../../shared/shared";
 import { DefaultTypes } from "../../../../../shared/type/defaulttypes";
-import { AbstractSection, EnergyFlow, Ratio, SvgEnergyFlow, SvgSquare, SvgSquarePosition } from "./abstractsection.component";
+import { AbstractSection, EnergyFlow, Ratio, SvgEnergyFlow } from "./abstractsection.component";
 
 @Component({
     selector: "[productionsection]",
@@ -39,7 +39,7 @@ export class ProductionSectionComponent extends AbstractSection implements OnIni
         service: Service,
         unitpipe: UnitvaluePipe,
     ) {
-        super("GENERAL.PRODUCTION", "up", "var(--ion-color-primary)", translate, service, "Common_Production");
+        super("GENERAL.PRODUCTION", "up", "var(--oe-production)", translate, service, "Common_Production");
         this.unitpipe = unitpipe;
     }
 
@@ -89,12 +89,6 @@ export class ProductionSectionComponent extends AbstractSection implements OnIni
             sum.production.activePower,
             sum.production.powerRatio,
             arrowIndicate);
-    }
-
-    protected getSquarePosition(square: SvgSquare, innerRadius: number): SvgSquarePosition {
-        const x = (square.length / 2) * (-1);
-        const y = (innerRadius - 10) * (-1);
-        return new SvgSquarePosition(x, y);
     }
 
     protected getImagePath(): string {

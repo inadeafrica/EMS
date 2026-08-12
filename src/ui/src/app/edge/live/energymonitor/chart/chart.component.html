@@ -8,6 +8,17 @@
       <svg:g gridsection></svg:g>
       <svg:g productionsection></svg:g>
       <svg:g storagesection></svg:g>
+
+      <!-- Center hub: today's self-sufficiency -->
+      @if (selfSufficientTodayPct != null) {
+        <svg:g class="oe-hub">
+          <svg:text x="0" y="-4" text-anchor="middle" font-family="var(--ion-font-family-mono)"
+            font-variant-numeric="tabular-nums" font-size="1.6rem" font-weight="600"
+            fill="var(--oe-ink)">{{ selfSufficientTodayPct | number:'1.0-0' }}%</svg:text>
+          <svg:text x="0" y="16" text-anchor="middle" font-family="var(--ion-font-family)" font-size="0.62rem"
+            fill="var(--oe-mist)">{{ 'LIVE.MERIDIAN.SELF_SUFFICIENT_TODAY' | translate }}</svg:text>
+        </svg:g>
+      }
     </svg:g>
   </svg>
 </div>

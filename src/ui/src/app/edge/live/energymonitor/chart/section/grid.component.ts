@@ -6,7 +6,7 @@ import { UnitvaluePipe } from "src/app/shared/pipe/unitvalue/unitvalue.pipe";
 import { DefaultTypes } from "src/app/shared/type/defaulttypes";
 import { Icon } from "src/app/shared/type/widget";
 import { CurrentData, EdgeConfig, GridMode, Service, Utils } from "../../../../../shared/shared";
-import { AbstractSection, EnergyFlow, Ratio, SvgEnergyFlow, SvgSquare, SvgSquarePosition } from "./abstractsection.component";
+import { AbstractSection, EnergyFlow, Ratio, SvgEnergyFlow } from "./abstractsection.component";
 
 @Component({
     selector: "[gridsection]",
@@ -55,7 +55,7 @@ export class GridSectionComponent extends AbstractSection implements OnInit, OnD
         service: Service,
         unitpipe: UnitvaluePipe,
     ) {
-        super("GENERAL.GRID", "left", "var(--ion-color-dark)", translate, service, "Grid");
+        super("GENERAL.GRID", "left", "var(--oe-grid)", translate, service, "Grid");
         this.unitpipe = unitpipe;
     }
 
@@ -175,12 +175,6 @@ export class GridSectionComponent extends AbstractSection implements OnInit, OnD
 
     protected getRatioType(): Ratio {
         return "Negative and Positive [-1,1]";
-    }
-
-    protected getSquarePosition(square: SvgSquare, innerRadius: number): SvgSquarePosition {
-        const x = (innerRadius - 5) * (-1);
-        const y = (square.length / 2) * (-1);
-        return new SvgSquarePosition(x, y);
     }
 
     protected getImagePath(): string {

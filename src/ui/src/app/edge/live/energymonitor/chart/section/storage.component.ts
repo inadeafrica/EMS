@@ -6,7 +6,7 @@ import { CurrentData } from "src/app/shared/components/edge/currentdata";
 import { UnitvaluePipe } from "src/app/shared/pipe/unitvalue/unitvalue.pipe";
 import { Service, Utils } from "../../../../../shared/shared";
 import { DefaultTypes } from "../../../../../shared/type/defaulttypes";
-import { AbstractSection, EnergyFlow, Ratio, SvgEnergyFlow, SvgSquare, SvgSquarePosition } from "./abstractsection.component";
+import { AbstractSection, EnergyFlow, Ratio, SvgEnergyFlow } from "./abstractsection.component";
 
 @Component({
     selector: "[storagesection]",
@@ -58,7 +58,7 @@ export class StorageSectionComponent extends AbstractSection implements OnInit, 
         protected override service: Service,
         unitpipe: UnitvaluePipe,
     ) {
-        super("EDGE.INDEX.ENERGYMONITOR.STORAGE", "down", "#009846", translate, service, "Storage");
+        super("EDGE.INDEX.ENERGYMONITOR.STORAGE", "down", "var(--oe-storage)", translate, service, "Storage");
         this.unitpipe = unitpipe;
     }
 
@@ -172,12 +172,6 @@ export class StorageSectionComponent extends AbstractSection implements OnInit, 
 
     protected getRatioType(): Ratio {
         return "Negative and Positive [-1,1]";
-    }
-
-    protected getSquarePosition(square: SvgSquare, innerRadius: number): SvgSquarePosition {
-        const x = (square.length / 2) * (-1);
-        const y = innerRadius - 5 - square.length;
-        return new SvgSquarePosition(x, y);
     }
 
     protected getImagePath(): string {
