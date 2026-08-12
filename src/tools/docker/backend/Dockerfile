@@ -39,7 +39,7 @@ COPY --from=build_backend /opt/openems-backend.jar /opt/openems/openems-backend.
 RUN find /etc/s6-overlay/ -type f -name 'run' -exec chmod +x {} \;
 
 RUN find /etc/s6-overlay -type f -exec dos2unix -f {} + && \
-    find /var/opt/openems -type f -exec dos2unix -f {} +
+    find /var/opt/openems -type f -print0 | xargs -0 dos2unix
 
 VOLUME /var/opt/openems/config
 VOLUME /var/opt/openems/data
