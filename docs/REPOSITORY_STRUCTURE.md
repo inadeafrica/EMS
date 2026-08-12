@@ -11,12 +11,10 @@ The system uses a **monorepo approach** with all source code organized in a sing
 ```
 EMS/
 ├── src/
-│   ├── edge/                  (Edge modules folder)
-│   │   └── io.openems.edge.*  (192 Edge modules)
-│   ├── backend/               (Backend modules folder)
-│   │   └── io.openems.backend.* (18 Backend modules)
-│   ├── common/                (Shared modules folder)
-│   │   └── io.openems.common.*, io.openems.shared.*, io.openems.wrapper, io.openems.oem.* (5 modules)
+│   ├── io.openems.edge.*      (192 Edge modules, flat under src/)
+│   ├── io.openems.backend.*   (18 Backend modules, flat under src/)
+│   ├── io.openems.common.*, io.openems.shared.*, io.openems.wrapper, io.openems.oem.* (5 modules, flat under src/)
+│   ├── cnf/                   (bnd workspace configuration)
 │   └── ui/                    (Angular web application)
 ├── config/
 │   ├── edge/
@@ -24,7 +22,9 @@ EMS/
 └── [documentation files]
 ```
 
-**Structure Implemented**: The repository follows **Option A** (Monorepo with Grouped Folders within src/), providing clear organization while maintaining monorepo benefits.
+**Structure Implemented**: The repository follows **Option A** (Monorepo), with all `io.openems.*` bundle modules kept as **flat, direct children of `src/`**.
+
+> **Why flat and not grouped into `edge/`, `backend/`, `common/` subfolders?** This project's Java/OSGi build uses the [bnd](https://bnd.bio/) Gradle "workspace" plugin (`biz.aQute.bnd.workspace`), which locates each bundle project by scanning the direct children of the workspace root (the directory containing `cnf/`) — it does not follow Gradle's own `projectDir` overrides. Grouping bundles into subfolders (as previously attempted) makes bnd unable to find any of them, silently disabling compilation for every module (`./gradlew build` "succeeds" but does nothing). Keeping every `io.openems.*` module as a direct sibling of `cnf/` is a hard requirement of the build tooling, not just a style preference.
 
 ## Architecture Components
 
@@ -42,29 +42,29 @@ According to the system architecture, there are **three main components**:
 
 ### 3. OpenEMS Backend (Port 8084)
 - **Technology**: Java, Spring Boot
-- **Location**: `src/backend/io.openems.backend.*` (18 modules)
+- **Location**: `src/io.openems.backend.*` (18 modules)
 - **Purpose**: Central management server
 
 ## Organizational Options
 
-### Option A: Monorepo with Grouped Folders ✅ **IMPLEMENTED**
+### Option A: Monorepo, Flat Bundle Layout ✅ **IMPLEMENTED**
 
 **Implemented Structure:**
 ```
 EMS/
 ├── src/
-│   ├── edge/
-│   │   └── [All Edge modules: io.openems.edge.*]
-│   ├── backend/
-│   │   └── [All Backend modules: io.openems.backend.*]
-│   ├── common/
-│   │   └── [Shared modules: io.openems.common.*, etc.]
+│   ├── io.openems.edge.*      [All Edge modules, flat under src/]
+│   ├── io.openems.backend.*   [All Backend modules, flat under src/]
+│   ├── io.openems.common.*, io.openems.shared.*, ... [Shared modules, flat under src/]
+│   ├── cnf/                   [bnd workspace configuration]
 │   └── ui/
 │       └── [Angular application]
 ├── config/
 ├── docs/
 └── docker-compose.yml
 ```
+
+The bundles are kept flat (not grouped into `edge/`/`backend/`/`common/` subfolders) because the bnd Gradle workspace plugin requires every module to be a direct child of `src/`, as explained above.
 
 **Advantages:**
 - ✅ Single source of truth
@@ -144,7 +144,7 @@ EMS/ (main repo)
 
 ## Recommendation for This Project
 
-### ✅ **Recommended: Option A - Monorepo with Grouped Folders**
+### ✅ **Recommended: Option A - Monorepo, Flat Bundle Layout**
 
 **Rationale:**
 
@@ -155,32 +155,28 @@ EMS/ (main repo)
 5. **Single Team**: Appears to be managed by a single team/organization
 6. **Deployment Together**: Docker Compose deploys all components together
 
-**Implementation Plan:**
-
-The current structure is already a monorepo, but organizing it better would improve clarity:
+**Implementation:**
 
 ```
 EMS/
 ├── src/
-│   ├── ui/                              (Already organized)
-│   │   └── [Angular application]
+│   ├── ui/                              (Angular application)
 │   │
-│   ├── edge/                            (New organization)
-│   │   ├── io.openems.edge.application/
-│   │   ├── io.openems.edge.battery.*/
-│   │   ├── io.openems.edge.controller.*/
-│   │   ├── io.openems.edge.ess.*/
-│   │   └── [190+ other edge modules]
+│   ├── io.openems.edge.application/     (Edge modules, flat under src/)
+│   ├── io.openems.edge.battery.*/
+│   ├── io.openems.edge.controller.*/
+│   ├── io.openems.edge.ess.*/
+│   ├── [190+ other edge modules]
 │   │
-│   ├── backend/                         (New organization)
-│   │   ├── io.openems.backend.application/
-│   │   ├── io.openems.backend.core/
-│   │   ├── io.openems.backend.timedata.*/
-│   │   └── [15+ other backend modules]
+│   ├── io.openems.backend.application/  (Backend modules, flat under src/)
+│   ├── io.openems.backend.core/
+│   ├── io.openems.backend.timedata.*/
+│   ├── [15+ other backend modules]
 │   │
-│   └── common/                          (New organization)
-│       ├── io.openems.common/
-│       └── io.openems.common.bridge.http/
+│   ├── io.openems.common/               (Shared modules, flat under src/)
+│   ├── io.openems.common.bridge.http/
+│   │
+│   └── cnf/                             (bnd workspace configuration)
 │
 ├── config/
 │   ├── edge/
@@ -192,25 +188,7 @@ EMS/
 └── docker-compose.yml
 ```
 
-## Migration Strategy
-
-If you decide to reorganize the current structure:
-
-### Phase 1: Documentation Update (Minimal Risk)
-1. Update ARCHITECTURE.md to clarify the monorepo structure
-2. Add this REPOSITORY_STRUCTURE.md document
-3. Update README.md to reference the structure
-
-### Phase 2: Logical Organization (Optional)
-1. Move components into organized folders within `src/`
-2. Update build configuration (Gradle, etc.)
-3. Update Docker build contexts
-4. Update documentation references
-
-### Phase 3: Validation
-1. Verify all builds work
-2. Test Docker Compose deployment
-3. Validate CI/CD pipelines
+**Note on grouping bundles into `edge/`/`backend/`/`common/` subfolders:** this was tried previously and reverted, because it silently breaks the build. The `biz.aQute.bnd.workspace` Gradle plugin discovers bundle projects by scanning the direct children of `src/` (the bnd workspace root) — it has no concept of Gradle's `projectDir` overrides. Nesting a bundle one level deeper makes bnd unable to locate it, so every module quietly loses its compile/assemble/test tasks while `./gradlew build` still reports success (it's only building the otherwise-empty root project). If closer visual grouping is wanted later, it needs to happen outside the bnd workspace scan path — e.g. an IDE working-set/filter, not a directory move — never a physical relocation of the `io.openems.*` module folders.
 
 ## Current Answer to Your Question
 
@@ -489,11 +467,12 @@ Regardless of which option you choose:
 | Date | Decision | Rationale |
 |------|----------|-----------|
 | 2026-01-14 | Continue with monorepo | System components tightly integrated, same team, coordinated releases needed |
+| 2026-08-12 | Reverted `edge/`/`backend/`/`common/` subfolder grouping; bundles kept flat under `src/` | Grouping broke the bnd Gradle workspace's project discovery, silently disabling compilation for every `io.openems.*` module |
 
 ## Conclusion
 
-The current monorepo structure is appropriate for this Energy Management System. The three architectural components (UI, Edge, Backend) can coexist in a single repository with organized folders. There is **no requirement** to create multiple repositories unless your team structure or development workflow specifically benefits from that approach.
+The current monorepo structure is appropriate for this Energy Management System. The three architectural components (UI, Edge, Backend) can coexist in a single repository. There is **no requirement** to create multiple repositories unless your team structure or development workflow specifically benefits from that approach. Within `src/`, the `io.openems.*` bundle modules must stay flat (direct children of `src/`) — this is a hard constraint of the bnd Gradle workspace tooling, not a style choice.
 
-**Current Status**: ✅ Monorepo with all components in `src/` - **This works well for this project**
+**Current Status**: ✅ Monorepo with all components in `src/`, bundles flat per the bnd workspace requirement - **This works well for this project**
 
-**Recommendation**: Keep the monorepo, optionally improve folder organization for better clarity.
+**Recommendation**: Keep the monorepo and the flat bundle layout. Do not move `io.openems.*` module folders into subdirectories.

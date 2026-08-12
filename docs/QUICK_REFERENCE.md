@@ -9,9 +9,9 @@ Fast lookup for common commands and configurations.
 ```
 Repository Structure:
 ├── UI (1 app)       → src/ui/
-├── Edge (192 mods)  → src/edge/io.openems.edge.*
-├── Backend (18 mods)→ src/backend/io.openems.backend.*
-└── Common (5 mods)  → src/common/io.openems.common.*
+├── Edge (192 mods)  → src/io.openems.edge.* (flat under src/)
+├── Backend (18 mods)→ src/io.openems.backend.* (flat under src/)
+└── Common (5 mods)  → src/io.openems.common.* (flat under src/)
 ```
 
 📚 See [REPOSITORY_STRUCTURE.md](REPOSITORY_STRUCTURE.md) for detailed explanation

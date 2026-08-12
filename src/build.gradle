@@ -276,7 +276,7 @@ task buildEdge() {
 	}
 	
 	doLast {
-		def source = file("edge/io.openems.edge.application/generated/distributions/executable/EdgeApp.jar")
+		def source = file("io.openems.edge.application/generated/distributions/executable/EdgeApp.jar")
 		def output = file(System.getenv('OEMS_EDGE_OUTPUT') ?: "${buildDir}/openems-edge.jar")
 
 		output.delete()
@@ -311,7 +311,7 @@ task buildBackend() {
 	}
 
 	doLast {
-		def source = file("backend/io.openems.backend.application/generated/distributions/executable/BackendApp.jar")
+		def source = file("io.openems.backend.application/generated/distributions/executable/BackendApp.jar")
 		def output = file(System.getenv('OEMS_BACKEND_OUTPUT') ?: "${buildDir}/openems-backend.jar")
 
 		output.delete()
