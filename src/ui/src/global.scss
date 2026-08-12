@@ -48,6 +48,24 @@ ion-card-content {
     color: var(--ion-card-content-color);
 }
 
+/* Softer, more contemporary card elevation used by every widget (oe-flat-widget) across all pages.
+   Ionic's own card styling sets border-radius/box-shadow on :host without exposing a CSS variable
+   for them, so overriding needs !important to win the cascade against the shadow-DOM default. */
+ion-card {
+    border-radius: 0.875rem !important;
+    box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.06), 0 0.5rem 1.25rem -0.25rem rgba(0, 0, 0, 0.12) !important;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+    &[role="button"]:hover {
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.08), 0 0.75rem 1.75rem -0.25rem rgba(0, 0, 0, 0.18) !important;
+        transform: translateY(-0.0625rem);
+    }
+
+    &[role="button"]:active {
+        transform: translateY(0);
+    }
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
     background-color: transparent !important;
