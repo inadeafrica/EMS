@@ -35,12 +35,14 @@ and battery data already moving.
 
 ## What's pre-configured
 
-- **PV production** (`meter1`, fed by `datasource0`): a rough daily curve peaking at
-  500,000 W (500 kW), representing a 500 kW inverter behind a larger, 600 kWp panel
-  array (i.e. the curve plateaus at the inverter's rating rather than climbing all
-  the way to the array's DC potential — this is normal inverter clipping).
+- **PV production** (`meter1`, fed by `datasource0`): a smooth daily curve (240
+  points, sunrise to sunset) peaking at 500,000 W (500 kW), representing a 500 kW
+  inverter behind a larger, 600 kWp panel array (i.e. the curve plateaus at the
+  inverter's rating rather than climbing all the way to the array's DC potential —
+  this is normal inverter clipping).
 - **Grid meter** (`meter0`, fed by `datasource1`): a baseline ~50 kW site load,
-  becoming a net export once production exceeds it.
+  becoming a net export once production exceeds it, sampled at the same 240 points
+  as production so the two move together.
 - **Battery** (`ess0`): 500 kW / 1,000 kWh (a standard 2-hour commercial BESS sizing),
   starting at 50% SoC.
 - **Balancing controller** (`ctrlBalancing0`): actively charges/discharges the battery
@@ -48,6 +50,29 @@ and battery data already moving.
   `Simulator.GridMeter.Acting` automatically subtracts every `ManagedSymmetricEss`
   component's real active power from its own reading each cycle, so the battery's
   actions visibly show up in the grid number, not just in the battery's own SoC.
+
+### Simulation duration
+
+`Simulator.Datasource.Single.Direct` advances one array entry per OpenEMS Cycle, and
+the default Cycle time is 1000ms (`Cycle.DEFAULT_CYCLE_TIME`) — this component has no
+built-in way to slow that down (its `timeDelta` is hardcoded to `-1`, i.e. "every
+Cycle", unlike `Simulator.Datasource.CSV.Direct`/`.CSV.Predefined`/`.Single.Channel`,
+which do expose a configurable `Time-Delta` in seconds). With 240 points, a full
+simulated day therefore takes **240 seconds (4 minutes)** of real time before
+looping back to the start. An earlier version of this seed data used only 15 points,
+which made a full "day" complete in 15 seconds and jump straight back to the start —
+visually indistinguishable from noise. 240 points gives second-to-second changes that
+are small enough to look continuous while still completing a full day/night cycle
+within a few minutes of watching the Live view.
+
+To change the pace: multiply/divide the number of points to speed up or slow down
+the simulated day (e.g. 480 points ≈ 8 minutes/day, 120 points ≈ 2 minutes/day),
+regenerating the curve at the new resolution — don't just repeat or truncate the
+existing 240 values, or the shape will distort. Alternatively, switch `datasource0`/
+`datasource1` to `Simulator.Datasource.CSV.Direct` (same underlying idea, but reads a
+CSV blob and supports a real `Time-Delta` in seconds per entry) if you want to keep a
+small, hand-editable list of points while still controlling real-time pacing
+independently of point density.
 
 ## Customizing the simulated data
 
