@@ -273,16 +273,12 @@ OpenEMS supports custom components. Refer to the [OpenEMS documentation](https:/
 
 ### Running in Simulation Mode
 
-The default configuration does **not** include any simulated or real components — the
-UI will show no data until you configure some. See [DEMO_SETUP.md](DEMO_SETUP.md) for
-step-by-step instructions to wire up a simulated PV + grid + battery system through
-the Edge's Apache Felix web console.
+The default configuration includes simulated components for testing. To use real hardware:
 
-To use real hardware instead of simulator components, add the appropriate device
-driver's configuration (e.g. a Modbus bridge and the matching ESS/meter/inverter
-bundle) through the same Felix console at `http://localhost:8090/system/console/configMgr`,
-following the [OpenEMS documentation](https://openems.github.io/openems.io/openems/latest/introduction.html)
-for the specific hardware.
+1. Modify `config/edge/config.json`
+2. Replace simulator components with real device drivers
+3. Configure device-specific parameters
+4. Restart the Edge service
 
 ## Production Deployment
 

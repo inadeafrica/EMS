@@ -77,11 +77,11 @@ Open your browser and navigate to:
 
 **OpenEMS UI**: http://localhost:8080
 
-You'll be able to log in (any username/password works against the default
-`Metadata.File` provider), but the dashboard will show no data yet — two demo Edge
-entries appear but both say "not connected," since nothing is registered against them
-and no simulated or real components are configured. See Step 7 below, or
-[DEMO_SETUP.md](DEMO_SETUP.md), to wire up a working demo.
+You should see the OpenEMS dashboard with:
+- Energy flow diagram
+- Current power values
+- Battery state of charge
+- Grid connection status
 
 ## Step 6: Explore InfluxDB
 
@@ -98,11 +98,12 @@ Navigate to:
 
 ## Step 7: Test the System
 
-### Configure Simulated Data
+### View Simulated Data
 
-Nothing is simulated out of the box. Follow [DEMO_SETUP.md](DEMO_SETUP.md) to connect
-the demo Edge to the Backend and configure simulated PV, grid, and battery components
-through the Edge's Apache Felix web console.
+The default configuration runs in simulation mode with:
+- Simulated grid meter
+- Simulated battery (10 kWh capacity, 5 kW power)
+- Self-consumption controller
 
 ### Monitor Energy Flows
 
