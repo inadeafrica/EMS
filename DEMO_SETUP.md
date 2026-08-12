@@ -40,9 +40,11 @@ and battery data already moving.
   inverter behind a larger, 600 kWp panel array (i.e. the curve plateaus at the
   inverter's rating rather than climbing all the way to the array's DC potential —
   this is normal inverter clipping).
-- **Grid meter** (`meter0`, fed by `datasource1`): a baseline ~50 kW site load,
-  becoming a net export once production exceeds it, sampled at the same 240 points
-  as production so the two move together.
+- **Grid meter** (`meter0`, fed by `datasource1` by default): a baseline ~50 kW flat
+  site load, becoming a net export once production exceeds it, sampled at the same
+  240 points as production so the two move together. Two alternative load archetypes
+  ship alongside this (disabled by default) — see "Swapping the load archetype"
+  below.
 - **Battery** (`ess0`): 500 kW / 1,000 kWh (a standard 2-hour commercial BESS sizing),
   starting at 50% SoC.
 - **Balancing controller** (`ctrlBalancing0`): actively charges/discharges the battery
@@ -50,6 +52,43 @@ and battery data already moving.
   `Simulator.GridMeter.Acting` automatically subtracts every `ManagedSymmetricEss`
   component's real active power from its own reading each cycle, so the battery's
   actions visibly show up in the grid number, not just in the battery's own SoC.
+
+## Swapping the load archetype
+
+Three interchangeable site-load profiles ship in
+`src/tools/docker/edge/root/var/lib/openems-default-config/Simulator/Datasource/Single/Direct/`,
+all sampled at the same 240 points as the production curve so any of them stay in
+sync with it:
+
+| Datasource | Shape | Overnight | Peak |
+|---|---|---|---|
+| `datasource1` (**default, active**) | flat baseline | 50 kW | 50 kW |
+| `datasourceUniversity` (disabled by default) | low overnight, sharp ramp ~7am, daytime plateau with a lunch dip, evening taper — a typical weekday campus | 80 kW | 400 kW |
+| `datasourceFactory` (disabled by default) | two 8-hour shifts (06:00–14:00, 14:00–22:00) with step transitions, idle overnight | 60 kW | 450 kW |
+
+These are generic representative shapes, not modeled on any specific site's actual
+metered data.
+
+**To swap which one `meter0` uses**, through the Edge's Felix console
+(`http://localhost:8090/system/console/configMgr`):
+
+1. Enable the datasource you want (e.g. `datasourceUniversity`) and disable the one
+   you're replacing (e.g. `datasource1`) — open each component's config and flip
+   `Is enabled?`.
+2. **Delete** the existing `meter0` (`Simulator GridMeter Acting`) configuration
+   entirely, then **create a new one** with the same `Component-ID` (`meter0`) and
+   `Datasource-ID` set to the new datasource's id.
+
+Don't just edit the existing `meter0`'s `Datasource-ID` field in place and save —
+we tested this and it doesn't work reliably. The reference from `meter0` to its
+datasource self-corrects its underlying filter automatically the *first* time
+`meter0` ever activates, then leaves that filter alone from then on; changing only
+`Datasource-ID` on an already-running `meter0` leaves it pointed at a filter that
+still names the old datasource, and since an OpenEMS component with an unsatisfied
+reference never activates, it can never get the chance to self-correct — it just
+gets permanently stuck reporting "Unsatisfied reference" until you delete and
+recreate it. `ctrlBalancing0` doesn't need to change — it refers to `meter0` by
+component ID, not by which datasource `meter0` happens to be reading from.
 
 ### Simulation duration
 
