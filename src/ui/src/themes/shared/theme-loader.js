@@ -1,11 +1,11 @@
 /**
  * Gets the valid theme
- * 
+ *
  * @param {*} theme the stored theme
- * @returns either "light" or "dark"
+ * @returns "light", "dark" or "warm"
  */
 function getValidTheme(theme) {
-  if (theme === "dark" || theme === "light") {
+  if (theme === "dark" || theme === "light" || theme === "warm") {
     return theme;
   }
   return window.matchMedia("(prefers-color-scheme: dark)").matches
