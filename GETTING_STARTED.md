@@ -79,9 +79,10 @@ Open your browser and navigate to:
 
 You'll be able to log in (any username/password works against the default
 `Metadata.File` provider), but the dashboard will show no data yet — two demo Edge
-entries appear but both say "not connected," since nothing is registered against them
-and no simulated or real components are configured. See Step 7 below, or
-[DEMO_SETUP.md](DEMO_SETUP.md), to wire up a working demo.
+entries appear but both say "not connected." The Edge itself already has simulated
+PV, grid, and battery data configured; it just needs to be linked to the Backend with
+an API key, which is a deliberate one-time manual step. See Step 7 below, or
+[DEMO_SETUP.md](DEMO_SETUP.md), to connect it.
 
 ## Step 6: Explore InfluxDB
 
@@ -98,11 +99,12 @@ Navigate to:
 
 ## Step 7: Test the System
 
-### Configure Simulated Data
+### Connect the Simulated Data
 
-Nothing is simulated out of the box. Follow [DEMO_SETUP.md](DEMO_SETUP.md) to connect
-the demo Edge to the Backend and configure simulated PV, grid, and battery components
-through the Edge's Apache Felix web console.
+The default configuration runs simulated PV, grid, and battery components on the
+Edge automatically — you just need to link the Edge to the Backend with an API key.
+Follow [DEMO_SETUP.md](DEMO_SETUP.md) for the one-time setup step and for how to
+customize the simulated values to a different system size.
 
 ### Monitor Energy Flows
 
