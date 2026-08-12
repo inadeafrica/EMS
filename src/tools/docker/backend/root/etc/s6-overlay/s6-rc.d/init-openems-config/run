@@ -12,8 +12,23 @@ if [ ! -d "$CONF_DIR" ] || [ -z "$(ls -A "$CONF_DIR" 2>/dev/null)" ]; then
     if [ -d "$CONF_DIR_DEFAULT" ]; then
         mkdir -p "$CONF_DIR"
         rsync -av --chown=abc:abc "${CONF_DIR_DEFAULT}/" "${CONF_DIR}/"
-        rsync -av --chown=abc:abc "${METADATA_DEFAULT}" "${METADATA_DEST}"
     else
         echo "No default configuration files found in $CONF_DIR_DEFAULT"
+    fi
+fi
+
+# $METADATA_DEST lives outside $CONF_DIR, which is the only one of the two covered
+# by the docker-compose volume mount - so it never survives a container being
+# recreated (or a plain restart of a container whose writable layer lost it some
+# other way), even when $CONF_DIR is already populated from a previous run and the
+# block above skips. Restore it independently of that check, whenever it's missing.
+if [ ! -f "$METADATA_DEST" ]; then
+    echo "Copying default metadata file to $METADATA_DEST"
+
+    if [ -f "$METADATA_DEFAULT" ]; then
+        mkdir -p "$(dirname "$METADATA_DEST")"
+        rsync -av --chown=abc:abc "${METADATA_DEFAULT}" "${METADATA_DEST}"
+    else
+        echo "No default metadata file found at $METADATA_DEFAULT"
     fi
 fi
