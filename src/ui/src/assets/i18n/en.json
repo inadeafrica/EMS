@@ -1182,7 +1182,29 @@
     "VALUE_WITH_LABEL": "Value {{ label }}{{ number }} {{ symbol }}"
   },
   "LIVE": {
-    "PULL_TO_REFRESH": "Pull this banner to refresh"
+    "PULL_TO_REFRESH": "Pull this banner to refresh",
+    "MERIDIAN": {
+      "TITLE": "Overview",
+      "VS_YESTERDAY": "vs. yesterday at this hour",
+      "SELF_SUFFICIENT_TODAY": "self-sufficient today",
+      "CHARGING": "Charging",
+      "DISCHARGING": "Discharging",
+      "IDLE": "Idle",
+      "BUYING": "Buying",
+      "SELLING": "Selling",
+      "TODAY": "Today",
+      "TODAY_PRODUCED": "Produced",
+      "TODAY_CONSUMED": "Consumed",
+      "TODAY_BATTERY_USABLE": "Battery used",
+      "TODAY_EXPORTED": "Exported",
+      "THIS_MONTH": "This month",
+      "MONTHLY_CONSUMPTION": "Consumption to date",
+      "TYPICAL_MONTH": "Typical month",
+      "CO2_AVOIDED": "CO₂ avoided",
+      "CO2_AVOIDED_ESTIMATE_HINT": "Estimated from self-consumed solar energy, not a metered value.",
+      "TREES_EQUIVALENT": "≈ {{count}} trees planted",
+      "NOT_ENOUGH_DATA": "Not enough data yet"
+    }
   },
   "LOADING_SCREEN": {
     "LOADING": "Loading",

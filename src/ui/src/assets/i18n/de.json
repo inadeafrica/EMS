@@ -1184,7 +1184,29 @@
     "VALUE_WITH_LABEL": "Wert {{ label }}{{ number }} {{ symbol }}"
   },
   "LIVE": {
-    "PULL_TO_REFRESH": "Hier ziehen, um zu aktualisieren"
+    "PULL_TO_REFRESH": "Hier ziehen, um zu aktualisieren",
+    "MERIDIAN": {
+      "TITLE": "Übersicht",
+      "VS_YESTERDAY": "ggü. gestern um diese Uhrzeit",
+      "SELF_SUFFICIENT_TODAY": "autark heute",
+      "CHARGING": "Lädt",
+      "DISCHARGING": "Entlädt",
+      "IDLE": "Inaktiv",
+      "BUYING": "Bezug",
+      "SELLING": "Einspeisung",
+      "TODAY": "Heute",
+      "TODAY_PRODUCED": "Erzeugt",
+      "TODAY_CONSUMED": "Verbraucht",
+      "TODAY_BATTERY_USABLE": "Batterie genutzt",
+      "TODAY_EXPORTED": "Eingespeist",
+      "THIS_MONTH": "Diesen Monat",
+      "MONTHLY_CONSUMPTION": "Verbrauch bisher",
+      "TYPICAL_MONTH": "Typischer Monat",
+      "CO2_AVOIDED": "CO₂ vermieden",
+      "CO2_AVOIDED_ESTIMATE_HINT": "Geschätzt aus selbst verbrauchtem Solarstrom, kein Messwert.",
+      "TREES_EQUIVALENT": "≈ {{count}} gepflanzte Bäume",
+      "NOT_ENOUGH_DATA": "Noch nicht genügend Daten"
+    }
   },
   "LOADING_SCREEN": {
     "LOADING": "Wird geladen",

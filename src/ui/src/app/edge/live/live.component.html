@@ -48,20 +48,9 @@
                 <Common_Selfconsumption></Common_Selfconsumption>
               </ion-col>
 
-              <ion-col *ngSwitchCase="'Storage'" size="12" size-lg="6" class="ion-no-padding">
-                <storage></storage>
-              </ion-col>
-
-              <ion-col *ngSwitchCase="'Grid'" size="12" size-lg="6" class="ion-no-padding">
-                <grid></grid>
-              </ion-col>
-
-              <ion-col *ngSwitchCase="'Common_Production'" size="12" size-lg="6" class="ion-no-padding">
-                <Common_Production></Common_Production>
-              </ion-col>
-
-              <ion-col *ngSwitchCase="'Consumption'" size="12" size-lg="6" class="ion-no-padding">
-                <consumption></consumption>
+              <!-- "Meridian" — consolidated production/consumption/storage/grid overview -->
+              <ion-col *ngSwitchCase="'Common_Production'" size="12" class="ion-no-padding">
+                <oe-meridian></oe-meridian>
               </ion-col>
 
             </ng-container>

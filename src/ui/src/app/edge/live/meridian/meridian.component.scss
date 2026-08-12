@@ -1,0 +1,269 @@
+.oe-meridian {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background: var(--oe-panel);
+    color: var(--oe-ink);
+    border-radius: var(--oe-card-radius);
+    box-shadow: var(--oe-shadow-card);
+    padding: 1.25rem;
+}
+
+/* ---------- Hero ---------- */
+
+.oe-hero {
+    position: relative;
+    height: 200px;
+    border-radius: calc(var(--oe-card-radius) - 0.35rem);
+    overflow: hidden;
+    background: var(--oe-panel-raised);
+}
+
+.oe-hero-chart {
+    position: absolute;
+    inset: 0;
+}
+
+.oe-hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    padding: 1rem 1.1rem;
+    background: linear-gradient(180deg, transparent 0%, var(--oe-panel-raised) 92%);
+    pointer-events: none;
+}
+
+.oe-hero-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--oe-mist);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.oe-hero-value {
+    font-size: 2.4rem;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--oe-ink);
+}
+
+.oe-hero-unit {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--oe-mist);
+    margin-left: 0.3rem;
+}
+
+.oe-hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.oe-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    background: color-mix(in srgb, var(--oe-storage) 16%, transparent);
+    color: var(--oe-storage);
+
+    ion-icon {
+        font-size: 1rem;
+    }
+}
+
+.oe-badge-down {
+    background: color-mix(in srgb, var(--oe-consumption) 16%, transparent);
+    color: var(--oe-consumption);
+}
+
+.oe-badge-accent {
+    background: color-mix(in srgb, var(--oe-accent) 18%, transparent);
+    color: var(--oe-accent);
+}
+
+/* ---------- Meter row ---------- */
+
+.oe-meters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+}
+
+.oe-meter {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.75rem;
+    border-radius: 0.85rem;
+    background: var(--oe-panel-raised);
+    border: 1px solid var(--oe-line);
+}
+
+.oe-meter-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    min-width: 2.4rem;
+    border-radius: 50%;
+
+    ion-icon {
+        font-size: 1.25rem;
+    }
+}
+
+.oe-domain-production {
+    background: color-mix(in srgb, var(--oe-production) 18%, transparent);
+    color: var(--oe-production);
+}
+
+.oe-domain-consumption {
+    background: color-mix(in srgb, var(--oe-consumption) 18%, transparent);
+    color: var(--oe-consumption);
+}
+
+.oe-domain-storage {
+    background: color-mix(in srgb, var(--oe-storage) 18%, transparent);
+    color: var(--oe-storage);
+}
+
+.oe-domain-grid {
+    background: color-mix(in srgb, var(--oe-grid) 18%, transparent);
+    color: var(--oe-grid);
+}
+
+.oe-meter-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.oe-meter-label {
+    font-size: 0.75rem;
+    color: var(--oe-mist);
+}
+
+.oe-meter-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--oe-ink);
+    white-space: nowrap;
+}
+
+.oe-meter-sub {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--oe-mist);
+}
+
+/* ---------- Today row ---------- */
+
+.oe-today {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 0.6rem;
+}
+
+.oe-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.7rem;
+    background: var(--oe-panel-raised);
+}
+
+.oe-chip-label {
+    font-size: 0.7rem;
+    color: var(--oe-mist);
+}
+
+.oe-chip-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* ---------- This month ---------- */
+
+.oe-month-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--oe-mist);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.oe-month-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.75rem;
+    margin-top: -0.75rem;
+}
+
+.oe-month-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1rem;
+    border-radius: 0.9rem;
+    background: var(--oe-panel-raised);
+    border: 1px solid var(--oe-line);
+}
+
+.oe-month-card-label {
+    font-size: 0.78rem;
+    color: var(--oe-mist);
+}
+
+.oe-month-card-value {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.oe-month-card-hint {
+    font-size: 0.78rem;
+    color: var(--oe-mist);
+}
+
+.oe-month-card-footnote {
+    font-size: 0.68rem;
+    color: var(--oe-mist-dim);
+    margin-top: 0.2rem;
+}
+
+.oe-progress {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--oe-line);
+    overflow: hidden;
+}
+
+.oe-progress-bar {
+    height: 100%;
+    background: var(--oe-production);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+/* Dark mode: soft glow on the hero accent. Light/Warm keep flat shadows only. */
+:root[data-theme="dark"] {
+    .oe-hero-value {
+        text-shadow: var(--oe-glow-production);
+    }
+
+    .oe-badge-accent {
+        box-shadow: var(--oe-glow-production);
+    }
+}
