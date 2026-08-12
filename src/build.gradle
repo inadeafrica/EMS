@@ -74,11 +74,19 @@ subprojects {
 				if (!desc.parent) {
 					def shortName = path.takeRight(36)
 					def padded = String.format("%36s", shortName) 
-					def icon = switch(result.resultType) {
-						case org.gradle.api.tasks.testing.TestResult.ResultType.SUCCESS -> "✅"
-						case org.gradle.api.tasks.testing.TestResult.ResultType.FAILURE -> "❌"
-						case org.gradle.api.tasks.testing.TestResult.ResultType.SKIPPED -> "ℹ"
-						default -> ""
+					def icon
+					switch (result.resultType) {
+						case org.gradle.api.tasks.testing.TestResult.ResultType.SUCCESS:
+							icon = "✅"
+							break
+						case org.gradle.api.tasks.testing.TestResult.ResultType.FAILURE:
+							icon = "❌"
+							break
+						case org.gradle.api.tasks.testing.TestResult.ResultType.SKIPPED:
+							icon = "ℹ"
+							break
+						default:
+							icon = ""
 					}
 					println "> [${padded}] Test summary: ${result.resultType} ${icon} " +
 							"(${result.testCount} tests, " +
@@ -257,22 +265,14 @@ task buildComponents() {
 task buildEdge() {
 	group = 'OpenEMS-Build'
 	description = 'Build a Fat-Jar for the OpenEMS-Edge into build/openems-edge.jar'
-	
-	def assemble = tasks.getByPath(':assembleEdge')
-	def export = tasks.getByPath(':io.openems.edge.application:export.EdgeApp')
-	def resolve = tasks.getByPath(':io.openems.edge.application:resolve.EdgeApp')
-	
-	dependsOn assemble
-	dependsOn export
-	dependsOn resolve
-	
-	resolve.mustRunAfter assemble
-	export.mustRunAfter resolve
-	
+
+	dependsOn ':assembleEdge'
+	dependsOn ':io.openems.edge.application:export.EdgeApp'
+	dependsOn ':io.openems.edge.application:resolve.EdgeApp'
+
 	/* force rebuild */
-	export.outputs.upToDateWhen { false }
 	outputs.upToDateWhen { false }
-	
+
 	doLast {
 		def source = file("io.openems.edge.application/generated/distributions/executable/EdgeApp.jar")
 		def output = file(System.getenv('OEMS_EDGE_OUTPUT') ?: "${buildDir}/openems-edge.jar")
@@ -290,20 +290,12 @@ task buildEdge() {
 task buildBackend() {
 	group = 'OpenEMS-Build'
 	description = 'Build a Fat-Jar for the OpenEMS-Backend into build/openems-backend.jar'
-	
-	def assemble = tasks.getByPath(':assembleBackend')
-	def export = tasks.getByPath(':io.openems.backend.application:export.BackendApp')
-	def resolve = tasks.getByPath(':io.openems.backend.application:resolve.BackendApp')
-	
-	dependsOn assemble
-	dependsOn export
-	dependsOn resolve
-	
-	resolve.mustRunAfter assemble
-	export.mustRunAfter resolve
-	
+
+	dependsOn ':assembleBackend'
+	dependsOn ':io.openems.backend.application:export.BackendApp'
+	dependsOn ':io.openems.backend.application:resolve.BackendApp'
+
 	/* force rebuild */
-	export.outputs.upToDateWhen { false }
 	outputs.upToDateWhen { false }
 
 	doLast {
@@ -318,6 +310,27 @@ task buildBackend() {
 		}
 		println("Built ${output}!")
 	}
+}
+
+// buildEdge/buildBackend need resolve.*App to run strictly after assemble*
+// and export.*App strictly after resolve.*App, since export reads the
+// -runbundles that resolve computes and both need every referenced
+// project's jar to already exist. Declaring mustRunAfter here (inside
+// projectsEvaluated, at configuration time) rather than relying on eager
+// cross-project task-path resolution inside the task body avoids depending
+// on Gradle's implicit on-demand project configuration, which its own docs
+// discourage as fragile. projectsEvaluated fires once every project is
+// configured (so the referenced tasks are guaranteed to exist) but still
+// before the execution graph is built - the correct window for
+// mustRunAfter to actually take effect.
+gradle.projectsEvaluated {
+	tasks.getByPath(':io.openems.edge.application:resolve.EdgeApp').mustRunAfter tasks.getByPath(':assembleEdge')
+	tasks.getByPath(':io.openems.edge.application:export.EdgeApp').mustRunAfter tasks.getByPath(':io.openems.edge.application:resolve.EdgeApp')
+	tasks.getByPath(':io.openems.edge.application:export.EdgeApp').outputs.upToDateWhen { false }
+
+	tasks.getByPath(':io.openems.backend.application:resolve.BackendApp').mustRunAfter tasks.getByPath(':assembleBackend')
+	tasks.getByPath(':io.openems.backend.application:export.BackendApp').mustRunAfter tasks.getByPath(':io.openems.backend.application:resolve.BackendApp')
+	tasks.getByPath(':io.openems.backend.application:export.BackendApp').outputs.upToDateWhen { false }
 }
 
 /*
