@@ -12,14 +12,14 @@
           {{ (productionW ?? 0) / 1000 | number:'1.1-1' }}<span class="oe-hero-unit">kW</span>
         </div>
         <div class="oe-hero-badges">
-          @if (vsYesterdayDeltaPct != null) {
+          @if (vsYesterdayDeltaPct !== null) {
             <span class="oe-badge" [class.oe-badge-down]="vsYesterdayDeltaPct < 0">
               <ion-icon [name]="vsYesterdayDeltaPct >= 0 ? 'trending-up-outline' : 'trending-down-outline'"></ion-icon>
               <span class="oe-numeric">{{ vsYesterdayDeltaPct | number:'1.0-0' }}%</span>
               {{ 'LIVE.MERIDIAN.VS_YESTERDAY' | translate }}
             </span>
           }
-          @if (selfSufficientTodayPct != null) {
+          @if (selfSufficientTodayPct !== null) {
             <span class="oe-badge oe-badge-accent">
               <ion-icon name="leaf-outline"></ion-icon>
               <span class="oe-numeric">{{ selfSufficientTodayPct | number:'1.0-0' }}%</span>
@@ -79,21 +79,21 @@
     <div class="oe-today">
       <div class="oe-chip">
         <span class="oe-chip-label">{{ 'LIVE.MERIDIAN.TODAY_PRODUCED' | translate }}</span>
-        <span class="oe-chip-value oe-numeric">{{ todayProducedKwh != null ? (todayProducedKwh | number:'1.1-1') + ' kWh' : '–' }}</span>
+        <span class="oe-chip-value oe-numeric">{{ todayProducedKwh !== null ? (todayProducedKwh | number:'1.1-1') + ' kWh' : '–' }}</span>
       </div>
       <div class="oe-chip">
         <span class="oe-chip-label">{{ 'LIVE.MERIDIAN.TODAY_CONSUMED' | translate }}</span>
-        <span class="oe-chip-value oe-numeric">{{ todayConsumedKwh != null ? (todayConsumedKwh | number:'1.1-1') + ' kWh' : '–' }}</span>
+        <span class="oe-chip-value oe-numeric">{{ todayConsumedKwh !== null ? (todayConsumedKwh | number:'1.1-1') + ' kWh' : '–' }}</span>
       </div>
       @if (hasStorage) {
         <div class="oe-chip">
           <span class="oe-chip-label">{{ 'LIVE.MERIDIAN.TODAY_BATTERY_USABLE' | translate }}</span>
-          <span class="oe-chip-value oe-numeric">{{ todayBatteryUsableKwh != null ? (todayBatteryUsableKwh | number:'1.1-1') + ' kWh' : '–' }}</span>
+          <span class="oe-chip-value oe-numeric">{{ todayBatteryUsableKwh !== null ? (todayBatteryUsableKwh | number:'1.1-1') + ' kWh' : '–' }}</span>
         </div>
       }
       <div class="oe-chip">
         <span class="oe-chip-label">{{ 'LIVE.MERIDIAN.TODAY_EXPORTED' | translate }}</span>
-        <span class="oe-chip-value oe-numeric">{{ todayExportedKwh != null ? (todayExportedKwh | number:'1.1-1') + ' kWh' : '–' }}</span>
+        <span class="oe-chip-value oe-numeric">{{ todayExportedKwh !== null ? (todayExportedKwh | number:'1.1-1') + ' kWh' : '–' }}</span>
       </div>
     </div>
 
@@ -103,8 +103,8 @@
 
       <div class="oe-month-card">
         <span class="oe-month-card-label">{{ 'LIVE.MERIDIAN.MONTHLY_CONSUMPTION' | translate }}</span>
-        <span class="oe-month-card-value oe-numeric">{{ monthConsumedKwh != null ? (monthConsumedKwh | number:'1.0-0') + ' kWh' : '–' }}</span>
-        @if (monthTypicalKwh != null) {
+        <span class="oe-month-card-value oe-numeric">{{ monthConsumedKwh !== null ? (monthConsumedKwh | number:'1.0-0') + ' kWh' : '–' }}</span>
+        @if (monthTypicalKwh !== null) {
           <div class="oe-progress">
             <div class="oe-progress-bar" [style.width.%]="Math.min(100, (monthConsumedKwh / monthTypicalKwh) * 100)"></div>
           </div>
@@ -116,8 +116,8 @@
 
       <div class="oe-month-card">
         <span class="oe-month-card-label">{{ 'LIVE.MERIDIAN.CO2_AVOIDED' | translate }}</span>
-        <span class="oe-month-card-value oe-numeric">{{ monthCo2AvoidedKg != null ? (monthCo2AvoidedKg | number:'1.0-0') + ' kg' : '–' }}</span>
-        @if (monthTreesEquivalent != null) {
+        <span class="oe-month-card-value oe-numeric">{{ monthCo2AvoidedKg !== null ? (monthCo2AvoidedKg | number:'1.0-0') + ' kg' : '–' }}</span>
+        @if (monthTreesEquivalent !== null) {
           <span class="oe-month-card-hint">{{ 'LIVE.MERIDIAN.TREES_EQUIVALENT' | translate: { count: (monthTreesEquivalent | number:'1.0-0') } }}</span>
         }
         <span class="oe-month-card-footnote">{{ 'LIVE.MERIDIAN.CO2_AVOIDED_ESTIMATE_HINT' | translate }}</span>

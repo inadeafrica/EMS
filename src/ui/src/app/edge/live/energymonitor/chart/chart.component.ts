@@ -40,11 +40,10 @@ export class EnergymonitorChartComponent implements OnInit, OnDestroy {
     public width: number;
     public height: number;
     public gridMode: number;
+    public readonly spinnerId = "energymonitor";
 
     /** "N% self-sufficient today" shown in the center hub — null until the query resolves. */
     protected selfSufficientTodayPct: number | null = null;
-
-    public readonly spinnerId = "energymonitor";
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 

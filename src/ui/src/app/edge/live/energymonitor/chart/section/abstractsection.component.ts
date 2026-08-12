@@ -243,35 +243,6 @@ export abstract class AbstractSection {
     }
 
     /**
-     * Splits [rangeStart, rangeEnd] (in degrees) into {@link SEGMENT_COUNT} equal slices,
-     * each shrunk by half of {@link SEGMENT_GAP_DEG} on either side so a visible gap
-     * separates neighbouring pills.
-     */
-    private buildSegmentGrid(rangeStart: number, rangeEnd: number): { start: number, end: number }[] {
-        const totalSpan = rangeEnd - rangeStart;
-        const stepSpan = totalSpan / AbstractSection.SEGMENT_COUNT;
-        const grid: { start: number, end: number }[] = [];
-        for (let i = 0; i < AbstractSection.SEGMENT_COUNT; i++) {
-            grid.push({
-                start: rangeStart + (i * stepSpan) + (AbstractSection.SEGMENT_GAP_DEG / 2),
-                end: rangeStart + ((i + 1) * stepSpan) - (AbstractSection.SEGMENT_GAP_DEG / 2),
-            });
-        }
-        return grid;
-    }
-
-    /** Builds a single rounded-cap pill path for [start, end] (in degrees), or null if the gap left no room. */
-    private pathForAngles(start: number, end: number): string | null {
-        if (end <= start) {
-            return null;
-        }
-        const arc = this.getArc()
-            .startAngle(this.deg2rad(start))
-            .endAngle(this.deg2rad(end));
-        return arc();
-    }
-
-    /**
     * This method is called on every change of values.
     *
     * @param valueAbsolute the absolute value of the Section
@@ -336,6 +307,26 @@ export abstract class AbstractSection {
     }
 
     /**
+     * Places the icon/label/value cluster just outside the ring, centered on the
+     * quadrant's compass-point angle (the midpoint between {@link getStartAngle} and
+     * {@link getEndAngle}) — using the same angle math the ring arcs are drawn with,
+     * rather than a per-section hand-tuned Cartesian offset. Because every distance here
+     * scales with outerRadius/innerRadius, the cluster never overlaps the ring track at
+     * any viewport width.
+     */
+    protected getSquarePosition(square: SvgSquare, innerRadius: number): SvgSquarePosition {
+        const angleDeg = (this.getStartAngle() + this.getEndAngle()) / 2;
+        const angleRad = this.deg2rad(angleDeg);
+        const clusterCenterRadius = this.outerRadius + (this.outerRadius * AbstractSection.CLUSTER_GAP_FACTOR) + (square.length / 2);
+
+        // d3-arc angle convention: 0deg = 12 o'clock, clockwise positive
+        const centerX = Math.sin(angleRad) * clusterCenterRadius;
+        const centerY = -Math.cos(angleRad) * clusterCenterRadius;
+
+        return new SvgSquarePosition(centerX - (square.length / 2), centerY - (square.length / 2));
+    }
+
+    /**
      * calculate...
      * ...length of square and image;
      * ...x and y of text and image;
@@ -366,23 +357,32 @@ export abstract class AbstractSection {
     }
 
     /**
-     * Places the icon/label/value cluster just outside the ring, centered on the
-     * quadrant's compass-point angle (the midpoint between {@link getStartAngle} and
-     * {@link getEndAngle}) — using the same angle math the ring arcs are drawn with,
-     * rather than a per-section hand-tuned Cartesian offset. Because every distance here
-     * scales with outerRadius/innerRadius, the cluster never overlaps the ring track at
-     * any viewport width.
+     * Splits [rangeStart, rangeEnd] (in degrees) into {@link SEGMENT_COUNT} equal slices,
+     * each shrunk by half of {@link SEGMENT_GAP_DEG} on either side so a visible gap
+     * separates neighbouring pills.
      */
-    protected getSquarePosition(square: SvgSquare, innerRadius: number): SvgSquarePosition {
-        const angleDeg = (this.getStartAngle() + this.getEndAngle()) / 2;
-        const angleRad = this.deg2rad(angleDeg);
-        const clusterCenterRadius = this.outerRadius + (this.outerRadius * AbstractSection.CLUSTER_GAP_FACTOR) + (square.length / 2);
+    private buildSegmentGrid(rangeStart: number, rangeEnd: number): { start: number, end: number }[] {
+        const totalSpan = rangeEnd - rangeStart;
+        const stepSpan = totalSpan / AbstractSection.SEGMENT_COUNT;
+        const grid: { start: number, end: number }[] = [];
+        for (let i = 0; i < AbstractSection.SEGMENT_COUNT; i++) {
+            grid.push({
+                start: rangeStart + (i * stepSpan) + (AbstractSection.SEGMENT_GAP_DEG / 2),
+                end: rangeStart + ((i + 1) * stepSpan) - (AbstractSection.SEGMENT_GAP_DEG / 2),
+            });
+        }
+        return grid;
+    }
 
-        // d3-arc angle convention: 0deg = 12 o'clock, clockwise positive
-        const centerX = Math.sin(angleRad) * clusterCenterRadius;
-        const centerY = -Math.cos(angleRad) * clusterCenterRadius;
-
-        return new SvgSquarePosition(centerX - (square.length / 2), centerY - (square.length / 2));
+    /** Builds a single rounded-cap pill path for [start, end] (in degrees), or null if the gap left no room. */
+    private pathForAngles(start: number, end: number): string | null {
+        if (end <= start) {
+            return null;
+        }
+        const arc = this.getArc()
+            .startAngle(this.deg2rad(start))
+            .endAngle(this.deg2rad(end));
+        return arc();
     }
 
     /**

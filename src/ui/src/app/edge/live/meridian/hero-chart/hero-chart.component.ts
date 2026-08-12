@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from "@angular/core";
-import { format } from "date-fns";
 import * as Chart from "chart.js";
+import { format } from "date-fns";
 
 @Component({
     selector: "oe-meridian-hero-chart",
@@ -16,6 +16,31 @@ export class MeridianHeroChartComponent implements OnChanges {
 
     protected chartData: Chart.ChartData<"line"> = { labels: [], datasets: [] };
     protected chartOptions: Chart.ChartOptions<"line"> = MeridianHeroChartComponent.buildOptions();
+
+    private static buildOptions(): Chart.ChartOptions<"line"> {
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            interaction: { mode: "index", intersect: false },
+            scales: {
+                x: { display: false },
+                y: { display: false, beginAtZero: true },
+            },
+        };
+    }
+
+    private static toRgba(hex: string, alpha: number): string {
+        const clean = hex.replace("#", "");
+        if (clean.length !== 6) {
+            return `rgba(245, 166, 35, ${alpha})`;
+        }
+        const bigint = parseInt(clean, 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
 
     public ngOnChanges(): void {
         const color = getComputedStyle(document.documentElement).getPropertyValue(this.colorVar).trim() || "#f5a623";
@@ -54,30 +79,5 @@ export class MeridianHeroChartComponent implements OnChanges {
                 },
             },
         };
-    }
-
-    private static buildOptions(): Chart.ChartOptions<"line"> {
-        return {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: false,
-            interaction: { mode: "index", intersect: false },
-            scales: {
-                x: { display: false },
-                y: { display: false, beginAtZero: true },
-            },
-        };
-    }
-
-    private static toRgba(hex: string, alpha: number): string {
-        const clean = hex.replace("#", "");
-        if (clean.length !== 6) {
-            return `rgba(245, 166, 35, ${alpha})`;
-        }
-        const bigint = parseInt(clean, 16);
-        const r = (bigint >> 16) & 255;
-        const g = (bigint >> 8) & 255;
-        const b = bigint & 255;
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 }
