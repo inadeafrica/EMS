@@ -1,0 +1,19 @@
+.oe-connector {
+    animation: oe-flow 1.1s linear infinite;
+}
+
+.oe-connector-reverse {
+    animation-direction: reverse;
+}
+
+@keyframes oe-flow {
+    to {
+        stroke-dashoffset: -16;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .oe-connector {
+        animation: none;
+    }
+}

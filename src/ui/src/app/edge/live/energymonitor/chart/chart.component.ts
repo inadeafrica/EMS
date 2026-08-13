@@ -14,12 +14,15 @@ import { StorageSectionComponent } from "./section/storage.component";
 @Component({
     selector: "energymonitor-chart",
     templateUrl: "./chart.component.html",
+    styleUrls: ["./chart.component.scss"],
     standalone: false,
 })
 export class EnergymonitorChartComponent implements OnInit, OnDestroy {
 
     /** Fraction of the available half-viewport reserved for the icon/label/value clusters sitting outside the ring. */
-    private static readonly CLUSTER_RESERVE_FRACTION = 0.30;
+    private static readonly CLUSTER_RESERVE_FRACTION = 0.36;
+    /** Hub circle radius as a fraction of outerRadius — kept in sync with AbstractSection's own constant. */
+    private static readonly HUB_RADIUS_FACTOR = 0.5625;
 
     @ViewChild(ConsumptionSectionComponent, { static: true })
     public consumptionSection: ConsumptionSectionComponent;
@@ -44,6 +47,9 @@ export class EnergymonitorChartComponent implements OnInit, OnDestroy {
 
     /** "N% self-sufficient today" shown in the center hub — null until the query resolves. */
     protected selfSufficientTodayPct: number | null = null;
+    protected hubRadius = 0;
+    protected hubValueFontSize = 0;
+    protected hubLabelFontSize = 0;
 
     private ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -104,6 +110,9 @@ export class EnergymonitorChartComponent implements OnInit, OnDestroy {
         // outside the ring track — always have room within the same viewport, at any size.
         const outerRadius = (Math.min(this.width, this.height) / 2) * (1 - EnergymonitorChartComponent.CLUSTER_RESERVE_FRACTION);
         const innerRadius = outerRadius - (outerRadius * 0.1378);
+        this.hubRadius = outerRadius * EnergymonitorChartComponent.HUB_RADIUS_FACTOR;
+        this.hubValueFontSize = outerRadius * 0.19;
+        this.hubLabelFontSize = outerRadius * 0.052;
         // All sections from update() in section
         [this.consumptionSection, this.gridSection, this.productionSection, this.storageSection]
             .filter(section => section != null)

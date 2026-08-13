@@ -1,61 +1,31 @@
-@for (segment of trackSegments; track $index) {
-  <svg:path [attr.d]="segment" fill="var(--oe-line)" stroke="none"></svg:path>
-}
+<svg:path [attr.d]="trackPath" fill="none" stroke="var(--oe-line)" [attr.stroke-width]="trackStrokeWidth" stroke-linecap="round"></svg:path>
 @if (isEnabled) {
-  @for (segment of valueSegments; track $index) {
-    <svg:path [attr.d]="segment" fill="var(--oe-storage)" stroke="none"
-      style="filter: drop-shadow(var(--oe-glow-storage))"></svg:path>
-  }
+  <svg:path [attr.d]="valuePath" fill="none" stroke="var(--oe-storage)" [attr.stroke-width]="valueStrokeWidth"
+    stroke-linecap="round" style="filter: drop-shadow(var(--oe-glow-storage))"></svg:path>
 }
-@if (isEnabled && energyFlow) {
-  <svg:g>
-    <svg:defs>
-      <svg:linearGradient [attr.id]="sectionId" [attr.x1]="energyFlow.gradient.x1" [attr.y1]="energyFlow.gradient.y1"
-        [attr.x2]="energyFlow.gradient.x2" [attr.y2]="energyFlow.gradient.y2">
-        <svg:stop offset="0%" stop-color="var(--oe-panel)" />
-        <svg:stop offset="100%" stop-color="var(--oe-storage)" />
-      </svg:linearGradient>
-    </svg:defs>
-    <svg:polygon [attr.points]="energyFlow.points" attr.fill="{{ fillRef }}" />
-    @if (chargeAnimationTrigger) {
-      <ng-container>
-        <svg:polygon [@Charge]="stateNameCharge" [attr.points]="energyFlow.animationPoints"
-          style="fill: var(--oe-panel)" />
-      </ng-container>
-    }
-    @if (dischargeAnimationTrigger) {
-      <ng-container>
-        <svg:polygon [@Discharge]="stateNameDischarge" [attr.points]="energyFlow.animationPoints"
-          style="fill: var(--oe-panel)" />
-      </ng-container>
-    }
-  </svg:g>
+@if (isEnabled && connector && connectorActive) {
+  <svg:line [attr.x1]="connector.x1" [attr.y1]="connector.y1" [attr.x2]="connector.x2" [attr.y2]="connector.y2"
+    stroke="var(--oe-storage)" stroke-width="1.5" stroke-dasharray="1 7" stroke-linecap="round"
+    class="oe-connector" [class.oe-connector-reverse]="connectorReverse"></svg:line>
 }
-@if (isEnabled && squarePosition && square) {
-  <svg:g attr.transform="translate({{squarePosition.x}},{{squarePosition.y}})">
-    <svg:text [attr.x]="square.valueText.x" [attr.y]="square.valueText.y" [attr.text-anchor]="square.valueText.anchor"
-      font-family="sans-serif" font-size="square.valueText.fontsize" fill="var(--oe-ink)">
-      @if (valueText) {
-        <ng-container>{{valueText}}</ng-container>
-      } @else {
-        <ng-template [ngTemplateOutlet]="no_text"></ng-template>
-      }
-      <ng-template #no_text>-</ng-template>
-    </svg:text>
-    <svg:use [class]="svgStyle" style="color: var(--oe-storage)" [attr.x]="square.image.x"
-      [attr.y]="square.image.y" [attr.width]="square.image.length" [attr.height]="square.image.length"
-      [attr.href]="square.image.image + '#root'">
-    </svg:use>
-
-    <svg:text [attr.x]="square.valueText.x" [attr.y]="socPercentageYPosition"
-      [attr.text-anchor]="square.valueText.anchor" font-family="sans-serif" [attr.font-size]="socPercentageFontSize"
-      font fill="var(--oe-ink)">
-      @if (socValue !== null) {
-        <ng-container>{{socValue}}%</ng-container>
-      } @else {
-        <ng-template [ngTemplateOutlet]="no_text"></ng-template>
-      }
-      <ng-template #no_text>-</ng-template>
-    </svg:text>
+@if (isEnabled && clusterPosition && cluster) {
+  <svg:g [attr.transform]="'translate(' + clusterPosition.x + ',' + clusterPosition.y + ')'">
+    <svg:circle cx="0" [attr.cy]="cluster.badgeCenterY" [attr.r]="cluster.badgeRadius" fill="var(--oe-panel-raised)"
+      stroke="var(--oe-line)" stroke-width="1"></svg:circle>
+    <svg:svg [attr.x]="-cluster.iconSize / 2" [attr.y]="cluster.badgeCenterY - cluster.iconSize / 2"
+      [attr.width]="cluster.iconSize" [attr.height]="cluster.iconSize" viewBox="0 0 24 24" fill="none"
+      stroke="var(--oe-storage)" stroke-width="2.2">
+      <svg:rect x="3" y="7" width="16" height="11" rx="2"></svg:rect>
+      <svg:path d="M19 10.5h1.5a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H19"></svg:path>
+    </svg:svg>
+    <svg:text x="0" [attr.y]="cluster.labelY" text-anchor="middle" [attr.font-size]="cluster.labelFontSize"
+      font-family="var(--ion-font-family)" fill="var(--oe-mist)"
+      style="text-transform: uppercase; letter-spacing: 0.06em">{{ name }}</svg:text>
+    <svg:text x="0" [attr.y]="cluster.valueY" text-anchor="middle" [attr.font-size]="cluster.valueFontSize"
+      font-family="var(--ion-font-family-mono)" font-weight="600" fill="var(--oe-ink)">{{ valueText || '–' }}</svg:text>
+    @if (subLabel) {
+      <svg:text x="0" [attr.y]="cluster.subLabelY" text-anchor="middle" [attr.font-size]="cluster.subLabelFontSize"
+        font-family="var(--ion-font-family-mono)" fill="var(--oe-mist-dim)">{{ subLabel }}</svg:text>
+    }
   </svg:g>
 }

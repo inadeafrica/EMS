@@ -10,13 +10,17 @@
       <svg:g storagesection></svg:g>
 
       <!-- Center hub: today's self-sufficiency -->
+      <svg:circle cx="0" cy="0" [attr.r]="hubRadius" fill="var(--oe-panel-raised)" stroke="var(--oe-line)"
+        stroke-width="1"></svg:circle>
       @if (selfSufficientTodayPct !== null) {
         <svg:g class="oe-hub">
-          <svg:text x="0" y="-4" text-anchor="middle" font-family="var(--ion-font-family-mono)"
-            font-variant-numeric="tabular-nums" font-size="1.6rem" font-weight="600"
+          <svg:text x="0" [attr.y]="hubValueFontSize * 0.32" text-anchor="middle"
+            font-family="var(--ion-font-family-mono)" font-variant-numeric="tabular-nums"
+            [attr.font-size]="hubValueFontSize" font-weight="700"
             fill="var(--oe-ink)">{{ selfSufficientTodayPct | number:'1.0-0' }}%</svg:text>
-          <svg:text x="0" y="16" text-anchor="middle" font-family="var(--ion-font-family)" font-size="0.62rem"
-            fill="var(--oe-mist)">{{ 'LIVE.MERIDIAN.SELF_SUFFICIENT_TODAY' | translate }}</svg:text>
+          <svg:text x="0" [attr.y]="hubValueFontSize * 0.32 + hubLabelFontSize * 1.6" text-anchor="middle"
+            font-family="var(--ion-font-family)" [attr.font-size]="hubLabelFontSize" fill="var(--oe-mist)"
+            style="text-transform: uppercase; letter-spacing: 0.07em">{{ 'LIVE.MERIDIAN.SELF_SUFFICIENT_TODAY' | translate }}</svg:text>
         </svg:g>
       }
     </svg:g>

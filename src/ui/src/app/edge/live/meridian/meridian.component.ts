@@ -1,6 +1,6 @@
 // @ts-strict-ignore
-import { Component } from "@angular/core";
-import { startOfDay, startOfMonth, subDays, subMonths } from "date-fns";
+import { Component, OnDestroy } from "@angular/core";
+import { format, getDate, getDaysInMonth, startOfDay, startOfMonth, subDays, subMonths } from "date-fns";
 
 import { ChronoUnit, Resolution, calculateResolution } from "src/app/edge/history/shared";
 import { AbstractFlatWidget } from "src/app/shared/components/flat/abstract-flat-widget";
@@ -17,7 +17,7 @@ import { DateUtils } from "src/app/shared/utils/date/dateutils";
     styleUrls: ["./meridian.component.scss"],
     standalone: false,
 })
-export class MeridianComponent extends AbstractFlatWidget {
+export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
 
     /**
      * Grid carbon-intensity used to estimate CO2 avoided by self-consumed solar.
@@ -63,13 +63,44 @@ export class MeridianComponent extends AbstractFlatWidget {
     protected monthConsumedKwh: number | null = null;
     /** Average of up to the last {@link TYPICAL_MONTH_LOOKBACK_MONTHS} completed months. Null until at least one full month of history exists. */
     protected monthTypicalKwh: number | null = null;
+    /** Straight-line projection of the current run-rate to the end of the month: monthConsumedKwh / daysElapsed * daysInMonth. */
+    protected monthOnPaceKwh: number | null = null;
+    protected monthDaysElapsed: number = 1;
+    protected monthDaysTotal: number = 30;
     /** Estimated — see {@link GRID_EMISSIONS_FACTOR_KG_PER_KWH}. */
     protected monthCo2AvoidedKg: number | null = null;
+    protected monthSelfConsumedKwh: number | null = null;
+    protected monthProducedKwh: number | null = null;
     protected monthTreesEquivalent: number | null = null;
 
     // hero chart: today's production power curve
     protected heroLabels: Date[] = [];
     protected heroValuesKw: (number | null)[] = [];
+    /** Evenly-spaced time-of-day labels shown under the hero chart, e.g. "06:00", "09:00" … */
+    protected heroAxisLabels: string[] = [];
+
+    protected clockLabel = "";
+    private clockInterval: ReturnType<typeof setInterval> | null = null;
+
+    /** Picks 6 evenly-spaced timestamps (first → last) from the queried series and formats them as "HH:mm". */
+    private static buildAxisLabels(labels: Date[], tickCount = 6): string[] {
+        if (labels.length === 0) {
+            return [];
+        }
+        const ticks: string[] = [];
+        for (let i = 0; i < tickCount; i++) {
+            const index = Math.round((i / (tickCount - 1)) * (labels.length - 1));
+            ticks.push(format(labels[index], "HH:mm"));
+        }
+        return ticks;
+    }
+
+    public override ngOnDestroy(): void {
+        super.ngOnDestroy();
+        if (this.clockInterval) {
+            clearInterval(this.clockInterval);
+        }
+    }
 
     protected override getChannelAddresses(): ChannelAddress[] {
         this.hasStorage = (this.config?.getComponentsImplementingNature("io.openems.edge.ess.api.SymmetricEss") ?? []).length > 0;
@@ -95,6 +126,12 @@ export class MeridianComponent extends AbstractFlatWidget {
         this.loadTodayStats();
         this.loadMonthStats();
         this.loadHeroChart();
+        this.updateClock();
+        this.clockInterval = setInterval(() => this.updateClock(), 30_000);
+    }
+
+    private updateClock(): void {
+        this.clockLabel = format(new Date(), "HH:mm");
     }
 
     private loadTodayStats(): void {
@@ -141,6 +178,8 @@ export class MeridianComponent extends AbstractFlatWidget {
     private loadMonthStats(): void {
         const now = new Date();
         const monthStart = DateUtils.maxDate(startOfMonth(now), this.edge?.firstSetupProtocol);
+        this.monthDaysElapsed = Math.max(1, getDate(now));
+        this.monthDaysTotal = getDaysInMonth(now);
 
         const consumptionCh = new ChannelAddress("_sum", "ConsumptionActiveEnergy");
         const productionCh = new ChannelAddress("_sum", "ProductionActiveEnergy");
@@ -153,10 +192,14 @@ export class MeridianComponent extends AbstractFlatWidget {
             const soldWh: number | null = data[gridSellCh.toString()] ?? 0;
 
             this.monthConsumedKwh = Utils.divideSafely(consumedWh, 1000);
+            this.monthOnPaceKwh = this.monthConsumedKwh != null
+                ? (this.monthConsumedKwh / this.monthDaysElapsed) * this.monthDaysTotal
+                : null;
 
             if (producedWh != null) {
-                const selfConsumedKwh = Math.max(0, producedWh - soldWh) / 1000;
-                this.monthCo2AvoidedKg = selfConsumedKwh * MeridianComponent.GRID_EMISSIONS_FACTOR_KG_PER_KWH;
+                this.monthProducedKwh = producedWh / 1000;
+                this.monthSelfConsumedKwh = Math.max(0, producedWh - soldWh) / 1000;
+                this.monthCo2AvoidedKg = this.monthSelfConsumedKwh * MeridianComponent.GRID_EMISSIONS_FACTOR_KG_PER_KWH;
                 this.monthTreesEquivalent = this.monthCo2AvoidedKg / MeridianComponent.TREE_CO2_ABSORPTION_KG_PER_MONTH;
             }
         }).catch(() => { /* leave at null */ });
@@ -208,9 +251,11 @@ export class MeridianComponent extends AbstractFlatWidget {
             const result = (response as QueryHistoricTimeseriesDataResponse).result;
             this.heroLabels = result.timestamps.map(timestamp => new Date(timestamp));
             this.heroValuesKw = (result.data[productionCh.toString()] ?? []).map(value => value != null ? value / 1000 : null);
+            this.heroAxisLabels = MeridianComponent.buildAxisLabels(this.heroLabels);
         }).catch(() => {
             this.heroLabels = [];
             this.heroValuesKw = [];
+            this.heroAxisLabels = [];
         });
     }
 }
