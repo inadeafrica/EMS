@@ -1,5 +1,5 @@
 // @ts-strict-ignore
-import { Component, OnDestroy } from "@angular/core";
+import { Component, Input, OnDestroy } from "@angular/core";
 import { format, getDate, getDaysInMonth, startOfDay, startOfMonth, subDays, subMonths } from "date-fns";
 
 import { ChronoUnit, Resolution, calculateResolution } from "src/app/edge/history/shared";
@@ -10,6 +10,7 @@ import { QueryHistoricTimeseriesDataResponse } from "src/app/shared/jsonrpc/resp
 import { QueryHistoricTimeseriesEnergyPerPeriodResponse } from "src/app/shared/jsonrpc/response/queryHistoricTimeseriesEnergyPerPeriodResponse";
 import { ChannelAddress, CurrentData, Utils } from "src/app/shared/shared";
 import { DateUtils } from "src/app/shared/utils/date/dateutils";
+import { EnergyFlowModalComponent } from "./energy-flow-modal/energy-flow-modal.component";
 
 @Component({
     selector: "oe-meridian",
@@ -38,6 +39,13 @@ export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
 
     /** How many completed months of consumption history to average for the "typical month" baseline. */
     private static readonly TYPICAL_MONTH_LOOKBACK_MONTHS = 6;
+
+    /**
+     * Whether the Edge has the ring-based "Energy Monitor" available at all
+     * (mirrors the same `Energymonitor` widget-class check the Live overview
+     * page uses). Controls whether the "view energy flow" link is shown.
+     */
+    @Input() protected hasEnergyFlow = false;
 
     protected readonly Math = Math;
     protected hasStorage = false;
@@ -132,6 +140,11 @@ export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
 
     private updateClock(): void {
         this.clockLabel = format(new Date(), "HH:mm");
+    }
+
+    protected async openEnergyFlow(): Promise<void> {
+        const modal = await this.modalController.create({ component: EnergyFlowModalComponent });
+        await modal.present();
     }
 
     private loadTodayStats(): void {

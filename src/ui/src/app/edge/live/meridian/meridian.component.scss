@@ -164,6 +164,42 @@
     color: var(--oe-mist-dim);
 }
 
+/* ---------- Energy flow link ---------- */
+
+.oe-energy-flow-link {
+    appearance: none;
+    border: 1px solid var(--oe-line);
+    background: var(--oe-panel-raised);
+    color: var(--oe-ink);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.85rem;
+    cursor: pointer;
+
+    svg {
+        width: 1.1rem;
+        height: 1.1rem;
+        stroke: var(--oe-mist);
+        flex: none;
+    }
+
+    svg:last-child {
+        margin-left: auto;
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+
+    &:hover {
+        border-color: var(--oe-accent);
+    }
+}
+
 /* ---------- Today chips ---------- */
 
 .oe-chip-row {

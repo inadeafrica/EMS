@@ -1211,7 +1211,8 @@
       "CO2_AVOIDED_ESTIMATE_HINT": "Geschätzt aus selbst verbrauchtem Solarstrom, kein Messwert.",
       "TREES_EQUIVALENT": "≈ {{count}} gepflanzte Bäume",
       "FROM_SELF_CONSUMED": "aus {{value}} kWh selbst verbrauchtem Solarstrom",
-      "NOT_ENOUGH_DATA": "Noch nicht genügend Daten"
+      "NOT_ENOUGH_DATA": "Noch nicht genügend Daten",
+      "ENERGY_FLOW": "Energiefluss"
     }
   },
   "LOADING_SCREEN": {

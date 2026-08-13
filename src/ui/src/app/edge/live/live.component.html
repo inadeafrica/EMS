@@ -13,14 +13,6 @@
         <ion-grid class="ion-no-padding">
           <ion-row>
             <ion-col size="12">
-              <ng-container *ngFor="let clazz of widgets.classes" [ngSwitch]="clazz">
-                <!-- Energymonitor -->
-                <energymonitor *ngSwitchCase="'Energymonitor'" [attr.tabindex]="0"></energymonitor>
-              </ng-container>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="12">
               <ng-container *ngFor="let widget of widgets.list" [ngSwitch]="widget.name">
                 <!-- Weather-->
                 <weather [componentId]="widget.componentId" *ngSwitchCase="'Weather.OpenMeteo'"
@@ -50,7 +42,7 @@
 
               <!-- "Meridian" — consolidated production/consumption/storage/grid overview -->
               <ion-col *ngSwitchCase="'Common_Production'" size="12" class="ion-no-padding">
-                <oe-meridian></oe-meridian>
+                <oe-meridian [hasEnergyFlow]="widgets.classes.includes('Energymonitor')"></oe-meridian>
               </ion-col>
 
             </ng-container>

@@ -1209,7 +1209,8 @@
       "CO2_AVOIDED_ESTIMATE_HINT": "Estimated from self-consumed solar energy, not a metered value.",
       "TREES_EQUIVALENT": "≈ {{count}} trees planted",
       "FROM_SELF_CONSUMED": "from {{value}} kWh of self-consumed solar",
-      "NOT_ENOUGH_DATA": "Not enough data yet"
+      "NOT_ENOUGH_DATA": "Not enough data yet",
+      "ENERGY_FLOW": "Energy flow"
     }
   },
   "LOADING_SCREEN": {
