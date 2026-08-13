@@ -82,6 +82,12 @@
     color: var(--oe-accent);
 }
 
+.oe-badge-warning {
+    background: color-mix(in srgb, var(--oe-consumption) 16%, transparent);
+    color: var(--oe-consumption);
+    font-weight: 700;
+}
+
 .oe-hero-time {
     text-align: right;
     color: var(--oe-mist);
@@ -120,6 +126,8 @@
 }
 
 .oe-meter {
+    appearance: none;
+    font-family: inherit;
     background: var(--oe-panel-raised);
     border: 1px solid var(--oe-line);
     border-radius: 0.9rem;
@@ -129,6 +137,17 @@
     align-items: center;
     gap: 0.4rem;
     text-align: center;
+    cursor: pointer;
+    width: 100%;
+
+    &:hover,
+    &:focus-visible {
+        border-color: var(--oe-accent);
+    }
+}
+
+.oe-meter-warning {
+    border-color: var(--oe-consumption);
 }
 
 .oe-meter-icon-badge {

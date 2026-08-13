@@ -8,8 +8,14 @@ import { QueryHistoricTimeseriesDataRequest } from "src/app/shared/jsonrpc/reque
 import { QueryHistoricTimeseriesEnergyPerPeriodRequest } from "src/app/shared/jsonrpc/request/queryHistoricTimeseriesEnergyPerPeriodRequest";
 import { QueryHistoricTimeseriesDataResponse } from "src/app/shared/jsonrpc/response/queryHistoricTimeseriesDataResponse";
 import { QueryHistoricTimeseriesEnergyPerPeriodResponse } from "src/app/shared/jsonrpc/response/queryHistoricTimeseriesEnergyPerPeriodResponse";
-import { ChannelAddress, CurrentData, Utils } from "src/app/shared/shared";
+import { ChannelAddress, CurrentData, GridMode, Utils } from "src/app/shared/shared";
+import { Role } from "src/app/shared/type/role";
 import { DateUtils } from "src/app/shared/utils/date/dateutils";
+import { ModalComponent as ConsumptionModalComponent } from "../common/consumption/modal/modal";
+import { ModalComponent as GridModalComponent } from "../common/grid/modal/modal";
+import { ModalComponent as ProductionModalComponent } from "../common/production/modal/modal";
+import { AdminStorageModalComponent } from "../common/storage/admin-modal/admin-modal.component";
+import { InstallerOwnerGuestStorageModalComponent } from "../common/storage/installer-owner-guest-modal/installer-owner-guest-modal.component";
 import { EnergyFlowModalComponent } from "./energy-flow-modal/energy-flow-modal.component";
 
 @Component({
@@ -48,6 +54,7 @@ export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
     @Input() protected hasEnergyFlow = false;
 
     protected readonly Math = Math;
+    protected readonly GridMode = GridMode;
     protected hasStorage = false;
 
     // live values
@@ -58,6 +65,7 @@ export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
     protected essActivePowerW: number | null = null;
     /** _sum/GridActivePower: > 0 buying, < 0 selling */
     protected gridActivePowerW: number | null = null;
+    protected gridMode: GridMode | null = null;
 
     // today (queried via Service.queryEnergy — real cumulated deltas, not estimates)
     protected todayProducedKwh: number | null = null;
@@ -118,6 +126,7 @@ export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
             new ChannelAddress("_sum", "EssSoc"),
             new ChannelAddress("_sum", "EssActivePower"),
             new ChannelAddress("_sum", "GridActivePower"),
+            new ChannelAddress("_sum", "GridMode"),
         ];
     }
 
@@ -128,6 +137,7 @@ export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
         this.soc = c["_sum/EssSoc"] ?? null;
         this.essActivePowerW = c["_sum/EssActivePower"] ?? null;
         this.gridActivePowerW = c["_sum/GridActivePower"] ?? null;
+        this.gridMode = c["_sum/GridMode"] ?? null;
     }
 
     protected override afterIsInitialized(): void {
@@ -140,6 +150,40 @@ export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
 
     protected async openEnergyFlow(): Promise<void> {
         const modal = await this.modalController.create({ component: EnergyFlowModalComponent });
+        await modal.present();
+    }
+
+    protected async openProductionDetail(): Promise<void> {
+        const modal = await this.modalController.create({ component: ProductionModalComponent });
+        await modal.present();
+    }
+
+    protected async openConsumptionDetail(): Promise<void> {
+        const modal = await this.modalController.create({ component: ConsumptionModalComponent });
+        await modal.present();
+    }
+
+    protected async openStorageDetail(): Promise<void> {
+        if (!this.hasStorage) {
+            return;
+        }
+        const modal = await this.modalController.create({
+            component: this.edge.roleIsAtLeast(Role.ADMIN) ? AdminStorageModalComponent : InstallerOwnerGuestStorageModalComponent,
+            componentProps: {
+                edge: this.edge,
+                component: this.component,
+            },
+        });
+        await modal.present();
+    }
+
+    protected async openGridDetail(): Promise<void> {
+        const modal = await this.modalController.create({
+            component: GridModalComponent,
+            componentProps: {
+                edge: this.edge,
+            },
+        });
         await modal.present();
     }
 

@@ -7,6 +7,11 @@
           <p class="oe-hero-eyebrow">{{ 'LIVE.MERIDIAN.LIVE_PRODUCTION' | translate }}</p>
           <div class="oe-hero-number oe-numeric">{{ (productionW ?? 0) / 1000 | number:'1.2-2' }}<small>kW</small></div>
           <div class="oe-hero-badges">
+            @if (gridMode === GridMode.OFF_GRID) {
+              <span class="oe-badge oe-badge-warning">
+                {{ 'GENERAL.OFF_GRID' | translate }}
+              </span>
+            }
             @if (vsYesterdayDeltaPct !== null) {
               <span class="oe-badge" [class.oe-badge-down]="vsYesterdayDeltaPct < 0">
                 <span>{{ vsYesterdayDeltaPct >= 0 ? '↗' : '↘' }}</span>
@@ -40,7 +45,7 @@
       }
 
       <div class="oe-meters">
-        <div class="oe-meter">
+        <button type="button" class="oe-meter" (click)="openProductionDetail()">
           <div class="oe-meter-icon-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-production)" stroke-width="2.2">
               <circle cx="12" cy="12" r="4"></circle>
@@ -49,9 +54,9 @@
           </div>
           <div class="oe-meter-label">{{ 'GENERAL.PRODUCTION' | translate }}</div>
           <div class="oe-meter-value oe-numeric">{{ (productionW ?? 0) / 1000 | number:'1.1-1' }} kW</div>
-        </div>
+        </button>
 
-        <div class="oe-meter">
+        <button type="button" class="oe-meter" (click)="openConsumptionDetail()">
           <div class="oe-meter-icon-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-consumption)" stroke-width="2.2">
               <path d="M4 20V10l8-6 8 6v10" stroke-linejoin="round"></path>
@@ -60,10 +65,10 @@
           </div>
           <div class="oe-meter-label">{{ 'GENERAL.CONSUMPTION' | translate }}</div>
           <div class="oe-meter-value oe-numeric">{{ (consumptionW ?? 0) / 1000 | number:'1.1-1' }} kW</div>
-        </div>
+        </button>
 
         @if (hasStorage) {
-          <div class="oe-meter">
+          <button type="button" class="oe-meter" (click)="openStorageDetail()">
             <div class="oe-meter-icon-badge">
               <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-storage)" stroke-width="2.2">
                 <rect x="3" y="7" width="16" height="11" rx="2"></rect>
@@ -75,10 +80,10 @@
             @if (essActivePowerW) {
               <div class="oe-meter-sub oe-numeric">{{ essActivePowerW >= 0 ? '+' : '-' }}{{ Math.abs(essActivePowerW) / 1000 | number:'1.1-1' }} kW</div>
             }
-          </div>
+          </button>
         }
 
-        <div class="oe-meter">
+        <button type="button" class="oe-meter" [class.oe-meter-warning]="gridMode === GridMode.OFF_GRID" (click)="openGridDetail()">
           <div class="oe-meter-icon-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-grid)" stroke-width="2.2">
               <path d="M6 4v16M18 4v16M6 9h12M6 15h12" stroke-linecap="round"></path>
@@ -86,8 +91,10 @@
           </div>
           <div class="oe-meter-label">{{ 'GENERAL.GRID' | translate }}</div>
           <div class="oe-meter-value oe-numeric">{{ Math.abs(gridActivePowerW ?? 0) / 1000 | number:'1.1-1' }} kW</div>
-          <div class="oe-meter-sub">{{ ((gridActivePowerW ?? 0) >= 0 ? 'LIVE.MERIDIAN.BUYING' : 'LIVE.MERIDIAN.SELLING') | translate }}</div>
-        </div>
+          <div class="oe-meter-sub">
+            {{ (gridMode === GridMode.OFF_GRID ? 'GENERAL.OFF_GRID' : ((gridActivePowerW ?? 0) >= 0 ? 'LIVE.MERIDIAN.BUYING' : 'LIVE.MERIDIAN.SELLING')) | translate }}
+          </div>
+        </button>
       </div>
 
       @if (hasEnergyFlow) {
