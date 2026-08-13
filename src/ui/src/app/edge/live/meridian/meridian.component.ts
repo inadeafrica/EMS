@@ -138,13 +138,13 @@ export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
         this.clockInterval = setInterval(() => this.updateClock(), 30_000);
     }
 
-    private updateClock(): void {
-        this.clockLabel = format(new Date(), "HH:mm");
-    }
-
     protected async openEnergyFlow(): Promise<void> {
         const modal = await this.modalController.create({ component: EnergyFlowModalComponent });
         await modal.present();
+    }
+
+    private updateClock(): void {
+        this.clockLabel = format(new Date(), "HH:mm");
     }
 
     private loadTodayStats(): void {
