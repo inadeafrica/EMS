@@ -34,9 +34,13 @@
       </div>
 
       <div class="oe-graph-wrap">
-        <oe-meridian-hero-chart [labels]="heroLabels" [values]="heroValuesKw" colorVar="--oe-production"></oe-meridian-hero-chart>
+        @if (heroChartHasData) {
+          <oe-meridian-hero-chart [labels]="heroLabels" [values]="heroValuesKw" colorVar="--oe-production"></oe-meridian-hero-chart>
+        } @else {
+          <div class="oe-graph-empty">{{ 'LIVE.MERIDIAN.NOT_ENOUGH_DATA' | translate }}</div>
+        }
       </div>
-      @if (heroAxisLabels.length) {
+      @if (heroChartHasData && heroAxisLabels.length) {
         <div class="oe-graph-labels oe-numeric">
           @for (label of heroAxisLabels; track $index) {
             <span>{{ label }}</span>

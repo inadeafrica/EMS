@@ -98,6 +98,11 @@ export class MeridianComponent extends AbstractFlatWidget implements OnDestroy {
     protected clockLabel = "";
     private clockInterval: ReturnType<typeof setInterval> | null = null;
 
+    /** False right after a fresh deployment/backend reset, before any historic data point for today exists yet. */
+    protected get heroChartHasData(): boolean {
+        return this.heroValuesKw.some(value => value != null);
+    }
+
     /** Picks 6 evenly-spaced timestamps (first → last) from the queried series and formats them as "HH:mm". */
     private static buildAxisLabels(labels: Date[], tickCount = 6): string[] {
         if (labels.length === 0) {

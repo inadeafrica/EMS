@@ -108,6 +108,17 @@
     height: 190px;
 }
 
+.oe-graph-empty {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--oe-mist-dim);
+    font-size: 0.85rem;
+    border: 1px dashed var(--oe-line);
+    border-radius: 0.85rem;
+}
+
 .oe-graph-labels {
     display: flex;
     justify-content: space-between;
