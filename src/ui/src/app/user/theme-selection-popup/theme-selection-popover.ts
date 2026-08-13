@@ -14,6 +14,14 @@ import { Theme as UserTheme } from "../../edge/history/shared";
     opacity: 0.9;
     border-radius: 10em !important;
   }
+  .theme-preview-swatch {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 1.25em;
+  }
+  .theme-preview-swatch[data-theme="warm"] {
+    background: linear-gradient(135deg, #16100a 0%, #271b0b 55%, #e8892e 100%);
+  }
     `],
     standalone: false,
 })
@@ -23,6 +31,7 @@ export class ThemePopoverComponent {
     protected readonly displayThemes = [
         { key: UserTheme.LIGHT, label: this.translate.instant("GENERAL.LIGHT"), img: "assets/img/light-mode-preview.jpg" },
         { key: UserTheme.DARK, label: this.translate.instant("GENERAL.DARK"), img: "assets/img/dark-mode-preview.jpg" },
+        { key: UserTheme.WARM, label: this.translate.instant("GENERAL.WARM"), img: null },
         { key: UserTheme.SYSTEM, label: this.translate.instant("GENERAL.SYSTEM_THEME"), img: "assets/img/system-mode-preview.jpg" },
     ];
 

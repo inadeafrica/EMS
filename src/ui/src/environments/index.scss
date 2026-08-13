@@ -7,7 +7,9 @@
     --ion-focus-outline-color: var(--ion-color-primary);
 
     /** font **/
-    --ion-font-family: "Roboto", "Helvetica Neue", sans-serif;
+    --ion-font-family: "Geist Sans", "Roboto", "Helvetica Neue", sans-serif;
+    /** used for every numeric readout (power, energy, dates, percentages) together with font-variant-numeric: tabular-nums **/
+    --ion-font-family-mono: "Geist Mono", "Geist Sans", "Roboto", "Helvetica Neue", monospace;
 
     /** Box edges shadow **/
     --ion-color-shadow: #47577a;
@@ -176,6 +178,26 @@
     --ion-skeleton-mid: rgba(0, 0, 0, 0.3);
     --ion-skeleton-end: rgba(0, 0, 0, 0.6);
     --ion-skeleton-gradient: linear-gradient(90deg, var(--ion-skeleton-start) 0%, var(--ion-skeleton-mid) 50%, var(--ion-skeleton-end) 100%);
+
+    /** "Meridian" design tokens — used by the Live overview summary widget and the Energy Flow ring only **/
+    --oe-bg: #eef1f3;
+    --oe-panel: #ffffff;
+    --oe-panel-raised: #f5f7f8;
+    --oe-line: #dce2e6;
+    --oe-ink: #1b2530;
+    --oe-mist: #5b6b78;
+    --oe-mist-dim: #8c99a4;
+    --oe-accent: #c9722e;
+    --oe-production: #d98f2b;
+    --oe-consumption: #c15b45;
+    --oe-storage: #3e8f6b;
+    --oe-grid: #2d7a88;
+    --oe-card-radius: 1.1rem;
+    --oe-shadow-card: 0 1px 2px rgba(27, 37, 48, 0.06), 0 4px 12px rgba(27, 37, 48, 0.06);
+    --oe-glow-production: none;
+    --oe-glow-consumption: none;
+    --oe-glow-storage: none;
+    --oe-glow-grid: none;
 }
 
 
@@ -287,4 +309,151 @@
     --ion-skeleton-mid: rgba(255, 255, 255, 0.04);
     --ion-skeleton-end: rgba(255, 255, 255, 0.08);
     --ion-skeleton-gradient: linear-gradient(90deg, var(--ion-skeleton-start) 0%, var(--ion-skeleton-mid) 50%, var(--ion-skeleton-end) 100%);
+
+    /** "Meridian" design tokens — used by the Live overview summary widget and the Energy Flow ring only **/
+    --oe-bg: #0a0e13;
+    --oe-panel: #12181f;
+    --oe-panel-raised: #171e26;
+    --oe-line: #212932;
+    --oe-ink: #f4f6f8;
+    --oe-mist: #7c8a99;
+    --oe-mist-dim: #4e5964;
+    --oe-accent: #f5a623;
+    --oe-production: #f5a623;
+    --oe-consumption: #ff6b4a;
+    --oe-storage: #59d98c;
+    --oe-grid: #2fd9c4;
+    --oe-card-radius: 1.1rem;
+    --oe-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+    --oe-glow-production: 0 0 18px rgba(245, 166, 35, 0.35);
+    --oe-glow-consumption: 0 0 18px rgba(255, 107, 74, 0.35);
+    --oe-glow-storage: 0 0 18px rgba(89, 217, 140, 0.35);
+    --oe-glow-grid: 0 0 18px rgba(47, 217, 196, 0.35);
+}
+
+:root[data-theme="warm"] {
+
+    /** success **/
+    --ion-color-success: #7cc086;
+    --ion-color-success-rgb: 124, 192, 134;
+    --ion-color-success-contrast: #0c150d;
+    --ion-color-success-contrast-rgb: 12, 21, 13;
+    --ion-color-success-shade: #6dab76;
+    --ion-color-success-tint: #8ec897;
+
+    /** warning **/
+    --ion-color-warning: #e8a72e;
+    --ion-color-warning-rgb: 232, 167, 46;
+    --ion-color-warning-contrast: #1b1305;
+    --ion-color-warning-contrast-rgb: 27, 19, 5;
+    --ion-color-warning-shade: #cc9328;
+    --ion-color-warning-tint: #ecb454;
+
+    /** danger **/
+    --ion-color-danger: #e14b3a;
+    --ion-color-danger-rgb: 225, 75, 58;
+    --ion-color-danger-contrast: #1c0705;
+    --ion-color-danger-contrast-rgb: 28, 7, 5;
+    --ion-color-danger-shade: #c74232;
+    --ion-color-danger-tint: #e5654e;
+
+    /** dark **/
+    --ion-color-dark: #f6ecdc;
+    --ion-color-dark-rgb: 246, 236, 220;
+    --ion-color-dark-contrast: #16100a;
+    --ion-color-dark-contrast-rgb: 22, 16, 10;
+    --ion-color-dark-shade: #d8cfc2;
+    --ion-color-dark-tint: #f7efe1;
+
+    /** medium **/
+    --ion-color-medium: #b49a7c;
+    --ion-color-medium-rgb: 180, 154, 124;
+    --ion-color-medium-contrast: hsla(30, 20%, 8%, 0.85);
+    --ion-color-medium-contrast-rgb: 22, 16, 10;
+    --ion-color-medium-shade: #9e876d;
+    --ion-color-medium-tint: #bca489;
+
+    /** light **/
+    --ion-color-light: var(--ion-color-toolbar-primary); // Background color for header of each widget.
+    --ion-color-light-rgb: 39, 27, 11;
+    --ion-color-light-contrast: #f6ecdc; // Font color in the title of all widgets.
+    --ion-color-light-contrast-rgb: 246, 236, 220;
+    --ion-color-light-shade: #302512;
+    --ion-color-light-tint: #16100a;
+
+    /** Custom Colors **/
+    --ion-item-color: #f6ecdc; // this sets the color for text in History, Menu bar and Menu Page sections //
+    --ion-item-background: #201609; // background color for widgets.
+    --ion-title-color: #f6ecdc; // Color of the Page Title.
+    --ion-menu-color: #f6ecdc;
+    --ion-color-text-menu: #e8dcc8;
+    --ion-color-toggle-background: #7a6650;
+    --ion-color-toggle-unchecked-handle: #b49a7c;
+    --ion-color-toggle-unchecked-track: #382812;
+    --ion-color-toggle-active: var(--ion-color-toggle-checked-border);
+
+    --ion-color-background-menu: #201609;
+
+    /** Charts Colors **/
+    --ion-color-chart-primary: #f6ecdc;
+
+    /** Text Color **/
+    --ion-text-color: #f6ecdc;
+    --ion-text-color-rgb: rgb(246, 236, 220);
+    --ion-text-color-dark: #16100a;
+    --ion-text-color-shade: #b49a7c;
+    --ion-color-text: #e8dcc8;
+    --ion-color-text-percentage-bar: #f6ecdc;
+
+    /** Percentage bar Color **/
+    --ion-background-percentagebar-color: #382812;
+    --ion-segment-button-color: var(--ion-color-primary);
+
+    /** toolbar **/
+    --ion-color-toolbar-primary: #271b0b;
+    --ion-color-toolbar-segment: var(--ion-color-primary);
+
+    /** Chart **/
+    --ion-color-chart-xAxis-ticks: #b49a7c;
+    --ion-color-chart-xLines: #382812;
+
+    --ion-color-emergencyreserve-primary: rgb(180, 154, 124); // Base //
+    --ion-color-emergencyreserve-rgba: rgba(180, 154, 124, 0); // Transparent //
+    --ion-color-charge-primary: rgba(124, 192, 134, 1);
+    --ion-color-charge-rgba: rgba(124, 192, 134, 0.05);
+    --ion-color-grey-primary: rgba(180, 154, 124, 1);
+    --ion-color-grey-rgba: rgba(180, 154, 124, 0.05); // semi-transparent //
+
+    /** Card **/
+    --ion-card-content: #f6ecdc;
+    --ion-card-content-color: #e8dcc8;
+    --ion-card-header-shadow: #382812;
+    --ion-color-label: var(--ion-item-color);
+    --ion-color-background-pull-to-refresh: var(--ion-color-secondary);
+    --ion-color-pull-to-refresh: var(--ion-menu-color);
+
+    --ion-skeleton-start: rgba(246, 236, 220, 0.08);
+    --ion-skeleton-mid: rgba(246, 236, 220, 0.04);
+    --ion-skeleton-end: rgba(246, 236, 220, 0.08);
+    --ion-skeleton-gradient: linear-gradient(90deg, var(--ion-skeleton-start) 0%, var(--ion-skeleton-mid) 50%, var(--ion-skeleton-end) 100%);
+
+    /** "Meridian" design tokens — used by the Live overview summary widget and the Energy Flow ring only **/
+    --oe-bg: #16100a;
+    --oe-panel: #201609;
+    --oe-panel-raised: #271b0b;
+    --oe-line: #382812;
+    --oe-ink: #f6ecdc;
+    --oe-mist: #b49a7c;
+    --oe-mist-dim: #7a6650;
+    --oe-accent: #e8892e;
+    --oe-production: #e8892e;
+    --oe-consumption: #e5644a;
+    --oe-storage: #7cc086;
+    --oe-grid: #52b6a6;
+    --oe-card-radius: 1.1rem;
+    --oe-shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 8px 20px rgba(0, 0, 0, 0.3);
+    --oe-glow-production: none;
+    --oe-glow-consumption: none;
+    --oe-glow-storage: none;
+    --oe-glow-grid: none;
 }

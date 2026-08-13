@@ -737,6 +737,7 @@
     "TOTAL_STATE": "Gesamtstatus",
     "VALUE": "Wert",
     "VISIBLE_FOR_ADMINS_ONLY": "Sichtbar nur für Service & Administration",
+    "WARM": "Warm",
     "WARNING": "Warnung",
     "WEEK": {
       "FRIDAY": "Freitag",
@@ -1183,7 +1184,36 @@
     "VALUE_WITH_LABEL": "Wert {{ label }}{{ number }} {{ symbol }}"
   },
   "LIVE": {
-    "PULL_TO_REFRESH": "Hier ziehen, um zu aktualisieren"
+    "PULL_TO_REFRESH": "Hier ziehen, um zu aktualisieren",
+    "MERIDIAN": {
+      "TITLE": "Übersicht",
+      "LIVE_PRODUCTION": "Live-Erzeugung",
+      "VS_YESTERDAY": "ggü. gestern",
+      "SELF_SUFFICIENT_TODAY": "autark heute",
+      "CHARGING": "Lädt",
+      "DISCHARGING": "Entlädt",
+      "IDLE": "Inaktiv",
+      "BUYING": "Bezug",
+      "SELLING": "Einspeisung",
+      "TODAY": "Heute",
+      "TODAY_PRODUCED": "Erzeugt",
+      "TODAY_CONSUMED": "Verbraucht",
+      "TODAY_BATTERY_USABLE": "Batterie nutzbar",
+      "TODAY_EXPORTED": "Eingespeist",
+      "THIS_MONTH": "Diesen Monat",
+      "MONTH_TO_DATE": "Monat bisher",
+      "DAYS_PROGRESS": "{{elapsed}} von {{total}} Tagen",
+      "OF_TYPICAL_MONTH": "{{percent}}% eines typischen {{typical}}-kWh-Monats",
+      "ON_PACE_FOR": "hochgerechnet {{value}} kWh",
+      "MONTHLY_CONSUMPTION": "Verbrauch bisher",
+      "TYPICAL_MONTH": "Typischer Monat",
+      "CO2_AVOIDED": "CO₂ vermieden",
+      "CO2_AVOIDED_ESTIMATE_HINT": "Geschätzt aus selbst verbrauchtem Solarstrom, kein Messwert.",
+      "TREES_EQUIVALENT": "≈ {{count}} gepflanzte Bäume",
+      "FROM_SELF_CONSUMED": "aus {{value}} kWh selbst verbrauchtem Solarstrom",
+      "NOT_ENOUGH_DATA": "Noch nicht genügend Daten",
+      "ENERGY_FLOW": "Energiefluss"
+    }
   },
   "LOADING_SCREEN": {
     "LOADING": "Wird geladen",

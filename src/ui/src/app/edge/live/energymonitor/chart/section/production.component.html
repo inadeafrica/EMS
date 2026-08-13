@@ -1,37 +1,28 @@
-<svg:path [attr.d]="outlinePath" fill="var(--ion-color-light)" stroke="var(--ion-color-medium-soft)"></svg:path>
-  @if (isEnabled) {
-    <svg:path [attr.d]="valuePath" fill="var(--ion-color-production)"
-      stroke="var(--ion-color-production)"></svg:path>
-    }
-    @if (isEnabled && energyFlow) {
-      <svg:g>
-        <svg:defs>
-          <svg:linearGradient [attr.id]="sectionId" [attr.x1]="energyFlow.gradient.x1" [attr.y1]="energyFlow.gradient.y1"
-            [attr.x2]="energyFlow.gradient.x2" [attr.y2]="energyFlow.gradient.y2">
-            <svg:stop offset="0%" stop-color="var(--ion-item-background)" />
-            <svg:stop offset="100%" stop-color="var(--ion-color-production)" />
-            </svg:linearGradient>
-            </svg:defs>
-            <svg:polygon [attr.points]="energyFlow.points" attr.fill="{{ fillRef }}" />
-            <svg:polygon [@Production]="stateName" [attr.points]="energyFlow.animationPoints"
-              style="fill: var(--ion-item-background)" />
-            </svg:g>
-          }
-          @if (isEnabled && squarePosition && square) {
-            <svg:g
-              attr.transform="translate({{squarePosition.x}},{{squarePosition.y}})">
-              <svg:text [attr.x]="square.valueText.x" [attr.y]="square.valueText.y" [attr.text-anchor]="square.valueText.anchor"
-                font-family="sans-serif" font-size="square.valueText.fontsize" fill="var(--ion-text-color)">
-                @if (valueText) {
-                  <ng-container>{{valueText}}</ng-container>
-                } @else {
-                  <ng-template [ngTemplateOutlet]="no_text"></ng-template>
-                }
-                <ng-template #no_text>-</ng-template>
-                </svg:text>
-                <svg:use style="color: var(--ion-color-production)" [attr.x]="square.image.x" [attr.y]="square.image.y"
-                  [attr.width]="square.image.length" [attr.height]="square.image.length"
-                  [attr.href]="square.image.image + '#root'">
-                  </svg:use>
-                  </svg:g>
-                }
+<svg:path [attr.d]="trackPath" fill="none" stroke="var(--oe-line)" [attr.stroke-width]="trackStrokeWidth" stroke-linecap="round"></svg:path>
+@if (isEnabled) {
+  <svg:path [attr.d]="valuePath" fill="none" stroke="var(--oe-production)" [attr.stroke-width]="valueStrokeWidth"
+    stroke-linecap="round" style="filter: drop-shadow(var(--oe-glow-production))"></svg:path>
+}
+@if (isEnabled && connector && connectorActive) {
+  <svg:line [attr.x1]="connector.x1" [attr.y1]="connector.y1" [attr.x2]="connector.x2" [attr.y2]="connector.y2"
+    stroke="var(--oe-production)" stroke-width="1.5" stroke-dasharray="1 7" stroke-linecap="round"
+    class="oe-connector" [class.oe-connector-reverse]="connectorReverse"></svg:line>
+}
+@if (isEnabled && clusterPosition && cluster) {
+  <svg:g [attr.transform]="'translate(' + clusterPosition.x + ',' + clusterPosition.y + ')'">
+    <svg:circle cx="0" [attr.cy]="cluster.badgeCenterY" [attr.r]="cluster.badgeRadius" fill="var(--oe-panel-raised)"
+      stroke="var(--oe-line)" stroke-width="1"></svg:circle>
+    <svg:svg [attr.x]="-cluster.iconSize / 2" [attr.y]="cluster.badgeCenterY - cluster.iconSize / 2"
+      [attr.width]="cluster.iconSize" [attr.height]="cluster.iconSize" viewBox="0 0 24 24" fill="none"
+      stroke="var(--oe-production)" stroke-width="2.2">
+      <svg:circle cx="12" cy="12" r="4"></svg:circle>
+      <svg:path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"
+        stroke-linecap="round"></svg:path>
+    </svg:svg>
+    <svg:text x="0" [attr.y]="cluster.labelY" text-anchor="middle" [attr.font-size]="cluster.labelFontSize"
+      font-family="var(--ion-font-family)" fill="var(--oe-mist)"
+      style="text-transform: uppercase; letter-spacing: 0.06em">{{ name }}</svg:text>
+    <svg:text x="0" [attr.y]="cluster.valueY" text-anchor="middle" [attr.font-size]="cluster.valueFontSize"
+      font-family="var(--ion-font-family-mono)" font-weight="600" fill="var(--oe-ink)">{{ valueText || '–' }}</svg:text>
+  </svg:g>
+}

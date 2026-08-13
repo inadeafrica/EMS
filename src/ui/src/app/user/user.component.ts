@@ -44,6 +44,7 @@ export class UserComponent implements OnInit {
     protected readonly themes: KeyValue<string, string>[] = [
         { key: "Light", value: "light" },
         { key: "Dark", value: "dark" },
+        { key: "Warm", value: "warm" },
         { key: "System", value: "system" },
     ];
     protected readonly environment = environment;

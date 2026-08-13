@@ -125,3 +125,84 @@ $font-family: var(--ion-font-family);
   --ion-title-color: var(--ion-color-toggle-background);
   --ion-color-toggle-checked-border: #e8ae6a;
 }
+
+
+
+:root[data-theme="warm"] {
+  /** primary **/
+  --ion-color-primary: #e8892e;
+  --ion-color-primary-rgb: 232, 137, 46;
+  --ion-color-primary-contrast: #1b1006;
+  --ion-color-primary-contrast-rgb: 27, 16, 6;
+  --ion-color-primary-shade: #cc7726;
+  --ion-color-primary-tint: #ec9c4f;
+
+  /** secondary **/
+  --ion-color-secondary: #cf9a5c;
+  --ion-color-secondary-rgb: 207, 154, 92;
+  --ion-color-secondary-contrast: #1b1006;
+  --ion-color-secondary-contrast-rgb: 27, 16, 6;
+  --ion-color-secondary-shade: #b6864f;
+  --ion-color-secondary-tint: #d6a873;
+
+  /** tertiary **/
+  --ion-color-tertiary: #e5644a;
+  --ion-color-tertiary-rgb: 229, 100, 74;
+  --ion-color-tertiary-contrast: #1b0d08;
+  --ion-color-tertiary-contrast-rgb: 27, 13, 8;
+  --ion-color-tertiary-shade: #c9563f;
+  --ion-color-tertiary-tint: #e87c65;
+
+  /** success **/
+  --ion-color-success: #7cc086;
+  --ion-color-success-rgb: 124, 192, 134;
+  --ion-color-success-contrast: #0c150d;
+  --ion-color-success-contrast-rgb: 12, 21, 13;
+  --ion-color-success-shade: #6dab76;
+  --ion-color-success-tint: #8ec897;
+
+  /** warning **/
+  --ion-color-warning: #e8a72e;
+  --ion-color-warning-rgb: 232, 167, 46;
+  --ion-color-warning-contrast: #1b1305;
+  --ion-color-warning-contrast-rgb: 27, 19, 5;
+  --ion-color-warning-shade: #cc9328;
+  --ion-color-warning-tint: #ecb454;
+
+  /** danger **/
+  --ion-color-danger: #e14b3a;
+  --ion-color-danger-rgb: 225, 75, 58;
+  --ion-color-danger-contrast: #1c0705;
+  --ion-color-danger-contrast-rgb: 28, 7, 5;
+  --ion-color-danger-shade: #c74232;
+  --ion-color-danger-tint: #e5654e;
+
+  /** dark **/
+  --ion-color-dark: #f6ecdc;
+  --ion-color-dark-rgb: 246, 236, 220;
+  --ion-color-dark-contrast: #16100a;
+  --ion-color-dark-contrast-rgb: 22, 16, 10;
+  --ion-color-dark-shade: #d8cfc2;
+  --ion-color-dark-tint: #f7efe1;
+
+  /** medium **/
+  --ion-color-medium: #b49a7c;
+  --ion-color-medium-rgb: 180, 154, 124;
+  --ion-color-medium-contrast: hsla(30, 20%, 8%, 0.85);
+  --ion-color-medium-contrast-rgb: 22, 16, 10;
+  --ion-color-medium-shade: #9e876d;
+  --ion-color-medium-tint: #bca489;
+
+  /** light **/
+  --ion-color-light: #271b0b; // Background color for the header of each widget.
+  --ion-color-light-rgb: 39, 27, 11;
+  --ion-color-light-contrast: #f6ecdc; // Used as font color in the title of all widgets.
+  --ion-color-light-contrast-rgb: 246, 236, 220;
+  --ion-color-light-shade: #302512;
+  --ion-color-light-tint: #16100a;
+  --ion-background-color: #16100a; // Background color of the whole application.
+  --ion-text-color: #f6ecdc;
+  --ion-item-background: #201609; // Background color for the widgets in the Live tap.
+  --ion-title-color: #f6ecdc;
+  --ion-color-toggle-checked-border: #e8892e;
+}

@@ -1,0 +1,203 @@
+@if (isInitialized) {
+  <div class="oe-meridian">
+
+    <section class="oe-hero">
+      <div class="oe-hero-top">
+        <div>
+          <p class="oe-hero-eyebrow">{{ 'LIVE.MERIDIAN.LIVE_PRODUCTION' | translate }}</p>
+          <div class="oe-hero-number oe-numeric">{{ (productionW ?? 0) / 1000 | number:'1.2-2' }}<small>kW</small></div>
+          <div class="oe-hero-badges">
+            @if (gridMode === GridMode.OFF_GRID) {
+              <span class="oe-badge oe-badge-warning">
+                {{ 'GENERAL.OFF_GRID' | translate }}
+              </span>
+            }
+            @if (vsYesterdayDeltaPct !== null) {
+              <span class="oe-badge" [class.oe-badge-down]="vsYesterdayDeltaPct < 0">
+                <span>{{ vsYesterdayDeltaPct >= 0 ? '↗' : '↘' }}</span>
+                <b class="oe-numeric">{{ vsYesterdayDeltaPct | number:'1.0-0' }}%</b>
+                {{ 'LIVE.MERIDIAN.VS_YESTERDAY' | translate }}
+              </span>
+            }
+            @if (selfSufficientTodayPct !== null) {
+              <span class="oe-badge oe-badge-accent">
+                <b class="oe-numeric">{{ selfSufficientTodayPct | number:'1.0-0' }}%</b>
+                {{ 'LIVE.MERIDIAN.SELF_SUFFICIENT_TODAY' | translate }}
+              </span>
+            }
+          </div>
+        </div>
+        <div class="oe-hero-time">
+          {{ 'LIVE.MERIDIAN.TODAY' | translate }}
+          <strong class="oe-numeric">{{ clockLabel }}</strong>
+        </div>
+      </div>
+
+      <div class="oe-graph-wrap">
+        @if (heroChartHasData) {
+          <oe-meridian-hero-chart [labels]="heroLabels" [values]="heroValuesKw" colorVar="--oe-production"></oe-meridian-hero-chart>
+        } @else {
+          <div class="oe-graph-empty">{{ 'LIVE.MERIDIAN.NOT_ENOUGH_DATA' | translate }}</div>
+        }
+      </div>
+      @if (heroChartHasData && heroAxisLabels.length) {
+        <div class="oe-graph-labels oe-numeric">
+          @for (label of heroAxisLabels; track $index) {
+            <span>{{ label }}</span>
+          }
+        </div>
+      }
+
+      <div class="oe-meters">
+        <button type="button" class="oe-meter" (click)="openProductionDetail()">
+          <div class="oe-meter-icon-badge oe-meter-icon-badge--production">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-production)" stroke-width="2.2">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <div class="oe-meter-label">{{ 'GENERAL.PRODUCTION' | translate }}</div>
+          <div class="oe-meter-value oe-numeric">{{ (productionW ?? 0) / 1000 | number:'1.1-1' }} kW</div>
+        </button>
+
+        <button type="button" class="oe-meter" (click)="openConsumptionDetail()">
+          <div class="oe-meter-icon-badge oe-meter-icon-badge--consumption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-consumption)" stroke-width="2.2">
+              <path d="M4 20V10l8-6 8 6v10" stroke-linejoin="round"></path>
+              <path d="M9 20v-6h6v6" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <div class="oe-meter-label">{{ 'GENERAL.CONSUMPTION' | translate }}</div>
+          <div class="oe-meter-value oe-numeric">{{ (consumptionW ?? 0) / 1000 | number:'1.1-1' }} kW</div>
+        </button>
+
+        @if (hasStorage) {
+          <button type="button" class="oe-meter" (click)="openStorageDetail()">
+            <div class="oe-meter-icon-badge oe-meter-icon-badge--storage">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-storage)" stroke-width="2.2">
+                <rect x="3" y="7" width="16" height="11" rx="2"></rect>
+                <path d="M19 10.5h1.5a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H19"></path>
+              </svg>
+            </div>
+            <div class="oe-meter-label">{{ 'EDGE.INDEX.ENERGYMONITOR.STORAGE' | translate }}</div>
+            <div class="oe-meter-value oe-numeric">{{ soc ?? 0 }}%</div>
+            @if (essActivePowerW) {
+              <div class="oe-meter-sub oe-numeric">{{ essActivePowerW >= 0 ? '+' : '-' }}{{ Math.abs(essActivePowerW) / 1000 | number:'1.1-1' }} kW</div>
+            }
+          </button>
+        }
+
+        <button type="button" class="oe-meter" [class.oe-meter-warning]="gridMode === GridMode.OFF_GRID" (click)="openGridDetail()">
+          <div class="oe-meter-icon-badge oe-meter-icon-badge--grid">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-grid)" stroke-width="2.2">
+              <path d="M6 4v16M18 4v16M6 9h12M6 15h12" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <div class="oe-meter-label">{{ 'GENERAL.GRID' | translate }}</div>
+          <div class="oe-meter-value oe-numeric">{{ Math.abs(gridActivePowerW ?? 0) / 1000 | number:'1.1-1' }} kW</div>
+          <div class="oe-meter-sub">
+            {{ (gridMode === GridMode.OFF_GRID ? 'GENERAL.OFF_GRID' : ((gridActivePowerW ?? 0) >= 0 ? 'LIVE.MERIDIAN.BUYING' : 'LIVE.MERIDIAN.SELLING')) | translate }}
+          </div>
+        </button>
+      </div>
+
+      @if (hasEnergyFlow) {
+        <button type="button" class="oe-energy-flow-link" (click)="openEnergyFlow()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6" cy="6" r="2.2"></circle>
+            <circle cx="18" cy="6" r="2.2"></circle>
+            <circle cx="12" cy="18" r="2.2"></circle>
+            <path d="M7.6 7.6L10.5 16M16.4 7.6L13.5 16" stroke-linecap="round"></path>
+          </svg>
+          {{ 'LIVE.MERIDIAN.ENERGY_FLOW' | translate }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      }
+
+      <div class="oe-chip-row">
+        <div class="oe-chip">
+          <div class="oe-chip-label"><span class="oe-swatch" style="background: var(--oe-production)"></span>{{ 'LIVE.MERIDIAN.TODAY_PRODUCED' | translate }}</div>
+          <div class="oe-chip-value oe-numeric">{{ todayProducedKwh !== null ? (todayProducedKwh | number:'1.1-1') : '–' }}<small>kWh</small></div>
+        </div>
+        <div class="oe-chip">
+          <div class="oe-chip-label"><span class="oe-swatch" style="background: var(--oe-consumption)"></span>{{ 'LIVE.MERIDIAN.TODAY_CONSUMED' | translate }}</div>
+          <div class="oe-chip-value oe-numeric">{{ todayConsumedKwh !== null ? (todayConsumedKwh | number:'1.1-1') : '–' }}<small>kWh</small></div>
+        </div>
+        @if (hasStorage) {
+          <div class="oe-chip">
+            <div class="oe-chip-label"><span class="oe-swatch" style="background: var(--oe-storage)"></span>{{ 'LIVE.MERIDIAN.TODAY_BATTERY_USABLE' | translate }}</div>
+            <div class="oe-chip-value oe-numeric">{{ todayBatteryUsableKwh !== null ? (todayBatteryUsableKwh | number:'1.1-1') : '–' }}<small>kWh</small></div>
+          </div>
+        }
+        <div class="oe-chip">
+          <div class="oe-chip-label"><span class="oe-swatch" style="background: var(--oe-grid)"></span>{{ 'LIVE.MERIDIAN.TODAY_EXPORTED' | translate }}</div>
+          <div class="oe-chip-value oe-numeric">{{ todayExportedKwh !== null ? (todayExportedKwh | number:'1.1-1') : '–' }}<small>kWh</small></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="oe-section-heading">
+      <h2>{{ 'LIVE.MERIDIAN.THIS_MONTH' | translate }}</h2>
+      <span>{{ 'LIVE.MERIDIAN.DAYS_PROGRESS' | translate: { elapsed: monthDaysElapsed, total: monthDaysTotal } }}</span>
+    </div>
+
+    <div class="oe-feature-row">
+      <article class="oe-feature-card">
+        <div class="oe-feature-top">
+          <div class="oe-feature-icon oe-feature-icon--consumption">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-consumption)" stroke-width="2">
+              <path d="M4 20V10l8-6 8 6v10" stroke-linejoin="round"></path>
+              <path d="M9 20v-6h6v6" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <span class="oe-feature-tag">{{ 'LIVE.MERIDIAN.MONTH_TO_DATE' | translate }}</span>
+        </div>
+        <div class="oe-feature-label">{{ 'GENERAL.CONSUMPTION' | translate }}</div>
+        <div class="oe-feature-value oe-numeric">{{ monthConsumedKwh !== null ? (monthConsumedKwh | number:'1.0-0') : '–' }}<small>kWh</small></div>
+        @if (monthTypicalKwh !== null) {
+          <div class="oe-progress-track">
+            <div class="oe-progress-fill" [style.width.%]="Math.min(100, (monthConsumedKwh / monthTypicalKwh) * 100)"></div>
+          </div>
+          <div class="oe-feature-sub oe-numeric">
+            {{ 'LIVE.MERIDIAN.OF_TYPICAL_MONTH' | translate: { percent: (Math.round((monthConsumedKwh / monthTypicalKwh) * 100)), typical: (monthTypicalKwh | number:'1.0-0') } }}
+            &middot;
+            {{ 'LIVE.MERIDIAN.ON_PACE_FOR' | translate: { value: (monthOnPaceKwh | number:'1.0-0') } }}
+          </div>
+        } @else {
+          <div class="oe-feature-sub">{{ 'LIVE.MERIDIAN.NOT_ENOUGH_DATA' | translate }}</div>
+        }
+      </article>
+
+      <article class="oe-feature-card">
+        <div class="oe-feature-top">
+          <div class="oe-feature-icon oe-feature-icon--storage">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--oe-storage)" stroke-width="2">
+              <path d="M12 3c3 3.5 6 7 6 10.5A6 6 0 0 1 6 13.5C6 10 9 6.5 12 3Z" stroke-linejoin="round"></path>
+            </svg>
+          </div>
+          <span class="oe-feature-tag">{{ 'LIVE.MERIDIAN.MONTH_TO_DATE' | translate }}</span>
+        </div>
+        <div class="oe-feature-label">{{ 'LIVE.MERIDIAN.CO2_AVOIDED' | translate }}</div>
+        <div class="oe-feature-value oe-numeric">{{ monthCo2AvoidedKg !== null ? (monthCo2AvoidedKg | number:'1.0-0') : '–' }}<small>kg</small>
+          @if (monthCo2AvoidedKg !== null) {
+            <small class="oe-estimate-mark" [attr.title]="'LIVE.MERIDIAN.CO2_AVOIDED_ESTIMATE_HINT' | translate">*</small>
+          }
+        </div>
+        @if (monthProducedKwh !== null && monthTreesEquivalent !== null) {
+          <div class="oe-progress-track">
+            <div class="oe-progress-fill oe-eco" [style.width.%]="Math.min(100, (monthSelfConsumedKwh / monthProducedKwh) * 100)"></div>
+          </div>
+          <div class="oe-feature-sub oe-numeric">
+            {{ 'LIVE.MERIDIAN.TREES_EQUIVALENT' | translate: { count: (monthTreesEquivalent | number:'1.0-0') } }}
+            &middot;
+            {{ 'LIVE.MERIDIAN.FROM_SELF_CONSUMED' | translate: { value: (monthSelfConsumedKwh | number:'1.0-0') } }}
+          </div>
+        } @else {
+          <div class="oe-feature-sub">{{ 'LIVE.MERIDIAN.NOT_ENOUGH_DATA' | translate }}</div>
+        }
+      </article>
+    </div>
+  </div>
+}

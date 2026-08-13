@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar class="ion-justify-content-center"
+    style="--background: var(--ion-color-toolbar-primary); color: var(--ion-title-color);">
+    <ion-title>{{ 'LIVE.MERIDIAN.ENERGY_FLOW' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="modalCtrl.dismiss()">
+        <ion-icon name="close-outline" style="color: var(--ion-title-color);"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <energymonitor></energymonitor>
+</ion-content>

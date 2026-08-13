@@ -18,6 +18,7 @@ export interface Dataset {
 export enum Theme {
     LIGHT = "light",
     DARK = "dark",
+    WARM = "warm",
     SYSTEM = "system",
 }
 

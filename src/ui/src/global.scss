@@ -28,6 +28,7 @@
 
 /* ngx-spinner */
 @use "node_modules/ngx-spinner/animations/ball-clip-rotate-multiple.css" as *;
+@use "./assets/fonts/fonts.scss" as *;
 @use "./environments/index.scss" as *;
 @use "variables" as *;
 @use "./global-ion-custom.scss" as *;
@@ -249,6 +250,12 @@ ion-select::part(icon) {
 .command-textbox {
     font-family: var(--ion-font-family);
     color: var(--ion-color-text);
+}
+
+// Geist Mono, tabular-figure numeric readout — production/consumption/kWh/kg/dates/etc.
+.oe-numeric {
+    font-family: var(--ion-font-family-mono);
+    font-variant-numeric: tabular-nums;
 }
 
 .margin-top {

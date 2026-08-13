@@ -45,6 +45,7 @@ import { InfoComponent } from "./info/info.component";
 import { Io_Api_DigitalInputComponent } from "./Io/Api_DigitalInput/Io_Api_DigitalInput";
 import { Io_Api_DigitalInput_ModalComponent } from "./Io/Api_DigitalInput/modal/modal.component";
 import { LiveComponent } from "./live.component";
+import { MeridianModule } from "./meridian/meridian.module";
 import { FlatComponent as EvcsClusterApiFlatComponent } from "./Multiple/evcs-api-cluster/flat/flat";
 import { ChartComponent as EvcsClusterApiChartComponent } from "./Multiple/evcs-api-cluster/modal/chart/chart";
 import { ModalComponent as EvcsClusterApiModalComponent } from "./Multiple/evcs-api-cluster/modal/modal";
@@ -73,6 +74,7 @@ import { NavigationInfoComponent } from "./navigation-info/navigation-info";
         ControllerIoFixDigitalOutput,
         EdgeOfflineModule,
         EnergymonitorModule,
+        MeridianModule,
         WeatherModule,
         ModalModule,
         SharedModule,

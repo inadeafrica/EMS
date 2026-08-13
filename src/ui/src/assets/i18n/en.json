@@ -734,6 +734,7 @@
     "TOTAL_STATE": "Total state",
     "VALUE": "value",
     "VISIBLE_FOR_ADMINS_ONLY": "Visible for Service & Administration only",
+    "WARM": "Warm",
     "WARNING": "Warning",
     "WEEK": {
       "FRIDAY": "Friday",
@@ -1181,7 +1182,36 @@
     "VALUE_WITH_LABEL": "Value {{ label }}{{ number }} {{ symbol }}"
   },
   "LIVE": {
-    "PULL_TO_REFRESH": "Pull this banner to refresh"
+    "PULL_TO_REFRESH": "Pull this banner to refresh",
+    "MERIDIAN": {
+      "TITLE": "Overview",
+      "LIVE_PRODUCTION": "Live production",
+      "VS_YESTERDAY": "vs yesterday",
+      "SELF_SUFFICIENT_TODAY": "self-sufficient today",
+      "CHARGING": "Charging",
+      "DISCHARGING": "Discharging",
+      "IDLE": "Idle",
+      "BUYING": "Buying",
+      "SELLING": "Selling",
+      "TODAY": "Today",
+      "TODAY_PRODUCED": "Produced",
+      "TODAY_CONSUMED": "Consumed",
+      "TODAY_BATTERY_USABLE": "Battery usable",
+      "TODAY_EXPORTED": "Exported",
+      "THIS_MONTH": "This month",
+      "MONTH_TO_DATE": "Month to date",
+      "DAYS_PROGRESS": "{{elapsed}} of {{total}} days",
+      "OF_TYPICAL_MONTH": "{{percent}}% of a typical {{typical}} kWh month",
+      "ON_PACE_FOR": "on pace for {{value}} kWh",
+      "MONTHLY_CONSUMPTION": "Consumption to date",
+      "TYPICAL_MONTH": "Typical month",
+      "CO2_AVOIDED": "CO₂ avoided",
+      "CO2_AVOIDED_ESTIMATE_HINT": "Estimated from self-consumed solar energy, not a metered value.",
+      "TREES_EQUIVALENT": "≈ {{count}} trees planted",
+      "FROM_SELF_CONSUMED": "from {{value}} kWh of self-consumed solar",
+      "NOT_ENOUGH_DATA": "Not enough data yet",
+      "ENERGY_FLOW": "Energy flow"
+    }
   },
   "LOADING_SCREEN": {
     "LOADING": "Loading",
