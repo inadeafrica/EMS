@@ -41,8 +41,8 @@
               </ion-col>
 
               <!-- "Meridian" — consolidated production/consumption/storage/grid overview -->
-              <ion-col *ngSwitchCase="'Common_Production'" size="12" class="ion-no-padding">
-                <oe-meridian [hasEnergyFlow]="widgets.classes.includes('Energymonitor')"></oe-meridian>
+              <ion-col *ngSwitchCase="'Energymonitor'" size="12" class="ion-no-padding">
+                <oe-meridian [hasEnergyFlow]="true"></oe-meridian>
               </ion-col>
 
             </ng-container>
