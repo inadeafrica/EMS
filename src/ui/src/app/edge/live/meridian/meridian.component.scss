@@ -176,6 +176,26 @@
     }
 }
 
+.oe-meter-icon-badge--production {
+    background: color-mix(in srgb, var(--oe-production) 16%, var(--oe-panel));
+    box-shadow: var(--oe-glow-production);
+}
+
+.oe-meter-icon-badge--consumption {
+    background: color-mix(in srgb, var(--oe-consumption) 16%, var(--oe-panel));
+    box-shadow: var(--oe-glow-consumption);
+}
+
+.oe-meter-icon-badge--storage {
+    background: color-mix(in srgb, var(--oe-storage) 16%, var(--oe-panel));
+    box-shadow: var(--oe-glow-storage);
+}
+
+.oe-meter-icon-badge--grid {
+    background: color-mix(in srgb, var(--oe-grid) 16%, var(--oe-panel));
+    box-shadow: var(--oe-glow-grid);
+}
+
 .oe-meter-label {
     font-size: 0.62rem;
     text-transform: uppercase;
@@ -333,6 +353,16 @@
         width: 1.15rem;
         height: 1.15rem;
     }
+}
+
+.oe-feature-icon--consumption {
+    background: color-mix(in srgb, var(--oe-consumption) 16%, var(--oe-panel-raised));
+    box-shadow: var(--oe-glow-consumption);
+}
+
+.oe-feature-icon--storage {
+    background: color-mix(in srgb, var(--oe-storage) 16%, var(--oe-panel-raised));
+    box-shadow: var(--oe-glow-storage);
 }
 
 .oe-feature-tag {
